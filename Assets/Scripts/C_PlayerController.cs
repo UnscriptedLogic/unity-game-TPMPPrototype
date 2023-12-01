@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnscriptedEngine;
 
 public class C_PlayerController : UController
@@ -23,6 +25,15 @@ public class C_PlayerController : UController
     private P_PlayerPawn playerPawn;
 
     private int objectRotation;
+    private Vector2 mousePosition;
+    
+    public Vector3 MouseWorldPosition
+    {
+        get
+        {
+            return playerPawn.ControllerCamera.ScreenToWorldPoint(mousePosition);
+        }
+    }
 
     public Bindable<PlayerState> playerState;
 
@@ -64,11 +75,21 @@ public class C_PlayerController : UController
 
     private void OnMouseClick(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (playerState.Value == PlayerState.Building)
-        {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation);
+        switch (playerState.Value)
+        {
+            case PlayerState.Building:
+                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation);
+
+                break;
+            case PlayerState.Deleting:
+                playerPawn.AttemptDelete(MouseWorldPosition);
+                break;
+            case PlayerState.None:
+                break;
+            default:
+                break;
         }
     }
 
@@ -108,7 +129,7 @@ public class C_PlayerController : UController
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
     {
-
+        playerState.Value = PlayerState.Deleting;
     }
 
     protected override ULevelPawn PossessPawn()
@@ -136,7 +157,9 @@ public class C_PlayerController : UController
     {
         if (playerPawn == null) return;
 
-        playerPawn.MovePlayerCamera(GameMode.InputContext.FindActionMap("Default").FindAction("MousePosition").ReadValue<Vector2>());
+        mousePosition = defaultActionMap.FindAction("MousePosition").ReadValue<Vector2>();
+
+        playerPawn.MovePlayerCamera(mousePosition);
 
         if (playerState.Value == PlayerState.Building)
         {
@@ -148,9 +171,7 @@ public class C_PlayerController : UController
 
     private Vector3 CalculateBuildPosition()
     {
-        Vector2 mousePos = GameMode.InputContext.FindActionMap("Default").FindAction("MousePosition").ReadValue<Vector2>();
-
-        Vector3 worldPosition = playerPawn.ControllerCamera.ScreenToWorldPoint(mousePos);
+        Vector3 worldPosition = MouseWorldPosition;
 
         worldPosition = new Vector3(worldPosition.x - 0.25f, worldPosition.y - 0.25f, 0f);
 

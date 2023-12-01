@@ -52,7 +52,7 @@ MonoBehaviour:
   depositOrientation: {fileID: 3709670764763445023}
   depositTransform: {fileID: 587103065592170618}
   buildItemPrefab: {fileID: 2159611956354016366, guid: 48d28e992259b1344a9f664ace8bf5d7, type: 3}
-  spawnInterval: 2
+  spawnInterval: 1
 --- !u!61 &663575030023748880
 BoxCollider2D:
   m_ObjectHideFlags: 0

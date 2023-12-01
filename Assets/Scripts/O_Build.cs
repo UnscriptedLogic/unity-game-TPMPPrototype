@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -143,7 +144,7 @@ public abstract class O_Build : ULevelObject
     {
         levelManager = GameMode as GM_LevelManager;
 
-        levelManager.GetPlayerController().playerState.OnValueChanged += OnBuildModeChanged;
+        levelManager.GetPlayerController().playerState.OnValueChanged += OnPlayerStateChanged;
     }
 
     public virtual void OnBeginPreview() 
@@ -182,7 +183,7 @@ public abstract class O_Build : ULevelObject
 
     }
 
-    protected virtual void OnBuildModeChanged(C_PlayerController.PlayerState playerState)
+    protected virtual void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
     {
         this.playerState = playerState;
     }
@@ -203,8 +204,13 @@ public abstract class O_Build : ULevelObject
 
     protected override void OnDestroy()
     {
-        levelManager.GetPlayerController().playerState.OnValueChanged -= OnBuildModeChanged;
+        levelManager.GetPlayerController().playerState.OnValueChanged -= OnPlayerStateChanged;
 
         base.OnDestroy();
+    }
+
+    public virtual void DeleteSelf()
+    {
+        Destroy(gameObject);
     }
 }

@@ -47,9 +47,9 @@ public class O_Build_GenericDispenser : O_Build
         depositOrientation.SetActive(true);
     }
 
-    protected override void OnBuildModeChanged(C_PlayerController.PlayerState playerState)
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
     {
-        base.OnBuildModeChanged(playerState);
+        base.OnPlayerStateChanged(playerState);
 
         depositOrientation.SetActive(playerState == C_PlayerController.PlayerState.Building);
 

@@ -41,9 +41,9 @@ public class O_Build_GenericBuilder : O_Build
         timer = new BuildBehaviours.Timer(dispenseTime, false);
     }
 
-    protected override void OnBuildModeChanged(C_PlayerController.PlayerState isBuildMode)
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
     {
-        base.OnBuildModeChanged(isBuildMode);
+        base.OnPlayerStateChanged(isBuildMode);
 
         inputNode.CheckConnection();
         outputNode.CheckConnection();

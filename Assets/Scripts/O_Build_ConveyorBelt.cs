@@ -87,7 +87,7 @@ public class O_Build_ConveyorBelt : O_Build
         return true;
     }
 
-    protected override void OnBuildModeChanged(C_PlayerController.PlayerState isBuildMode)
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
     {
         startPointerAnchor.gameObject.SetActive(isBuildMode == C_PlayerController.PlayerState.Building);
         endPointerAnchor.gameObject.SetActive(isBuildMode == C_PlayerController.PlayerState.Building);

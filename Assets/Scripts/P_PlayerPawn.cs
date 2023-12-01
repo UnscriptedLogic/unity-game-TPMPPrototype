@@ -59,10 +59,10 @@ public class P_PlayerPawn : URTSCamera
         switch (direction)
         {
             case Direction.Forward:
-                pos += anchor.forward * panSpeed * Time.deltaTime;
+                pos += anchor.up * panSpeed * Time.deltaTime;
                 break;
             case Direction.Backward:
-                pos += -anchor.forward * panSpeed * Time.deltaTime;
+                pos += -anchor.up * panSpeed * Time.deltaTime;
                 break;
             case Direction.Left:
                 pos += -anchor.right * panSpeed * Time.deltaTime;
@@ -76,7 +76,7 @@ public class P_PlayerPawn : URTSCamera
         }
 
         pos.x = Mathf.Clamp(pos.x, -bounds.x, bounds.x);
-        pos.z = Mathf.Clamp(pos.z, -bounds.y, bounds.y);
+        pos.y = Mathf.Clamp(pos.y, -bounds.y, bounds.y);
 
 
         anchor.position = Vector3.Lerp(anchor.position, pos, smoothing);
@@ -103,5 +103,20 @@ public class P_PlayerPawn : URTSCamera
         {
             MoveCamera(Direction.Backward);
         }
+    }
+
+    public void AttemptDelete(Vector3 mouseWorldPosition)
+    {
+        Collider2D collider = Physics2D.OverlapCircle(mouseWorldPosition, 1f);
+        if (collider == null) return;
+
+        O_Build build = collider.GetComponent<O_Build>();
+        if (build == null)
+        {
+            build = collider.GetComponentInParent<O_Build>();
+            if (build == null) return;
+        }
+
+        build.DeleteSelf();
     }
 }

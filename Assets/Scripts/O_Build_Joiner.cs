@@ -26,9 +26,9 @@ public class O_Build_Joiner : O_Build
         bottomInputNode.Initialize();
     }
 
-    protected override void OnBuildModeChanged(C_PlayerController.PlayerState isBuildMode)
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
     {
-        base.OnBuildModeChanged(isBuildMode);
+        base.OnPlayerStateChanged(isBuildMode);
 
         outputNode.CheckConnection();
         leftInputNode.CheckConnection();
