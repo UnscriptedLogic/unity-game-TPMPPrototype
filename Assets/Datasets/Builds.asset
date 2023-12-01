@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b628dec6bf36652499dd3b657c8748b4, type: 3}
+  m_Name: Builds
+  m_EditorClassIdentifier: 
+  buildableDataSet:
+  - id: conveyor
+    displayName: Conveyor
+    frameworkCategory: 1
+    buildMachineCategory: 1
+    build: {fileID: 1281026800053470207, guid: 348a47304ba02874e9d0b6bb3f2710eb, type: 3}
+  - id: util_joiner
+    displayName: Joiner
+    frameworkCategory: 1
+    buildMachineCategory: 0
+    build: {fileID: 4637216370504582894, guid: 507a30dc7447db04ba67e04415e67651, type: 3}
+  - id: dispenser_html
+    displayName: HTML Dispenser
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: a7aa11dd142712f49802c541dd1a94d7, type: 3}
+  - id: dispenser_css
+    displayName: CSS Dispenser
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 872733305103220562, guid: 65107e367beed074d859059e20dff9ea, type: 3}
+  - id: dispenser_js
+    displayName: Javascript Dispenser
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 7487909542043569968, guid: 496d0537a673a1343be622977781492e, type: 3}
+  - id: builder_htmlbuttondiv
+    displayName: HTML Button Div Builder
+    frameworkCategory: 0
+    buildMachineCategory: 1
+    build: {fileID: 960104662771992712, guid: ce2178242b138554aa4434439f0e5634, type: 3}
+  - id: builder_csspadding
+    displayName: CSS Padding Builder
+    frameworkCategory: 0
+    buildMachineCategory: 1
+    build: {fileID: 960104662771992712, guid: d5249ecc944fb17489556972f9276604, type: 3}
+  - id: builder_jsonclick
+    displayName: JS OnClick
+    frameworkCategory: 0
+    buildMachineCategory: 1
+    build: {fileID: -7366603762298442300, guid: caf701f87d4a7a747b089725877c2b52, type: 3}
+  - id: builder_htmlinteractablebutton
+    displayName: HTML Interactable Button Builder
+    frameworkCategory: 0
+    buildMachineCategory: 1
+    build: {fileID: 960104662771992712, guid: 4d040b50f46786c4e816d8964b7ee52a, type: 3}

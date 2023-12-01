@@ -1,0 +1,107 @@
+using System;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnscriptedEngine;
+
+public class P_PlayerPawn : URTSCamera
+{
+    [Header("Player Pawn Extension")]
+    [SerializeField] private SO_Builds buildableDataSet;
+
+    [SerializeField] private Vector2 panningDetectionThickness;
+
+    private O_Build objectToBuild;
+
+    public void StartBuildPreview(string buildID)
+    {
+        ClearPreview();
+        objectToBuild = Instantiate(buildableDataSet.GetBuildableWithID(buildID).Build);
+
+        objectToBuild.OnBeginPreview();
+    }
+
+    public void UpdateBuildPreview(Vector3 position, int rotationOffset)
+    {
+        objectToBuild.OnUpdatePreview(position, rotationOffset);
+    }
+
+    public void AttemptBuild(Vector3 position, int rotationOffset)
+    {
+        if (objectToBuild.CanBeBuilt())
+        {
+            objectToBuild.Build(position, rotationOffset);
+        }
+    }
+
+    public void AttemptAlternateBuild(Vector3 position, int rotationOffset)
+    {
+        objectToBuild.AlternateBuild(position, rotationOffset);
+    }
+
+    public void ClearPreview()
+    {
+        if (objectToBuild != null)
+        {
+            Destroy(objectToBuild.gameObject);
+        }
+    }
+
+    public void EndBuildPreview()
+    {
+        ClearPreview();
+        objectToBuild.OnEndPreview();
+    }
+
+    public override void MoveCamera(Direction direction)
+    {
+        Vector3 pos = anchor.position;
+
+        switch (direction)
+        {
+            case Direction.Forward:
+                pos += anchor.forward * panSpeed * Time.deltaTime;
+                break;
+            case Direction.Backward:
+                pos += -anchor.forward * panSpeed * Time.deltaTime;
+                break;
+            case Direction.Left:
+                pos += -anchor.right * panSpeed * Time.deltaTime;
+                break;
+            case Direction.Right:
+                pos += anchor.right * panSpeed * Time.deltaTime;
+                break;
+            default:
+                Debug.Log("Something went wrong here");
+                break;
+        }
+
+        pos.x = Mathf.Clamp(pos.x, -bounds.x, bounds.x);
+        pos.z = Mathf.Clamp(pos.z, -bounds.y, bounds.y);
+
+
+        anchor.position = Vector3.Lerp(anchor.position, pos, smoothing);
+    }
+
+    public void MovePlayerCamera(Vector2 mousePos)
+    {
+        if (mousePos.x >= Screen.width - panningDetectionThickness.x)
+        {
+            MoveCamera(Direction.Right);
+        }
+
+        if (mousePos.x <= panningDetectionThickness.x)
+        {
+            MoveCamera(Direction.Left);
+        }
+
+        if (mousePos.y >= Screen.height - panningDetectionThickness.y)
+        {
+            MoveCamera(Direction.Forward);
+        }
+
+        if (mousePos.y <= panningDetectionThickness.y)
+        {
+            MoveCamera(Direction.Backward);
+        }
+    }
+}
