@@ -18,6 +18,11 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 1281026800053470207, guid: 348a47304ba02874e9d0b6bb3f2710eb, type: 3}
+  - id: util_wideconveyor
+    displayName: Wide Conveyor
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 1281026800053470207, guid: 6f41b74dd2092d54a946ef2e4e5185bf, type: 3}
   - id: util_joiner
     displayName: Joiner
     frameworkCategory: 1
@@ -28,8 +33,13 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 2755233388485305449, guid: 65269e7cc8f40bd4aa58f8e20f745c1f, type: 3}
-  - id: dispenser_htmlcanvas
+  - id: dispenser_htmlemptycanvas
     displayName: Empty Canvas
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: 344f066e5f7c7be4cadbb31b000abb2e, type: 3}
+  - id: dispenser_htmlsquare
+    displayName: Square Component
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
