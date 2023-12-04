@@ -33,6 +33,11 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 2755233388485305449, guid: 65269e7cc8f40bd4aa58f8e20f745c1f, type: 3}
+  - id: util_constructor
+    displayName: Constructor
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 7920708871764187601, guid: 15efdb618e71f954598459931fa31d6e, type: 3}
   - id: dispenser_htmlemptycanvas
     displayName: Empty Canvas
     frameworkCategory: 0
@@ -43,3 +48,13 @@ MonoBehaviour:
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
+  - id: modifier_stretchvertical
+    displayName: Stretch Vertical
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 6127758460252443562, guid: 07407892967d62445a947ec24888e543, type: 3}
+  - id: modifier_stretchhorizontal
+    displayName: Stretch Horizontal
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 6127758460252443562, guid: 0bc36a133f682b7468c7d8fb2e1a4c13, type: 3}

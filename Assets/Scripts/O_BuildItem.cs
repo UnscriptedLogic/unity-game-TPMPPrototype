@@ -65,6 +65,7 @@ public class O_BuildItem : ULevelObject
         if (splineContainer == null) return;
 
         SplineAnimator.Container = splineContainer;
+        splineAnimator.ElapsedTime = 0;
         splineAnimator.Play();
     }
 

@@ -9,7 +9,7 @@ public class O_Build_GenericBuilder : O_Build
     [SerializeField] private GameObject buildItemPrefab;
 
     [SerializeField] private int dispenseOnEveryTick = 1;
-    [SerializeField] private List<BuildBehaviours.RequiredItem> requiredBuildItems = new List<BuildBehaviours.RequiredItem>();
+    [SerializeField] private List<BuildBehaviours.InventorySlot> requiredBuildItems = new List<BuildBehaviours.InventorySlot>();
 
     protected override void Start()
     {
@@ -86,7 +86,7 @@ public class O_Build_GenericBuilder : O_Build
                 if (item.ID != requiredBuildItems[i].id) continue;
                 if (requiredBuildItems[i].IsInventoryFull) continue;
 
-                BuildBehaviours.ConsumeItem(this, item, inputNode, ref requiredBuildItems[i].items);
+                BuildBehaviours.ConsumeItem(this, item, ref requiredBuildItems[i].items);
                 break;
             }
         }

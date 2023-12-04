@@ -55,7 +55,7 @@ public static class BuildBehaviours
     }
 
     [System.Serializable]
-    public class RequiredItem
+    public class InventorySlot
     {
         public string id;
         public int amount = 1;
@@ -72,7 +72,14 @@ public static class BuildBehaviours
         }
     }
 
-    public static void ConsumeItem(O_Build build, O_BuildItem item, InputNode inputNode, ref List<O_BuildItem> buildItems)
+    public static void ConsumeItem(O_Build build, O_BuildItem item, ref List<O_BuildItem> buildItems)
+    {
+        ConsumeItem(build, item);
+
+        buildItems.Add(item);
+    }
+
+    public static void ConsumeItem(O_Build build, O_BuildItem item)
     {
         item.gameObject.SetActive(false);
 
@@ -80,8 +87,6 @@ public static class BuildBehaviours
         item.SplineAnimator.ElapsedTime = 0;
 
         item.transform.position = build.transform.position;
-
-        buildItems.Add(item);
     }
 
     public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> buildItems)
@@ -91,6 +96,12 @@ public static class BuildBehaviours
         item.gameObject.SetActive(true);
 
         buildItems.RemoveAt(0);
+    }
+
+    public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
+    {
+        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        item.gameObject.SetActive(true);
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)

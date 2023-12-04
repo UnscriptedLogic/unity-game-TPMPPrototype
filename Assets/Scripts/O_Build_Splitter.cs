@@ -52,7 +52,7 @@ public class O_Build_Splitter : O_Build
         {
             if (inputNode.TryGetBuildItem(out O_BuildItem buildItem))
             {
-                BuildBehaviours.ConsumeItem(this, buildItem, inputNode, ref buildItems);
+                BuildBehaviours.ConsumeItem(this, buildItem, ref buildItems);
             } 
         }
 

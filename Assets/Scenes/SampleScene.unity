@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BP_Build_SimpleHTMLPageProducer
       objectReference: {fileID: 0}
+    - target: {fileID: 2983328342041798567, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5

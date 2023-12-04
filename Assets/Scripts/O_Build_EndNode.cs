@@ -6,7 +6,7 @@ public class O_Build_EndNode : O_Build
 {
     [SerializeField] private InputNode inputNode;
 
-    [SerializeField] private List<BuildBehaviours.RequiredItem> requiredItems = new List<BuildBehaviours.RequiredItem>();
+    [SerializeField] private List<BuildBehaviours.InventorySlot> requiredItems = new List<BuildBehaviours.InventorySlot>();
 
     protected override void Start()
     {
@@ -74,7 +74,7 @@ public class O_Build_EndNode : O_Build
                 if (item.ID != requiredItems[i].id) continue;
                 if (requiredItems[i].IsInventoryFull) continue;
 
-                BuildBehaviours.ConsumeItem(this, item, inputNode, ref requiredItems[i].items);
+                BuildBehaviours.ConsumeItem(this, item, ref requiredItems[i].items);
                 break;
             }
         }

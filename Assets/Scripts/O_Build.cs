@@ -11,7 +11,7 @@ public abstract class O_Build : ULevelObject
 
         private bool isConnected;
         private SpriteRenderer spriteRenderer;
-        private BoxCollider2D collider;
+        private Collider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
 
         public Transform Transform => transform;
@@ -24,7 +24,7 @@ public abstract class O_Build : ULevelObject
         public void Initialize()
         {
             spriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
-            collider = transform.GetComponent<BoxCollider2D>();
+            collider = transform.GetComponent<Collider2D>();
 
             if (ColorUtility.TryParseHtmlString("#98FF7D", out Color color))
             {
@@ -68,6 +68,32 @@ public abstract class O_Build : ULevelObject
                 O_BuildItem item = colliders[i].GetComponent<O_BuildItem>();
                 if (item == null) continue;
                 
+                O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
+                if (itemConveyorBelt == null) continue;
+                if (itemConveyorBelt != conveyorBelt) continue;
+
+                buildItem = item;
+                return true;
+            }
+
+            buildItem = null;
+            return false;
+        }
+
+        public bool TryGetBuildComponent<T>(out T buildItem) where T : O_BuildItem
+        {
+            if (!isConnected)
+            {
+                buildItem = default;
+                return false;
+            }
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                T item = colliders[i].GetComponent<T>();
+                if (item == null) continue;
+
                 O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
                 if (itemConveyorBelt == null) continue;
                 if (itemConveyorBelt != conveyorBelt) continue;

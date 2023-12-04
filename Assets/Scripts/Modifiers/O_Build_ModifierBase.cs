@@ -1,0 +1,87 @@
+using NUnit.Framework;
+using System;
+using UnityEngine;
+using UnscriptedEngine;
+
+public class O_Build_ModifierBase : O_Build
+{
+    [SerializeField] private InputNode inputNode;
+    [SerializeField] private OutputNode outputNode;
+    [SerializeField] private int processTickDelay = 8;
+    [SerializeField] private int creationIteration;
+
+    private O_BuildComponent buildComponent;
+
+    private int _creationIteration;
+
+    protected override void Start()
+    {
+        base.Start();
+
+        inputNode.Initialize();
+        outputNode.Initialize();
+    
+        OnBuildDestroyed += CheckConnections;
+    }
+
+    protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    {
+        if (!inputNode.IsConnected) return;
+
+        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+        {
+            if (buildItem as O_BuildPage) return;
+
+            buildComponent = buildItem;
+
+            BuildBehaviours.ConsumeItem(this, buildComponent);
+
+            OnComponentRecieved(buildItem);
+
+            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            {
+                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+            }
+        }
+
+        if (!outputNode.IsConnected) return;
+
+        if (buildComponent == null) return;
+
+        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        {
+            _creationIteration++;
+
+            if (_creationIteration < creationIteration) return;
+
+            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
+            buildComponent = null;
+
+            _creationIteration = 0;
+        }
+    }
+
+    protected virtual void OnComponentRecieved(O_BuildComponent component) { }
+    protected virtual void ForEveryAttachedComponent(O_BuildComponentItem itemComponent) { }
+
+    private void CheckConnections(object sender, EventArgs e)
+    {
+        inputNode.CheckConnection();
+        outputNode.CheckConnection();
+    }
+
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
+    {
+        base.OnPlayerStateChanged(playerState);
+
+        inputNode.CheckConnection();
+        outputNode.CheckConnection();
+    }
+
+    protected override void OnDestroy()
+    {
+        OnBuildDestroyed -= CheckConnections;
+
+        base.OnDestroy();
+    }
+}

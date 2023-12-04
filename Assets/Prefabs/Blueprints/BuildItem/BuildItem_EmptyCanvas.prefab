@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 418484280950649440}
   - component: {fileID: 5856260503601958205}
   - component: {fileID: 462926881747628500}
-  - component: {fileID: 3088603404299828653}
+  - component: {fileID: 308295150809787338}
   m_Layer: 7
   m_Name: BuildItem_EmptyCanvas
   m_TagString: Untagged
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &3088603404299828653
+--- !u!114 &308295150809787338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,11 +114,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3022135173088375680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b8d53da8cb4fc4e8fa6cc85588cf28, type: 3}
+  m_Script: {fileID: 11500000, guid: 6007c90f77df5844687d7ebe39da65e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   category: 0
-  id: css
+  id: html_page_empty
+  canvasRoot: {fileID: 2523724293336426818}
+  attachedComponents: []
 --- !u!1 &3730074294632749518
 GameObject:
   m_ObjectHideFlags: 0

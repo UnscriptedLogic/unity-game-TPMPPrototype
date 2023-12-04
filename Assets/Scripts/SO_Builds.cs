@@ -13,6 +13,7 @@ public enum BuildMachineCategory
     DISPENSER,
     BUILDER,
     PRODUCER,
+    MODIFIER,
     UTILITY,
     NONE,
 }
