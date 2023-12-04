@@ -10,9 +10,8 @@ public class O_Build_Joiner : O_Build
     [SerializeField] private InputNode bottomInputNode;
 
     [Header("Dispense Settings")]
+    [SerializeField] private int dispenseOnEveryTick = 4;
     [SerializeField] private int maxStorage = 100;
-    [SerializeField] private float spawnInterval;
-    private float _spawnInterval;
 
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
@@ -24,39 +23,36 @@ public class O_Build_Joiner : O_Build
         leftInputNode.Initialize();
         rightInputNode.Initialize();
         bottomInputNode.Initialize();
+
+        OnBuildCreated += CheckConnections;
+        OnBuildDestroyed += CheckConnections;
     }
 
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
+    protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        base.OnPlayerStateChanged(isBuildMode);
+        if (buildItems.Count == 0) return;
+        if (!outputNode.IsConnected) return;
 
+        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+
+        CreateBuildItem(buildItems[0], outputNode);
+
+        buildItems.RemoveAt(0);
+    }
+
+    private void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
+    {
+        O_BuildItem item = buildItem;
+        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        item.gameObject.SetActive(true);
+    }
+
+    private void CheckConnections(object sender, System.EventArgs e)
+    {
         outputNode.CheckConnection();
         leftInputNode.CheckConnection();
         rightInputNode.CheckConnection();
         bottomInputNode.CheckConnection();
-    }
-
-    private void Update()
-    {
-        if (!outputNode.IsConnected) return;
-
-        if (_spawnInterval <= 0f)
-        {
-            if (buildItems.Count > 0)
-            {
-                O_BuildItem item = buildItems[0];
-                item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
-                item.gameObject.SetActive(true);
-
-                buildItems.RemoveAt(0);
-
-                _spawnInterval = spawnInterval;
-            }
-        }
-        else
-        {
-            _spawnInterval -= Time.deltaTime;
-        }
     }
 
     private void FixedUpdate()
@@ -99,5 +95,13 @@ public class O_Build_Joiner : O_Build
         item.transform.position = transform.position;
 
         buildItems.Add(item);
+    }
+
+    protected override void OnDestroy()
+    {
+        OnBuildCreated -= CheckConnections;
+        OnBuildDestroyed -= CheckConnections;
+
+        base.OnDestroy();
     }
 }

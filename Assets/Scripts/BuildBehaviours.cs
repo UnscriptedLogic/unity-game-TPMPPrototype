@@ -54,6 +54,24 @@ public static class BuildBehaviours
         }
     }
 
+    [System.Serializable]
+    public class RequiredItem
+    {
+        public string id;
+        public int amount = 1;
+        public int storageCap = 20;
+
+        [HideInInspector] public List<O_BuildItem> items = new List<O_BuildItem>();
+
+        public bool IsInventoryFull
+        {
+            get
+            {
+                return items.Count >= storageCap;
+            }
+        }
+    }
+
     public static void ConsumeItem(O_Build build, O_BuildItem item, InputNode inputNode, ref List<O_BuildItem> buildItems)
     {
         item.gameObject.SetActive(false);
@@ -73,5 +91,12 @@ public static class BuildBehaviours
         item.gameObject.SetActive(true);
 
         buildItems.RemoveAt(0);
+    }
+
+    public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
+    {
+        O_BuildItem item = buildItem;
+        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        item.gameObject.SetActive(true);
     }
 }

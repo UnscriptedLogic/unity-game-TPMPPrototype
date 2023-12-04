@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 6424352224870186333}
   - component: {fileID: 960104662771992712}
   m_Layer: 0
-  m_Name: BP_Build_CSSPaddingBuilder
+  m_Name: BP_Build_HTMLInteractableButtonBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,12 +226,20 @@ MonoBehaviour:
     transform: {fileID: 1245899464533550434}
   outputNode:
     transform: {fileID: 11282775848794504}
-  buildItemPrefab: {fileID: 3022135173088375680, guid: 778c41d7760f4164686fafd72e1a4b80, type: 3}
-  storageCap: 20
-  dispenseTime: 0.5
+  buildItemPrefab: {fileID: 6900659328970073332, guid: 405c373624a9246479b5c4f72388253c, type: 3}
+  dispenseOnEveryTick: 2
   requiredBuildItems:
-  - id: css
-    amount: 4
+  - id: html_button
+    amount: 1
+    storageCap: 20
+    items: []
+  - id: css_padding
+    amount: 1
+    storageCap: 20
+    items: []
+  - id: js_onclick
+    amount: 1
+    storageCap: 20
     items: []
 --- !u!1 &3514647170052220154
 GameObject:
@@ -461,9 +469,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CSS Padding
-
-    Builder'
+  m_text: HTML Interactable Button Builder
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -490,7 +496,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
+  m_fontSize: 176.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

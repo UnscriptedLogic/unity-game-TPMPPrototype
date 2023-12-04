@@ -80,7 +80,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3760977695015407730
 Transform:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 1281026800053470207}
   - component: {fileID: 5233014844649702355}
   m_Layer: 0
-  m_Name: BP_Build_ConveyorBelt
+  m_Name: BP_Build_WideConveyorBelt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,6 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellSize: {x: 0.1, y: 0.1}
   offset: {x: 0, y: 0}
+  splineInstantiate: {fileID: 5315114295112963216}
   splineContainer: {fileID: 5233014844649702355}
   ui_hud: {fileID: 404465211289132731, guid: 03588ecc3a3fa0143a6abcd9b640416b, type: 3}
   endPoint: {fileID: 6588092268419433276}
@@ -273,7 +274,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3035987373737494566}
@@ -322,7 +323,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -2413806693520163455, guid: be6e47ed0d9a4aa48bbf8338f34e72ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -416,12 +417,12 @@ MonoBehaviour:
   m_Container: {fileID: 5233014844649702355}
   m_ItemsToInstantiate:
   - prefab: {fileID: 0}
-    Prefab: {fileID: 8839709499924983525, guid: b786451da92a0584aa6c912ac07a463d, type: 3}
+    Prefab: {fileID: 8839709499924983525, guid: 90a87830f53579b4889b2112932a4a8b, type: 3}
     probability: 0
     Probability: 100
   m_Method: 2
   m_Space: 2
-  m_Spacing: {x: 0.1, y: 0.1}
+  m_Spacing: {x: 0.2, y: 0.2}
   m_Up: 1
   m_Forward: 5
   m_PositionOffset:
@@ -479,7 +480,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5563698700288925538}
@@ -528,7 +529,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -2413806693520163455, guid: be6e47ed0d9a4aa48bbf8338f34e72ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -591,7 +592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &942542907610504379
 Transform:
   m_ObjectHideFlags: 0

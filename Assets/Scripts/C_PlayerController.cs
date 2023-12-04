@@ -65,6 +65,7 @@ public class C_PlayerController : UController
     {
         hudCanvas.OnRequestingToBuild -= HudCanvas_OnRequestingToBuild;
         hudCanvas.OnCloseBuildMenu -= HudCanvas_OnCloseBuildMenu;
+        hudCanvas.OnDeleteBuildToggled -= HudCanvas_OnDeleteBuildToggled;
 
         defaultActionMap.FindAction("MouseClick").performed -= OnMouseClick;
         defaultActionMap.FindAction("MouseRightClick").performed -= OnMouseRightClick;
@@ -129,7 +130,7 @@ public class C_PlayerController : UController
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
     {
-        playerState.Value = PlayerState.Deleting;
+        playerState.Value = value ? PlayerState.Deleting : PlayerState.None;
     }
 
     protected override ULevelPawn PossessPawn()

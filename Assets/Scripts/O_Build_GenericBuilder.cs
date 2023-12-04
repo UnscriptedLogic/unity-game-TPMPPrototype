@@ -4,32 +4,12 @@ using UnscriptedEngine;
 
 public class O_Build_GenericBuilder : O_Build
 {
-    [System.Serializable]
-    public class RequiredItem
-    {
-        public string id;
-        public int amount = 1;
-        public int storageCap = 20;
-
-        [HideInInspector] public List<O_BuildItem> items = new List<O_BuildItem>();
-
-        public bool IsInventoryFull
-        {
-            get
-            {
-                return items.Count >= storageCap;
-            }
-        }
-    }
-
     [SerializeField] private InputNode inputNode;
     [SerializeField] private OutputNode outputNode;
     [SerializeField] private GameObject buildItemPrefab;
 
-    [SerializeField] private float dispenseTime;
-    [SerializeField] private List<RequiredItem> requiredBuildItems = new List<RequiredItem>();
-
-    private BuildBehaviours.Timer timer;
+    [SerializeField] private int dispenseOnEveryTick = 1;
+    [SerializeField] private List<BuildBehaviours.RequiredItem> requiredBuildItems = new List<BuildBehaviours.RequiredItem>();
 
     protected override void Start()
     {
@@ -38,18 +18,40 @@ public class O_Build_GenericBuilder : O_Build
         inputNode.Initialize();
         outputNode.Initialize();
 
-        timer = new BuildBehaviours.Timer(dispenseTime, false);
+        OnBuildDestroyed += CheckConnections;
     }
 
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
+    private void CheckConnections(object sender, System.EventArgs e)
     {
-        base.OnPlayerStateChanged(isBuildMode);
+        inputNode.CheckConnection();
+        outputNode.CheckConnection();
+    }
+
+    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
+    {
+        base.OnPlayerStateChanged(playerState);
 
         inputNode.CheckConnection();
         outputNode.CheckConnection();
     }
 
-    private bool AreItemRequirementsMaterial()
+    protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    {
+        if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
+
+        if (!outputNode.IsConnected) return;
+
+        if (AreItemRequirementsMet())
+        {
+            DispenseMaterial();
+
+            GameObject buildItemObject = Instantiate(buildItemPrefab);
+            O_BuildItem buildItem = buildItemObject.GetComponent<O_BuildItem>();
+            buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        }
+    }
+
+    private bool AreItemRequirementsMet()
     {
         for (int i = 0; i < requiredBuildItems.Count; i++)
         {
@@ -73,27 +75,6 @@ public class O_Build_GenericBuilder : O_Build
         }
     }
 
-    private void Update()
-    {
-        if (!outputNode.IsConnected) return;
-
-        timer.Update();
-
-        if (timer.TimeRemaining <= 0)
-        {
-            if (AreItemRequirementsMaterial())
-            {
-                DispenseMaterial();
-
-                GameObject buildItemObject = Instantiate(buildItemPrefab);
-                O_BuildItem buildItem = buildItemObject.GetComponent<O_BuildItem>();
-                buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
-
-                timer.Reset();
-            }
-        }
-    }
-
     private void FixedUpdate()
     {
         if (!inputNode.IsConnected) return;
@@ -109,5 +90,12 @@ public class O_Build_GenericBuilder : O_Build
                 break;
             }
         }
+    }
+
+    protected override void OnDestroy()
+    {
+        OnBuildDestroyed -= CheckConnections;
+
+        base.OnDestroy();
     }
 }

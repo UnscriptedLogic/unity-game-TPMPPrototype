@@ -181,9 +181,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6424352224870186333}
-  - component: {fileID: -7366603762298442300}
+  - component: {fileID: 960104662771992712}
   m_Layer: 0
-  m_Name: BP_Build_JSOnClickBuilder
+  m_Name: BP_Build_HTMLButtonDivBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,7 @@ Transform:
   - {fileID: 3255941809907732229}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7366603762298442300
+--- !u!114 &960104662771992712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,12 +226,12 @@ MonoBehaviour:
     transform: {fileID: 1245899464533550434}
   outputNode:
     transform: {fileID: 11282775848794504}
-  buildItemPrefab: {fileID: 1852551001678308031, guid: 6bec01d7150d6444ab257061d29276bf, type: 3}
-  storageCap: 20
-  dispenseTime: 1
+  buildItemPrefab: {fileID: 6900659328970073332, guid: da6f5cda5c7adc0409317da5c26acaaa, type: 3}
+  dispenseOnEveryTick: 1
   requiredBuildItems:
-  - id: js
-    amount: 1
+  - id: html
+    amount: 2
+    storageCap: 20
     items: []
 --- !u!1 &3514647170052220154
 GameObject:
@@ -461,9 +461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'JS OnClick
-
-    Builder'
+  m_text: HTML Button Div Builder
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

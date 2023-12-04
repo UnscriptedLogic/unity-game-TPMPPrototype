@@ -2,75 +2,52 @@ using System;
 using UnityEngine;
 using UnityEngine.Splines;
 using UnscriptedEngine;
+using static O_Build;
 
 public class O_Build_GenericDispenser : O_Build
 {
-    [SerializeField] private GameObject depositOrientation;
-    [SerializeField] private Transform depositTransform;
+    [SerializeField] private OutputNode outputNode;
     [SerializeField] private O_BuildItem buildItemPrefab;
 
-    [SerializeField] private float spawnInterval = 2f;
-    private float _spawnInterval;
-
-    private SplineContainer splineContainer;
-    private bool isDepositting;
+    [SerializeField] private int dispenseOnEveryTick = 1;
 
     protected override void Start()
     {
         base.Start();
+
+        outputNode.Initialize();
+
+        OnBuildDestroyed += CheckConnections;
     }
 
-    private void Update()
+    private void CheckConnections(object sender, EventArgs e)
     {
-        if (!isDepositting) return;
-
-        if (_spawnInterval <= 0f)
-        {
-            _spawnInterval = spawnInterval;
-
-            O_BuildItem buildItem = Instantiate(buildItemPrefab);
-            buildItem.SetSpline(splineContainer);
-        }
-        else
-        {
-            _spawnInterval -= Time.deltaTime;
-        }
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-    }
-
-    public override void OnBeginPreview()
-    {
-        depositOrientation.SetActive(true);
+        outputNode.CheckConnection();
     }
 
     protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
     {
         base.OnPlayerStateChanged(playerState);
+        
+        outputNode.CheckConnection();
+    }
 
-        depositOrientation.SetActive(playerState == C_PlayerController.PlayerState.Building);
+    protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    {
+        if (!outputNode.IsConnected) return;
 
-        if (playerState != C_PlayerController.PlayerState.Building)
+        if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
         {
-            if (!isDepositting)
-            {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(depositTransform.position, 0.25f);
-                for (int i = 0; i < colliders.Length; i++)
-                {
-                    if (!colliders[i].CompareTag(START_CONSTRUCT_POINT)) continue;
-
-                    O_Build_ConveyorBelt conveyorBelt = colliders[i].GetComponentInParent<O_Build_ConveyorBelt>();
-                    if (!colliders[i].GetComponentInParent<O_Build_ConveyorBelt>()) continue;
-
-                    isDepositting = true;
-                    splineContainer = conveyorBelt.ConveyorSplineContainer;
-                    break;
-                }
-            }
+            O_BuildItem buildItem = Instantiate(buildItemPrefab);
+            buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         }
+    }
+
+    protected override void OnDestroy()
+    {
+        OnBuildDestroyed -= CheckConnections;
+
+        base.OnDestroy();
     }
 
     public override bool CanBeBuilt()

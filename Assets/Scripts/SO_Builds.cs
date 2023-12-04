@@ -12,6 +12,7 @@ public enum BuildMachineCategory
 {
     DISPENSER,
     BUILDER,
+    PRODUCER,
     UTILITY,
     NONE,
 }

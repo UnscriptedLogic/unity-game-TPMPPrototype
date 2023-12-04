@@ -5,6 +5,7 @@ using UnscriptedEngine;
 
 public class O_Build_ConveyorBelt : O_Build
 {
+    [SerializeField] private SplineInstantiate splineInstantiate;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private GameObject ui_hud;
     [SerializeField] private Transform endPoint;
@@ -105,6 +106,8 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (isBuildingStart)
         {
+            splineInstantiate.gameObject.SetActive(true);
+
             isBuildingStart = false;
 
             splineContainer.Spline.Add(CreatePoint(Vector3.zero, rotationOffset), TangentMode.Linear, 2);
@@ -124,6 +127,9 @@ public class O_Build_ConveyorBelt : O_Build
             endPoint.localPosition = Vector3.zero;
 
             endPointerAnchor.gameObject.SetActive(false);
+
+            splineInstantiate.Clear();
+            splineInstantiate.gameObject.SetActive(false);
         }
     }
 }

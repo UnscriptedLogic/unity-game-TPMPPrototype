@@ -48,6 +48,8 @@ public class P_PlayerPawn : URTSCamera
 
     public void EndBuildPreview()
     {
+        if (objectToBuild == null) return;
+
         ClearPreview();
         objectToBuild.OnEndPreview();
     }
@@ -107,16 +109,21 @@ public class P_PlayerPawn : URTSCamera
 
     public void AttemptDelete(Vector3 mouseWorldPosition)
     {
-        Collider2D collider = Physics2D.OverlapCircle(mouseWorldPosition, 1f);
-        if (collider == null) return;
-
-        O_Build build = collider.GetComponent<O_Build>();
-        if (build == null)
+        Collider2D[] collider = Physics2D.OverlapCircleAll(mouseWorldPosition, .25f);
+        for (int i = 0; i < collider.Length; i++)
         {
-            build = collider.GetComponentInParent<O_Build>();
-            if (build == null) return;
-        }
+            if (collider[i] == null) continue;
 
-        build.DeleteSelf();
+            O_Build build = collider[i].GetComponent<O_Build>();
+            if (build == null)
+            {
+                build = collider[i].GetComponentInParent<O_Build>();
+                if (build == null) continue;
+            }
+
+            build.DeleteSelf();
+
+            break;
+        }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6554613702452613851}
   - component: {fileID: 2905129378869282939}
   m_Layer: 0
-  m_Name: Output
+  m_Name: OutputMiddle
   m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 5831076509465772744}
   - component: {fileID: 5075648236952250512}
   m_Layer: 0
-  m_Name: InputLeft
+  m_Name: OutputLeft
   m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Join
+  m_text: Splitter
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -473,10 +473,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3711420991532160943}
-  - component: {fileID: 4637216370504582894}
   - component: {fileID: 3424563780598897708}
+  - component: {fileID: 2755233388485305449}
   m_Layer: 0
-  m_Name: BP_Build_Joiner
+  m_Name: BP_Build_Splitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,30 +503,6 @@ Transform:
   - {fileID: 4994879920613940560}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4637216370504582894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4099827082446437609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 609edc58b13e1ec4aa191e50404fb0ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellSize: {x: 0.9, y: 0.9}
-  offset: {x: 0, y: 0}
-  outputNode:
-    transform: {fileID: 6554613702452613851}
-  leftInputNode:
-    transform: {fileID: 5831076509465772744}
-  rightInputNode:
-    transform: {fileID: 4547917937455448499}
-  bottomInputNode:
-    transform: {fileID: 1380480864135363552}
-  maxStorage: 50
-  spawnInterval: 0.25
 --- !u!61 &3424563780598897708
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -573,6 +549,29 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2755233388485305449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099827082446437609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b14ab1b50df594da4cc21d79df9555, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellSize: {x: 0.9, y: 0.9}
+  offset: {x: 0, y: 0}
+  inputNode:
+    transform: {fileID: 1380480864135363552}
+  leftOutputNode:
+    transform: {fileID: 5831076509465772744}
+  rightOutputNode:
+    transform: {fileID: 4547917937455448499}
+  middleOutputNode:
+    transform: {fileID: 6554613702452613851}
+  dispenseOnEveryTick: 2
 --- !u!1 &4739046881524463278
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +755,7 @@ GameObject:
   - component: {fileID: 1380480864135363552}
   - component: {fileID: 8056980304175264638}
   m_Layer: 0
-  m_Name: InputBottom
+  m_Name: Input
   m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1007,7 +1006,7 @@ GameObject:
   - component: {fileID: 4547917937455448499}
   - component: {fileID: 2682940055203182912}
   m_Layer: 0
-  m_Name: InputRight
+  m_Name: OutputRight
   m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

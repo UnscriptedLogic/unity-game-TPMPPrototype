@@ -140,11 +140,23 @@ public abstract class O_Build : ULevelObject
     protected GM_LevelManager levelManager;
     protected C_PlayerController.PlayerState playerState;
 
+    public static event EventHandler OnBuildCreated;
+    public static event EventHandler OnBuildDestroyed;
+
     protected virtual void Start()
     {
         levelManager = GameMode as GM_LevelManager;
 
         levelManager.GetPlayerController().playerState.OnValueChanged += OnPlayerStateChanged;
+
+        OnBuildCreated?.Invoke(this, EventArgs.Empty);
+
+        levelManager.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
+    }
+
+    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    {
+
     }
 
     public virtual void OnBeginPreview() 
@@ -175,7 +187,13 @@ public abstract class O_Build : ULevelObject
 
     public virtual void Build(Vector3 position, int rotationOffset)
     {
-        Instantiate(gameObject);
+        O_Build build = Instantiate(gameObject).GetComponent<O_Build>();
+        build.OnBuilt();
+    }
+
+    public virtual void OnBuilt()
+    {
+
     }
 
     public virtual void AlternateBuild(Vector3 position, int rotationOffset)
@@ -204,7 +222,11 @@ public abstract class O_Build : ULevelObject
 
     protected override void OnDestroy()
     {
+        levelManager.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
+
         levelManager.GetPlayerController().playerState.OnValueChanged -= OnPlayerStateChanged;
+
+        OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
 
         base.OnDestroy();
     }
