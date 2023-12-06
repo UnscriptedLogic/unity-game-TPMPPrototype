@@ -59,6 +59,9 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("MouseClick").performed += OnMouseClick;
         defaultActionMap.FindAction("MouseRightClick").performed += OnMouseRightClick;
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
+
+        //shortcuts
+        defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
     }
 
     protected override void OnLevelStopped()
@@ -152,6 +155,15 @@ public class C_PlayerController : UController
         playerPawn.EndBuildPreview();
 
         playerState.Value = PlayerState.None;
+    }
+
+    private void InstantConveyorBuild(InputAction.CallbackContext obj)
+    {
+        playerState.Value = PlayerState.Building;
+
+        hudCanvas.BuildBtnClicked();
+
+        playerPawn.StartBuildPreview("util_conveyor");
     }
 
     private void Update()

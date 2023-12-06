@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using System.Linq;
+using System;
 
 namespace UnscriptedEngine
 {
@@ -66,6 +67,19 @@ namespace UnscriptedEngine
             variable.OnValueChanged += (value) =>
             {
                 component.OnBindedValueChanged(value);
+            };
+        }
+
+        /// <summary>
+        /// Binds a UIComponent to a Bindable variable, subscribing to it's events and updating when something changes.
+        /// </summary>
+        public void BindUI<T>(ref Bindable<T> variable, string id, Func<T, object> defineBindingMethod)
+        {
+            UUIComponent component = GetUIComponent<UUIComponent>(id);
+
+            variable.OnValueChanged += (value) =>
+            {
+                component.OnBindedValueChanged(defineBindingMethod(value));
             };
         }
 

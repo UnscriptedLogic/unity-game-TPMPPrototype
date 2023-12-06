@@ -109,6 +109,7 @@ namespace UnscriptedEngine
         /// Defines a bindable variable that can be subscribed to for changes using the OnValueChanged event.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        [System.Serializable]
         public class Bindable<T>
         {
             private T _value;

@@ -5,6 +5,12 @@ using UnscriptedEngine;
 
 public class O_Build_ModifierBase : O_Build
 {
+    public enum Side
+    {
+        Width,
+        Height,
+    }
+
     [SerializeField] private InputNode inputNode;
     [SerializeField] private OutputNode outputNode;
     [SerializeField] private int processTickDelay = 8;

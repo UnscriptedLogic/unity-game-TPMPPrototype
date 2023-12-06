@@ -18,11 +18,6 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 1281026800053470207, guid: 348a47304ba02874e9d0b6bb3f2710eb, type: 3}
-  - id: util_wideconveyor
-    displayName: Wide Conveyor
-    frameworkCategory: 1
-    buildMachineCategory: 3
-    build: {fileID: 1281026800053470207, guid: 6f41b74dd2092d54a946ef2e4e5185bf, type: 3}
   - id: util_joiner
     displayName: Joiner
     frameworkCategory: 1
@@ -48,6 +43,11 @@ MonoBehaviour:
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
+  - id: dispenser_htmlcircle
+    displayName: Circle Component
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
   - id: modifier_stretchvertical
     displayName: Stretch Vertical
     frameworkCategory: 1
@@ -58,3 +58,18 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 6127758460252443562, guid: 0bc36a133f682b7468c7d8fb2e1a4c13, type: 3}
+  - id: modifier_position
+    displayName: Position
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 2360944043468057583, guid: 57ffdb26f13436e4eb56a272051e2cde, type: 3}
+  - id: modifier_color
+    displayName: Color Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 5227923228343801633, guid: 0392911f30610f64483697875b237aed, type: 3}
+  - id: modifier_shrink
+    displayName: Shrink Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 3835251865746333402, guid: d4bcc27fa85437e44a3e94c8ea8b3b60, type: 3}

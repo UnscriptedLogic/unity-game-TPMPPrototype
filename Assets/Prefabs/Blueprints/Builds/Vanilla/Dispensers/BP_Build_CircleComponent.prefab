@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2731108159020371978}
   - component: {fileID: 663575030023748880}
   m_Layer: 0
-  m_Name: BP_Build_SquareComponent
+  m_Name: BP_Build_CircleComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0}
   outputNode:
     transform: {fileID: 587103065592170618}
-  buildItemPrefab: {fileID: 5191673410740653060, guid: 85c9728070a25c04c9d30f6b6a65858f, type: 3}
+  buildItemPrefab: {fileID: 5191673410740653060, guid: d819455efce712740937bf9b7e7020f8, type: 3}
   dispenseOnEveryTick: 30
 --- !u!61 &663575030023748880
 BoxCollider2D:
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Square Component
+  m_text: Circle Component
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

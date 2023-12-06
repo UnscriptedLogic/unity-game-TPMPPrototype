@@ -7,6 +7,8 @@ namespace UnscriptedEngine
     [RequireComponent(typeof(Button))]
     public class UButtonComponent : UUIComponent, IBindable
     {
+        [SerializeField] private bool useTheme = true;
+
         private Button button;
         private Image image;
 
@@ -20,7 +22,10 @@ namespace UnscriptedEngine
             button = GetComponent<Button>();
             image = GetComponent<Image>();
 
-            image.color = theme.PrimaryPalette.main;
+            if (useTheme)
+            {
+                image.color = theme.PrimaryPalette.main;
+            }
         }
 
         /// <summary>

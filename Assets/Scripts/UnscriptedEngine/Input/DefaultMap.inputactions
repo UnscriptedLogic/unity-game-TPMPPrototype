@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ConveyorShortcut",
+                    "type": "Button",
+                    "id": "0d123dc1-015b-49f9-9bb4-ca05c78c22f4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -115,6 +124,17 @@
                     "processors": "Invert",
                     "groups": "",
                     "action": "RotatePressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb4fa8d6-3861-4b73-9c8f-e1b0e9667346",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ConveyorShortcut",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
