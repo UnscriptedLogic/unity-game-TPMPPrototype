@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
+
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnscriptedEngine;
 
 public class CreateObjectWindow : EditorWindow
 {
@@ -31,7 +28,7 @@ public class CreateObjectWindow : EditorWindow
         {
             GetWindow<CreateULevelObjectWindow>("Create New ULevelObject");
         }
-        
+
         if (GUILayout.Button("Create ULevelPawn", GUILayout.Height(buttonHeight)))
         {
             GetWindow<CreateULevelPawnWindow>("Create New ULevelPawn");
@@ -243,7 +240,7 @@ public class CreateUCanvasControllerWindow : EditorWindow
             Close();
 
             GameObject gameObject = new GameObject(componentName);
-            
+
             Canvas canvas = gameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
@@ -267,3 +264,5 @@ public class CreateUCanvasControllerWindow : EditorWindow
         GUILayout.EndArea();
     }
 }
+
+#endif

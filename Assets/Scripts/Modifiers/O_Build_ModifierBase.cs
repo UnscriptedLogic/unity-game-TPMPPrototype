@@ -11,14 +11,14 @@ public class O_Build_ModifierBase : O_Build
         Height,
     }
 
-    [SerializeField] private InputNode inputNode;
-    [SerializeField] private OutputNode outputNode;
-    [SerializeField] private int processTickDelay = 8;
-    [SerializeField] private int creationIteration;
+    [SerializeField] protected InputNode inputNode;
+    [SerializeField] protected OutputNode outputNode;
+    [SerializeField] protected int processTickDelay = 8;
+    [SerializeField] protected int creationIteration;
 
-    private O_BuildComponent buildComponent;
+    protected O_BuildComponent buildComponent;
 
-    private int _creationIteration;
+    protected int _creationIteration;
 
     protected override void Start()
     {
@@ -70,7 +70,7 @@ public class O_Build_ModifierBase : O_Build
     protected virtual void OnComponentRecieved(O_BuildComponent component) { }
     protected virtual void ForEveryAttachedComponent(O_BuildComponentItem itemComponent) { }
 
-    private void CheckConnections(object sender, EventArgs e)
+    protected void CheckConnections(object sender, EventArgs e)
     {
         inputNode.CheckConnection();
         outputNode.CheckConnection();

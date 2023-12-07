@@ -80,6 +80,13 @@ namespace UnscriptedEngine
             return canvasController;
         }
 
+        protected virtual T AttachUIWidget<T>(T widget) where T : UCanvasController
+        {
+            T canvasController = Instantiate(widget, transform);
+            canvasController.OnWidgetAttached(this);
+            return canvasController;
+        }
+
         protected virtual void DettachUIWidget(GameObject widget) 
         { 
             UCanvasController uCanvasController = widget.GetComponent<UCanvasController>();
@@ -103,6 +110,28 @@ namespace UnscriptedEngine
             float snappedZ = Mathf.Floor((position.z - gridOrigin.z) / cellSize) * cellSize + gridOrigin.z;
 
             return new Vector3(snappedX, snappedY, snappedZ);
+        }
+
+        public T CastTo<T>() where T : ULevelObject
+        {
+            if (this as T)
+            {
+                return (T)this;
+            }
+
+            return default(T);
+        }
+
+        public void CastTo<T>(Action<T> OnSuccess, Action OnFailure = null) where T : ULevelObject
+        {
+            if (this as T)
+            {
+                OnSuccess(this as T);
+            }
+            else
+            {
+                OnFailure?.Invoke();
+            }
         }
 
         /// <summary>

@@ -16,4 +16,4 @@ MonoBehaviour:
     main: {r: 1, g: 1, b: 1, a: 1}
     light: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
     dark: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
-  primaryFont: {fileID: 11400000, guid: 427e868abd492104a85e4355456e2c0b, type: 2}
+  primaryFont: {fileID: 11400000, guid: 9ca53abc2142c8448af62034e1663353, type: 2}

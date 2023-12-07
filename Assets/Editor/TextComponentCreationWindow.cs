@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 using TMPro;
@@ -47,3 +49,5 @@ public class TextComponentCreationWindow : EditorWindow
         Selection.activeGameObject = textComponent;
     }
 }
+
+#endif

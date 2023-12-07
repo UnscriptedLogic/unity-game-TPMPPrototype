@@ -120,7 +120,8 @@ MonoBehaviour:
   category: 0
   id: html_page_empty
   canvasRoot: {fileID: 2523724293336426818}
-  attachedComponents: []
+  attachedComponents:
+  - {fileID: 1229332544820564905}
 --- !u!1 &3730074294632749518
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +235,7 @@ GameObject:
   - component: {fileID: 227319221466903872}
   - component: {fileID: 805845422734959792}
   - component: {fileID: 5379718213539608598}
+  - component: {fileID: 1229332544820564905}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -298,6 +300,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1229332544820564905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6903557901163159769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ce21d3e069d64eaa308a02ff21836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: canvas
+  uiComponent: {fileID: 227319221466903872}
 --- !u!1 &9149576600104503338
 GameObject:
   m_ObjectHideFlags: 0

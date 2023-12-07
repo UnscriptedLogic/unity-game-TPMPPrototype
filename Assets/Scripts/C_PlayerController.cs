@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnscriptedEngine;
 
 public class C_PlayerController : UController
@@ -139,7 +135,7 @@ public class C_PlayerController : UController
     protected override ULevelPawn PossessPawn()
     {
         GM_LevelManager levelManager = GameMode as GM_LevelManager;
-        playerPawn = levelManager.GetPlayerPawn();
+        playerPawn = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>();
         return playerPawn;
     }
 

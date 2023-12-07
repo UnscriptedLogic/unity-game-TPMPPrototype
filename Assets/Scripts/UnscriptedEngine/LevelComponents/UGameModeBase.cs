@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace UnscriptedEngine
 {
@@ -36,7 +37,13 @@ namespace UnscriptedEngine
             public void Completed() => progress = 100f;
         }
 
+        [Header("Base Settings")]
         [SerializeField] protected InputActionAsset inputContext;
+        [SerializeField] protected UController playerController;
+        [SerializeField] protected ULevelPawn playerPawn;
+
+        protected UController _playerController;
+        protected ULevelPawn _playerPawn;
 
         protected List<LoadProcess> loadProcesses;
 
@@ -67,6 +74,9 @@ namespace UnscriptedEngine
         protected virtual IEnumerator Start()
         {
             OnGameModeInitialized?.Invoke(this, EventArgs.Empty);
+
+            _playerController = Instantiate(playerController);
+            _playerPawn = Instantiate(playerPawn);
 
             yield return StartCoroutine(LoadLevel());
 
@@ -114,6 +124,19 @@ namespace UnscriptedEngine
                     yield return null;
                 }
             }
+        }
+
+        public virtual ULevelPawn GetPlayerPawn() => _playerPawn;
+        public virtual UController GetPlayerController() => _playerController;
+
+        public virtual void LoadScene(int buildIndex)
+        {
+            SceneManager.LoadSceneAsync(buildIndex);
+        }
+
+        public virtual void QuitGame()
+        {
+            Application.Quit();
         }
     }
 }

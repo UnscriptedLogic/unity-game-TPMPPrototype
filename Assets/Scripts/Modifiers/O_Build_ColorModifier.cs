@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnscriptedEngine;
+using static O_Build;
 
 public class O_Build_ColorModifier : O_Build_ModifierBase
 {
@@ -30,7 +31,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = levelManager.GetPlayerPawn().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
     }
 
     private void OnToggleBack()
@@ -60,6 +61,41 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
     private void UpdateVisual()
     {
         image.color = colors[index].color;
+    }
+
+    protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    {
+        if (!inputNode.IsConnected) return;
+
+        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+        {
+            buildComponent = buildItem;
+
+            BuildBehaviours.ConsumeItem(this, buildComponent);
+
+            OnComponentRecieved(buildItem);
+
+            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            {
+                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+            }
+        }
+
+        if (!outputNode.IsConnected) return;
+
+        if (buildComponent == null) return;
+
+        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        {
+            _creationIteration++;
+
+            if (_creationIteration < creationIteration) return;
+
+            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
+            buildComponent = null;
+
+            _creationIteration = 0;
+        }
     }
 
     protected override void ForEveryAttachedComponent(O_BuildComponentItem itemComponent)

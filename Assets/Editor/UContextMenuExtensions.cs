@@ -1,7 +1,7 @@
-using TMPro;
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
-//using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace UnscriptedEngine
@@ -44,4 +44,6 @@ namespace UnscriptedEngine
             Selection.activeGameObject = buttonComponent;
         }
     }
-}
+} 
+
+#endif

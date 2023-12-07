@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7565345036331817542}
   - component: {fileID: 6126294793649998052}
   m_Layer: 0
-  m_Name: ConveyorBeltHUD
+  m_Name: BP_ConveyorBeltHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -47,7 +47,7 @@ MonoBehaviour:
     displayName: Circle Component
     frameworkCategory: 0
     buildMachineCategory: 0
-    build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
+    build: {fileID: 2731108159020371978, guid: 9ce3dd07e85c099459da24e26f4e29e7, type: 3}
   - id: modifier_stretchvertical
     displayName: Stretch Vertical
     frameworkCategory: 1

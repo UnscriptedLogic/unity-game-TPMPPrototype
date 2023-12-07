@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+# if UNITY_EDITOR
+
 using System.IO;
 using UnityEditor;
-using UnityEditor.ProjectWindowCallback;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 namespace UnscriptedEngine
@@ -51,11 +49,11 @@ namespace UnscriptedEngine
                 Debug.Log(emptyPrefab.name);
 
                 GameObject prefab = PrefabUtility.SaveAsPrefabAsset(emptyPrefab, pathName);
-                
+
                 AttachScript(prefab.name, prefab);
 
                 DestroyImmediate(emptyPrefab);
-                
+
                 Debug.Log("Prefab created with script: " + pathName);
             }
 
@@ -78,5 +76,8 @@ namespace UnscriptedEngine
                 prefab.AddComponent(System.Type.GetType($"O_{scriptName}"));
             }
         }
-    } 
+    }
 }
+
+
+#endif

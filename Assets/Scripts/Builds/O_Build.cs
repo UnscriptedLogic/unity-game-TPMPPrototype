@@ -173,7 +173,7 @@ public abstract class O_Build : ULevelObject
     {
         levelManager = GameMode as GM_LevelManager;
 
-        levelManager.GetPlayerController().playerState.OnValueChanged += OnPlayerStateChanged;
+        levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged += OnPlayerStateChanged;
 
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
 
@@ -250,7 +250,7 @@ public abstract class O_Build : ULevelObject
     {
         levelManager.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
 
-        levelManager.GetPlayerController().playerState.OnValueChanged -= OnPlayerStateChanged;
+        levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged -= OnPlayerStateChanged;
 
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
 
