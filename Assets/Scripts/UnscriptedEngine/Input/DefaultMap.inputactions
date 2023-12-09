@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "0fccd280-c464-4629-8c77-fac09f952695",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -107,8 +116,8 @@
                 },
                 {
                     "name": "",
-                    "id": "a3828911-3b95-48ae-92f6-2c956cfa5cdd",
-                    "path": "<Mouse>/scroll/up",
+                    "id": "d4acffce-0ea4-471c-a9a9-0224bb361bde",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -118,8 +127,8 @@
                 },
                 {
                     "name": "",
-                    "id": "bc195fd6-47b2-411c-a76a-efe4e1002783",
-                    "path": "<Mouse>/scroll/down",
+                    "id": "6d5c888d-01a9-4967-a266-e2a1a55f0fb5",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "Invert",
                     "groups": "",
@@ -135,6 +144,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ConveyorShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e40c36c-2774-4033-9d4c-e841e83312b8",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5e966b2-28fd-4a7d-a3dc-18b548d60b0f",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "Invert",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

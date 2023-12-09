@@ -5,6 +5,8 @@ using UnityEngine;
 public class O_Build_EndNode : O_Build
 {
     [SerializeField] private InputNode inputNode;
+    [SerializeField] private InputNode inputPacketNode;
+    [SerializeField] private OutputNode outputPacketNode;
 
     [SerializeField] private List<BuildBehaviours.InventorySlot> requiredItems = new List<BuildBehaviours.InventorySlot>();
 
@@ -13,6 +15,8 @@ public class O_Build_EndNode : O_Build
         base.Start();
 
         inputNode.Initialize();
+        inputPacketNode.Initialize();
+        outputPacketNode.Initialize();
 
         OnBuildDestroyed += CheckConnections;
     }
@@ -20,6 +24,8 @@ public class O_Build_EndNode : O_Build
     private void CheckConnections(object sender, System.EventArgs e)
     {
         inputNode.CheckConnection();
+        inputPacketNode.CheckConnection();
+        outputPacketNode.CheckConnection();
     }
 
     protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
@@ -27,6 +33,8 @@ public class O_Build_EndNode : O_Build
         base.OnPlayerStateChanged(playerState);
 
         inputNode.CheckConnection();
+        inputPacketNode.CheckConnection();
+        outputPacketNode.CheckConnection();
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
