@@ -10,6 +10,7 @@ public class UIC_MainMenu : UCanvasController
 
     [SerializeField] private GameObject yourProjectsSection;
     [SerializeField] private GameObject findProjectsSection;
+    [SerializeField] private GameObject shopSection;
 
     public event EventHandler OnQuitBtnClickedEvent;
 
@@ -23,10 +24,13 @@ public class UIC_MainMenu : UCanvasController
         //overview page
         Bind<UButtonComponent>("yourprojects", OnYourProjectsBtnClicked);
         Bind<UButtonComponent>("findprojects", OnFindProjectsBtnClicked);
+        Bind<UButtonComponent>("shopBtn", OnShopBtnClicked);
         Bind<UButtonComponent>("testproject", OnProjectClicked);
         Bind<UButtonComponent>("backtomainbtn", OnBackToMainBtnClicked);
 
         overviewPage.SetActive(false);
+        findProjectsSection.SetActive(false);
+        shopSection.SetActive(false);
     }
 
     private void OnProjectClicked()
@@ -38,12 +42,21 @@ public class UIC_MainMenu : UCanvasController
     {
         yourProjectsSection.SetActive(true);
         findProjectsSection.SetActive(false);
+        shopSection.SetActive(false);
     }
 
     private void OnFindProjectsBtnClicked()
     {
         yourProjectsSection.SetActive(false);
         findProjectsSection.SetActive(true);
+        shopSection.SetActive(false);
+    }
+
+    private void OnShopBtnClicked()
+    {
+        yourProjectsSection.SetActive(false);
+        findProjectsSection.SetActive(false);
+        shopSection.SetActive(true);
     }
 
     private void OnPlayBtnClicked()

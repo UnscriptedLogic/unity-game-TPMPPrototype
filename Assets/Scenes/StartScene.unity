@@ -151,6 +151,7 @@ MonoBehaviour:
   inputContext: {fileID: -944628639613478452, guid: d9ca1e2d12a005b4386d14a2f052c823, type: 3}
   playerController: {fileID: 4054320150024189377, guid: 2440c5f05dda7f14cae661c18feb19ef, type: 3}
   playerPawn: {fileID: 1777241361112332110, guid: 79fa53a2406344044824d92612811e90, type: 3}
+  gameInstance: {fileID: 1146424582312471352, guid: 10b4ab17a27717649ab6a00f08dfc4e9, type: 3}
 --- !u!4 &1565358711
 Transform:
   m_ObjectHideFlags: 0

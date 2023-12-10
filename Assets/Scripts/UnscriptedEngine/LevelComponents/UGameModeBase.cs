@@ -41,9 +41,11 @@ namespace UnscriptedEngine
         [SerializeField] protected InputActionAsset inputContext;
         [SerializeField] protected UController playerController;
         [SerializeField] protected ULevelPawn playerPawn;
+        [SerializeField] protected GameInstance gameInstance;
 
         protected UController _playerController;
         protected ULevelPawn _playerPawn;
+        protected GameInstance _gameInstance;
 
         protected List<LoadProcess> loadProcesses;
 
@@ -65,6 +67,13 @@ namespace UnscriptedEngine
         protected void Awake()
         {
             instance = this;
+
+            if (GameInstance.singleton == null)
+            {
+                Instantiate(gameInstance);
+            }
+
+            _gameInstance = gameInstance;
 
             inputContext.Enable();
 
