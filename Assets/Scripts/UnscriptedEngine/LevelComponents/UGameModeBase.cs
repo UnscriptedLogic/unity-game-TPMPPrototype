@@ -41,11 +41,11 @@ namespace UnscriptedEngine
         [SerializeField] protected InputActionAsset inputContext;
         [SerializeField] protected UController playerController;
         [SerializeField] protected ULevelPawn playerPawn;
-        [SerializeField] protected GameInstance gameInstance;
+        [SerializeField] protected UGameInstance gameInstance;
 
         protected UController _playerController;
         protected ULevelPawn _playerPawn;
-        protected GameInstance _gameInstance;
+        protected UGameInstance _gameInstance;
 
         protected List<LoadProcess> loadProcesses;
 
@@ -63,12 +63,13 @@ namespace UnscriptedEngine
         public static UGameModeBase instance { get; private set; }
 
         public InputActionAsset InputContext => inputContext;
+        public UGameInstance GameInstance => gameInstance;
 
         protected void Awake()
         {
             instance = this;
 
-            if (GameInstance.singleton == null)
+            if (UGameInstance.singleton == null)
             {
                 Instantiate(gameInstance);
             }

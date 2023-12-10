@@ -47,6 +47,8 @@ public class O_BuildItem : ULevelObject
         base.Awake();
 
         O_Build.OnBuildDestroyed += CheckConveyor;
+
+        SplineAnimator.MaxSpeed = GameMode.GameInstance.CastTo<GI_CustomGameInstance>().conveyorBeltSpeed.Value;
     }
 
     private void CheckConveyor(object sender, System.EventArgs e)

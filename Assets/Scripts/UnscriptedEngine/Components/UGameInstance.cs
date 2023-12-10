@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnscriptedEngine;
 
-public class GameInstance : MonoBehaviour
+public class UGameInstance : UObject
 {
-    public static GameInstance singleton { get; private set; } = null;
+    public static UGameInstance singleton { get; private set; } = null;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (singleton != null)
         {

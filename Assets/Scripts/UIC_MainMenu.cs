@@ -12,6 +12,10 @@ public class UIC_MainMenu : UCanvasController
     [SerializeField] private GameObject findProjectsSection;
     [SerializeField] private GameObject shopSection;
 
+    [Header("Shop Page")]
+    [SerializeField] private GameObject contentTab1;
+    [SerializeField] private GameObject contentTab2;
+
     public event EventHandler OnQuitBtnClickedEvent;
 
     public override void OnWidgetAttached(ULevelObject context)
@@ -28,9 +32,31 @@ public class UIC_MainMenu : UCanvasController
         Bind<UButtonComponent>("testproject", OnProjectClicked);
         Bind<UButtonComponent>("backtomainbtn", OnBackToMainBtnClicked);
 
+        //Shop Page
+        Bind<UButtonComponent>("level1", OnLevelClicked);
+        Bind<UButtonComponent>("level2", OnLevelClicked);
+        BindUI(ref GameMode.GameInstance.CastTo<GI_CustomGameInstance>().packets, "packets", (value) => $"Packets: {value}");
+
         overviewPage.SetActive(false);
         findProjectsSection.SetActive(false);
         shopSection.SetActive(false);
+
+        contentTab2.SetActive(false);
+    }
+
+    private void OnLevelClicked(string id)
+    {
+        contentTab1.SetActive(false);
+        contentTab2.SetActive(false);
+
+        if (id == "level1")
+        {
+            contentTab1.SetActive(true);
+        }
+        else if (id == "level2")
+        {
+            contentTab2.SetActive(true);
+        }
     }
 
     private void OnProjectClicked()
@@ -74,5 +100,12 @@ public class UIC_MainMenu : UCanvasController
     private void OnQuitBtnClicked()
     {
         OnQuitBtnClicked();
+    }
+
+    protected override void OnDestroy()
+    {
+        UnBindUI(ref GameMode.GameInstance.CastTo<GI_CustomGameInstance>().packets, "packets");
+
+        base.OnDestroy();
     }
 }
