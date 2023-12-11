@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnscriptedEngine;
 
 public class O_Build_EndNode : O_Build
 {
+    [SerializeField] private UCanvasController canvasController;
     [SerializeField] private InputNode inputNode;
-    [SerializeField] private InputNode inputPacketNode;
-    [SerializeField] private OutputNode outputPacketNode;
 
-    [SerializeField] private List<BuildBehaviours.InventorySlot> requiredItems = new List<BuildBehaviours.InventorySlot>();
+    private float elapsedTime = 0f;
+    private Bindable<int> acceptedPagesRate = new Bindable<int>(0);
 
     protected override void Start()
     {
         base.Start();
 
+        canvasController.OnWidgetAttached(this);
+        canvasController.BindUI(ref acceptedPagesRate,"rate", value => $"{value} pages/min");
+
         inputNode.Initialize();
-        inputPacketNode.Initialize();
-        outputPacketNode.Initialize();
 
         OnBuildDestroyed += CheckConnections;
     }
@@ -24,8 +26,6 @@ public class O_Build_EndNode : O_Build
     private void CheckConnections(object sender, System.EventArgs e)
     {
         inputNode.CheckConnection();
-        inputPacketNode.CheckConnection();
-        outputPacketNode.CheckConnection();
     }
 
     protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
@@ -33,58 +33,32 @@ public class O_Build_EndNode : O_Build
         base.OnPlayerStateChanged(playerState);
 
         inputNode.CheckConnection();
-        inputPacketNode.CheckConnection();
-        outputPacketNode.CheckConnection();
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
         if (!inputNode.IsConnected) return;
 
-        if (AreItemRequirementsMet())
-        {
-            DispenseMaterial();
-        }
-    }
-
-    private void DispenseMaterial()
-    {
-        for (int i = 0; i < requiredItems.Count; i++)
-        {
-            for (int j = 0; j < requiredItems[i].amount; j++)
-            {
-                requiredItems[i].items.RemoveAt(0);
-            }
-        }
-    }
-
-    private bool AreItemRequirementsMet()
-    {
-        for (int i = 0; i < requiredItems.Count; i++)
-        {
-            if (requiredItems[i].items.Count < requiredItems[i].amount)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private void FixedUpdate()
-    {
-        if (!inputNode.IsConnected) return;
-
         if (inputNode.TryGetBuildItem(out O_BuildItem item))
         {
-            for (int i = 0; i < requiredItems.Count; i++)
-            {
-                if (item.ID != requiredItems[i].id) continue;
-                if (requiredItems[i].IsInventoryFull) continue;
+            BuildBehaviours.ConsumeItem(this, item);
+            acceptedPagesRate.Value++;
+        }
+    }
 
-                BuildBehaviours.ConsumeItem(this, item, ref requiredItems[i].items);
-                break;
-            }
+    public override void DeleteSelf()
+    {
+
+    }
+
+    private void Update()
+    {
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime >= 60f)
+        {
+            elapsedTime = 0f;
+            acceptedPagesRate.Value = 0;
         }
     }
 

@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: closeBtn
+  useTheme: 1
 --- !u!1 &8476776220215482993
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +147,7 @@ GameObject:
   - component: {fileID: 5846938183917593731}
   - component: {fileID: 3593420810484263796}
   - component: {fileID: 6321603361528147031}
+  - component: {fileID: 2728723727002634425}
   m_Layer: 5
   m_Name: DescTMP
   m_TagString: Untagged
@@ -271,3 +273,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2728723727002634425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476776220215482993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b0214e539d7ff4496d6759e20b18d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 

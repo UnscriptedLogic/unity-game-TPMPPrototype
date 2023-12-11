@@ -11,6 +11,8 @@ public class O_Build_GenericDispenser : O_Build
 
     [SerializeField] private int dispenseOnEveryTick = 1;
 
+    private bool isProjectCompleted = false;
+
     protected override void Start()
     {
         base.Start();
@@ -18,6 +20,22 @@ public class O_Build_GenericDispenser : O_Build
         outputNode.Initialize();
 
         OnBuildDestroyed += CheckConnections;
+
+        levelManager.OnTestFactoryClicked += LevelManager_OnTestFactoryClicked;
+        levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+    }
+
+    private void LevelManager_OnProjectCompleted(object sender, EventArgs e)
+    {
+        isProjectCompleted = true;
+    }
+
+    private void LevelManager_OnTestFactoryClicked(object sender, EventArgs e)
+    {
+        if (!outputNode.IsConnected) return;
+
+        O_BuildItem buildItem = Instantiate(buildItemPrefab);
+        buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
     }
 
     private void CheckConnections(object sender, EventArgs e)
@@ -34,6 +52,8 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (!isProjectCompleted) return;
+
         if (!outputNode.IsConnected) return;
 
         if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))

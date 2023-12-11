@@ -19,15 +19,26 @@ public class HUD_CanvasController : UCanvasController
     public event EventHandler OnCloseBuildMenu;
     public event EventHandler<bool> OnDeleteBuildToggled;
 
+    private GM_LevelManager levelManager;
+
     public override void OnWidgetAttached(ULevelObject context)
     {
         base.OnWidgetAttached(context);
+
+        levelManager = GameMode.CastTo<GM_LevelManager>();
 
         Bind<UButtonComponent>("buildBtn", BuildBtnClicked);
         Bind<UButtonComponent>("closeBtn", DefaultBtnClicked);
 
         Bind<UButtonComponent>("deleteBtn", DeleteBtnClicked);
         Bind<UButtonComponent>("closeDeleteBtn", CloseDeletePageClicked);
+
+        Bind<UButtonComponent>("clockin", levelManager.ClockIn);
+        Bind<UButtonComponent>("finishproject", levelManager.FinishProject);
+        Bind<UButtonComponent>("testfactory", levelManager.TestFactory);
+
+        BindUI(ref GameMode.CastTo<GM_LevelManager>().daysLeft, "time", value => $"{value} days left to the deadline");
+        BindUI(ref levelManager.energy, "energy", value => $"Test Factory - {value}/{levelManager.ResetEnergyAmount}");
 
         for (int i = 0; i < builds.DataSet.Count; i++)
         {
