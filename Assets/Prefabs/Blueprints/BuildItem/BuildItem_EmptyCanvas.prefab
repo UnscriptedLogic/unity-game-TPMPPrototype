@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 418484280950649440}
   - component: {fileID: 5856260503601958205}
   - component: {fileID: 462926881747628500}
-  - component: {fileID: 3088603404299828653}
+  - component: {fileID: 308295150809787338}
   m_Layer: 7
   m_Name: BuildItem_EmptyCanvas
   m_TagString: Untagged
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_LoopMode: 0
   m_Method: 1
   m_Duration: 1
-  m_MaxSpeed: 1
+  m_MaxSpeed: 0.5
   m_EasingMode: 0
   m_AlignmentMode: 0
   m_ObjectForwardAxis: 0
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &3088603404299828653
+--- !u!114 &308295150809787338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,11 +114,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3022135173088375680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b8d53da8cb4fc4e8fa6cc85588cf28, type: 3}
+  m_Script: {fileID: 11500000, guid: 6007c90f77df5844687d7ebe39da65e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   category: 0
-  id: css
+  id: html_page_empty
+  canvasRoot: {fileID: 2523724293336426818}
+  attachedComponents:
+  - {fileID: 1229332544820564905}
 --- !u!1 &3730074294632749518
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +235,7 @@ GameObject:
   - component: {fileID: 227319221466903872}
   - component: {fileID: 805845422734959792}
   - component: {fileID: 5379718213539608598}
+  - component: {fileID: 1229332544820564905}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -279,15 +283,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 7482667652216324306, guid: fc4ddeaed8e5f9e48a5cf0024cf52f4f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -296,6 +300,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1229332544820564905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6903557901163159769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ce21d3e069d64eaa308a02ff21836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: canvas
+  uiComponent: {fileID: 227319221466903872}
 --- !u!1 &9149576600104503338
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 418484280950649440}
   - component: {fileID: 5856260503601958205}
   - component: {fileID: 462926881747628500}
-  - component: {fileID: 3088603404299828653}
+  - component: {fileID: 5191673410740653060}
   m_Layer: 7
   m_Name: BuildItem_SquareComponent
   m_TagString: Untagged
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_LoopMode: 0
   m_Method: 1
   m_Duration: 1
-  m_MaxSpeed: 1
+  m_MaxSpeed: 0.75
   m_EasingMode: 0
   m_AlignmentMode: 0
   m_ObjectForwardAxis: 0
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &3088603404299828653
+--- !u!114 &5191673410740653060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,11 +114,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3022135173088375680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b8d53da8cb4fc4e8fa6cc85588cf28, type: 3}
+  m_Script: {fileID: 11500000, guid: d738b968e8047de4a87ad4cc93d758c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   category: 0
-  id: css
+  id: html_component_square
+  canvasRoot: {fileID: 2523724293336426818}
+  attachedComponents:
+  - {fileID: 2232094332348248739}
 --- !u!1 &3316382376961107666
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,8 +131,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920222788414077385}
+  - component: {fileID: 2232094332348248739}
   m_Layer: 5
-  m_Name: ObjectPanel
+  m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,6 +159,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2232094332348248739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316382376961107666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ce21d3e069d64eaa308a02ff21836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: square
+  uiComponent: {fileID: 2294612178257148238}
 --- !u!1 &3730074294632749518
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,10 +308,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 920222788414077385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 372, y: 372}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -810, y: 390}
+  m_SizeDelta: {x: -1620, y: -780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1311080258050961936
 CanvasRenderer:
@@ -391,7 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.22352941}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -407,7 +425,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.175
+  m_PixelsPerUnitMultiplier: 0.5
 --- !u!1 &9149576600104503338
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnscriptedEngine;
 
 public class C_PlayerController : UController
@@ -55,10 +51,11 @@ public class C_PlayerController : UController
         hudCanvas.OnCloseBuildMenu += HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled += HudCanvas_OnDeleteBuildToggled;
 
-        defaultActionMap = levelManager.InputContext.FindActionMap("Default");
-        defaultActionMap.FindAction("MouseClick").performed += OnMouseClick;
-        defaultActionMap.FindAction("MouseRightClick").performed += OnMouseRightClick;
+        defaultActionMap = GetDefaultInputMap();
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
+
+        //shortcuts
+        defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
     }
 
     protected override void OnLevelStopped()
@@ -67,14 +64,14 @@ public class C_PlayerController : UController
         hudCanvas.OnCloseBuildMenu -= HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled -= HudCanvas_OnDeleteBuildToggled;
 
-        defaultActionMap.FindAction("MouseClick").performed -= OnMouseClick;
-        defaultActionMap.FindAction("MouseRightClick").performed -= OnMouseRightClick;
         defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
+
+        defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
 
         base.OnLevelStopped();
     }
 
-    private void OnMouseClick(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    public override void OnDefaultLeftMouseDown()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
@@ -94,7 +91,7 @@ public class C_PlayerController : UController
         }
     }
 
-    private void OnMouseRightClick(InputAction.CallbackContext context)
+    public override void OnDefaultRightMouseDown()
     {
         if (playerState.Value == PlayerState.Building)
         {
@@ -136,7 +133,7 @@ public class C_PlayerController : UController
     protected override ULevelPawn PossessPawn()
     {
         GM_LevelManager levelManager = GameMode as GM_LevelManager;
-        playerPawn = levelManager.GetPlayerPawn();
+        playerPawn = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>();
         return playerPawn;
     }
 
@@ -154,11 +151,20 @@ public class C_PlayerController : UController
         playerState.Value = PlayerState.None;
     }
 
+    private void InstantConveyorBuild(InputAction.CallbackContext obj)
+    {
+        playerState.Value = PlayerState.Building;
+
+        hudCanvas.BuildBtnClicked();
+
+        playerPawn.StartBuildPreview("util_conveyor");
+    }
+
     private void Update()
     {
         if (playerPawn == null) return;
 
-        mousePosition = defaultActionMap.FindAction("MousePosition").ReadValue<Vector2>();
+        mousePosition = GetDefaultMousePosition();
 
         playerPawn.MovePlayerCamera(mousePosition);
 
