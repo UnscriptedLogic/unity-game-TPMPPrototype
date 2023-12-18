@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cfaff0d4c81194da02b74368527887, type: 3}
+  m_Name: DefaultTheme
+  m_EditorClassIdentifier: 
+  primaryPalette:
+    main: {r: 0.10188681, g: 0.10188681, b: 0.10188681, a: 1}
+    light: {r: 1, g: 1, b: 1, a: 1}
+    dark: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  primaryFont: {fileID: 11400000, guid: bf0ab0124ca898f4a814d0c62808d24c, type: 2}

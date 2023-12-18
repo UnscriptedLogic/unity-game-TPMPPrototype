@@ -10,7 +10,6 @@ public abstract class O_Build : ULevelObject
         [SerializeField] private Transform transform;
 
         private bool isConnected;
-        private SpriteRenderer spriteRenderer;
         private Collider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
 
@@ -23,13 +22,7 @@ public abstract class O_Build : ULevelObject
 
         public void Initialize()
         {
-            spriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
             collider = transform.GetComponent<Collider2D>();
-
-            if (ColorUtility.TryParseHtmlString("#98FF7D", out Color color))
-            {
-                spriteRenderer.color = color;
-            }
         }
 
         public void CheckConnection()
@@ -113,7 +106,6 @@ public abstract class O_Build : ULevelObject
         [SerializeField] private Transform transform;
 
         private bool isConnected;
-        private SpriteRenderer spriteRenderer;
         private BoxCollider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
 
@@ -127,13 +119,7 @@ public abstract class O_Build : ULevelObject
 
         public void Initialize()
         {
-            spriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
             collider = transform.GetComponent<BoxCollider2D>();
-
-            if (ColorUtility.TryParseHtmlString("#FF9643", out Color color))
-            {
-                spriteRenderer.color = color;
-            }
         }
 
         public void CheckConnection()
@@ -250,7 +236,10 @@ public abstract class O_Build : ULevelObject
     {
         levelManager.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
 
-        levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged -= OnPlayerStateChanged;
+        if (levelManager.GetPlayerController().CastTo<C_PlayerController>() != null)
+        {
+            levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged -= OnPlayerStateChanged;
+        }
 
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
 

@@ -33,34 +33,11 @@ public class O_Build_ConveyorBelt : O_Build
         if (isBuildingStart)
         {
 
-            //This is the end point snapping. Because of how janky it can be with the current grid syste
-            //I have disabled it. I will turn this to a "Hold down a button to snap to points" feature
-
-            //Collider2D[] colliders = Physics2D.OverlapCircleAll(position + new Vector3(0.5f, 0.5f, 0f), 0.25f);
-            //for (int i = 0; i < colliders.Length; i++)
-            //{
-            //    if (colliders[i].CompareTag(END_CONSTRUCT_POINT))
-            //    {
-            //        position = colliders[i].transform.position - new Vector3(0.5f, 0.5f, 0f);
-            //        break;
-            //    }
-            //}
-
             transform.position = position + new Vector3(0.5f, 0.5f, 0f);
             startPointerAnchor.rotation = Quaternion.Euler(Vector3.forward * (rotationOffset - 45));
         }
         else
         {
-            //Collider2D[] colliders = Physics2D.OverlapCircleAll(position + new Vector3(0.5f, 0.5f, 0f), 0.25f);
-            //for (int i = 0; i < colliders.Length; i++)
-            //{
-            //    if (colliders[i].CompareTag(START_CONSTRUCT_POINT))
-            //    {
-            //        position = colliders[i].transform.position - new Vector3(0.5f, 0.5f, 0f);
-            //        break;
-            //    }
-            //}
-
             endPoint.position = position + new Vector3(0.5f, 0.5f, 0);
             splineContainer.Spline.SetKnot(splineContainer.Spline.Knots.ToList().Count - 1, CreatePoint(position - transform.position + new Vector3(0.5f, 0.5f, 0), rotationOffset));
 
