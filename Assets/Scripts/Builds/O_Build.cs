@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnscriptedEngine;
+using static O_Build;
 
 public abstract class O_Build : ULevelObject
 {
@@ -49,21 +50,11 @@ public abstract class O_Build : ULevelObject
 
         public bool TryGetBuildItem(out O_BuildItem buildItem)
         {
-            if (!isConnected)
-            {
-                buildItem = null;
-                return false;
-            }
-
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
                 O_BuildItem item = colliders[i].GetComponent<O_BuildItem>();
                 if (item == null) continue;
-                
-                O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
-                if (itemConveyorBelt == null) continue;
-                if (itemConveyorBelt != conveyorBelt) continue;
 
                 buildItem = item;
                 return true;
@@ -75,21 +66,11 @@ public abstract class O_Build : ULevelObject
 
         public bool TryGetBuildComponent<T>(out T buildItem) where T : O_BuildItem
         {
-            if (!isConnected)
-            {
-                buildItem = default;
-                return false;
-            }
-
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
                 T item = colliders[i].GetComponent<T>();
                 if (item == null) continue;
-
-                O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
-                if (itemConveyorBelt == null) continue;
-                if (itemConveyorBelt != conveyorBelt) continue;
 
                 buildItem = item;
                 return true;
@@ -117,6 +98,20 @@ public abstract class O_Build : ULevelObject
             set { isConnected = value; }
         }
 
+        public bool IsSpawnAreaEmpty
+        {
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].GetComponent<O_BuildItem>() != null) return false;
+                }
+
+                return true;
+            }
+        }
+
         public void Initialize()
         {
             collider = transform.GetComponent<BoxCollider2D>();
@@ -140,6 +135,28 @@ public abstract class O_Build : ULevelObject
             }
 
             collider.enabled = !isConnected;
+        }
+
+        public bool HasConveyorBelt
+        {
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].GetComponent<O_Build_ConveyorBelt>() != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public void DispsenseItem<T>(T gameObject) where T : O_BuildItem
+        {
+            gameObject.transform.position = transform.position;
         }
     }
 

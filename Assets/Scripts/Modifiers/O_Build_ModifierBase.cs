@@ -32,8 +32,6 @@ public class O_Build_ModifierBase : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
-
         if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
         {
             if (buildItem as O_BuildPage) return;
@@ -49,8 +47,6 @@ public class O_Build_ModifierBase : O_Build
                 ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
             }
         }
-
-        if (!outputNode.IsConnected) return;
 
         if (buildComponent == null) return;
 

@@ -137,8 +137,8 @@ GameObject:
   - component: {fileID: 8876534934203695590}
   - component: {fileID: 214297324147385509}
   - component: {fileID: 8069998225990244617}
-  - component: {fileID: 8551627494774821785}
   - component: {fileID: 8774130158080164036}
+  - component: {fileID: 1701072516573636792}
   m_Layer: 5
   m_Name: ToggleBack
   m_TagString: Untagged
@@ -270,20 +270,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8551627494774821785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759140747064430348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1e07dd0beb289040a43b9ddc10e41f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: toggleback
-  useTheme: 0
 --- !u!114 &8774130158080164036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +287,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1701072516573636792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759140747064430348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5138b7ecaa15db489668c58dab8b2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: toggleback
+  useTheme: 0
 --- !u!1 &1971923331457282203
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,8 +393,8 @@ GameObject:
   - component: {fileID: 2131564560576314401}
   - component: {fileID: 1111260754185829084}
   - component: {fileID: 1229122627575663088}
-  - component: {fileID: 5971634193113187317}
   - component: {fileID: 4411498812156789205}
+  - component: {fileID: 1281189792844773164}
   m_Layer: 5
   m_Name: ToggleForward
   m_TagString: Untagged
@@ -526,20 +526,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5971634193113187317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2920065248995684813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1e07dd0beb289040a43b9ddc10e41f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: toggleforward
-  useTheme: 0
 --- !u!114 &4411498812156789205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +543,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1281189792844773164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920065248995684813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5138b7ecaa15db489668c58dab8b2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: toggleforward
+  useTheme: 0
 --- !u!1 &3106155552870721764
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,7 +778,7 @@ MonoBehaviour:
     transform: {fileID: 1021018345672012577}
   processTickDelay: 8
   creationIteration: 2
-  uiInterface: {fileID: 5431605664688539583}
+  uiInterface: {fileID: 2478061826322866179}
   image: {fileID: 1135460460482637736}
   colors:
   - id: white
@@ -808,7 +808,7 @@ GameObject:
   - component: {fileID: 918408934449027634}
   - component: {fileID: 3263270681364737569}
   - component: {fileID: 5923910920254641510}
-  - component: {fileID: 5431605664688539583}
+  - component: {fileID: 2478061826322866179}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -883,7 +883,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &5431605664688539583
+--- !u!114 &2478061826322866179
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -892,10 +892,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4937699328114803020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec631409e54d06488c58ce1dae60791, type: 3}
+  m_Script: {fileID: 11500000, guid: f2e4db12e9a646b44b650e7db2a39553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: {fileID: 11400000, guid: 08f348cf284f1e14a965473e0ed8f4fe, type: 2}
+  theme: {fileID: 11400000, guid: b7256c6f87dc62e41985585bc059c063, type: 2}
 --- !u!1 &4937781315430442368
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,6 +944,7 @@ GameObject:
   - component: {fileID: 4090454285288385051}
   - component: {fileID: 8897126972720513259}
   - component: {fileID: 2586421935529488665}
+  - component: {fileID: 6117377235306725906}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1069,6 +1070,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6117377235306725906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7224169653417841289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a533c8e86509948b53aacb943f372c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 
 --- !u!1 &8160440560307238809
 GameObject:
   m_ObjectHideFlags: 0

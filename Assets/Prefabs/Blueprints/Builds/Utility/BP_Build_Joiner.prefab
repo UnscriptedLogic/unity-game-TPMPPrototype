@@ -525,8 +525,8 @@ MonoBehaviour:
     transform: {fileID: 4547917937455448499}
   bottomInputNode:
     transform: {fileID: 1380480864135363552}
-  dispenseOnEveryTick: 2
-  maxStorage: 50
+  dispenseOnEveryTick: 1
+  maxStorage: 1
 --- !u!61 &3424563780598897708
 BoxCollider2D:
   m_ObjectHideFlags: 0

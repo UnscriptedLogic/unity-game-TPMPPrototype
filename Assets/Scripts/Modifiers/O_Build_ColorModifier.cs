@@ -65,8 +65,6 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
-
         if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
         {
             buildComponent = buildItem;
@@ -80,8 +78,6 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
                 ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
             }
         }
-
-        if (!outputNode.IsConnected) return;
 
         if (buildComponent == null) return;
 

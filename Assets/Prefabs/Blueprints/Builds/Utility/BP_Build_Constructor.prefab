@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 2317738632527534430}
   - component: {fileID: 5551818751465766252}
   - component: {fileID: 2898153674957564185}
+  - component: {fileID: 1634490052267046708}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -222,6 +223,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1634490052267046708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495031835408876066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a533c8e86509948b53aacb943f372c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 
 --- !u!1 &2191751770261796663
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,8 +785,6 @@ MonoBehaviour:
   rightInputNode:
     transform: {fileID: 6268509374701159994}
   dispenseOnEveryTick: 4
-  leftSlotStorage: 1
-  maxComponentStorage: 2
 --- !u!61 &3160081326649317323
 BoxCollider2D:
   m_ObjectHideFlags: 0

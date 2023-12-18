@@ -18,40 +18,26 @@ public class O_Build_Constructor : O_Build
     protected override void Start()
     {
         base.Start();
-
-        outputNode.Initialize();
-        leftInputNode.Initialize();
-        rightInputNode.Initialize();
-
-        OnBuildCreated += CheckConnections;
-        OnBuildDestroyed += CheckConnections;
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (leftInputNode.IsConnected)
+        if (leftBuildComponent == null)
         {
-            if (leftBuildComponent == null)
+            if (leftInputNode.TryGetBuildComponent(out O_BuildComponent buildComponent))
             {
-                if (leftInputNode.TryGetBuildComponent(out O_BuildComponent buildComponent))
-                {
-                    ConsumeComponent(buildComponent, ref leftBuildComponent);
-                }
+                ConsumeComponent(buildComponent, ref leftBuildComponent);
             }
         }
 
-        if (rightInputNode.IsConnected)
+        if (rightBuildComponent == null)
         {
-            if (rightBuildComponent == null)
+            if (rightInputNode.TryGetBuildComponent(out O_BuildComponent buildComponent))
             {
-                if (rightInputNode.TryGetBuildComponent(out O_BuildComponent buildComponent))
-                {
-                    ConsumeComponent(buildComponent, ref rightBuildComponent);
-                }
+                ConsumeComponent(buildComponent, ref rightBuildComponent);
             }
         }
 
-        if (!outputNode.IsConnected) return;
         if (leftBuildComponent == null || rightBuildComponent == null) return;
         if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
 
@@ -59,8 +45,8 @@ public class O_Build_Constructor : O_Build
         O_BuildComponent applyTo = leftBuildComponent;
         if (leftBuildComponent as O_BuildPage)
         {
-            applyOn = leftBuildComponent;
-            applyTo = rightBuildComponent;
+            applyOn = rightBuildComponent;
+            applyTo = leftBuildComponent;
         }
 
         for (int i = 0; i < applyTo.AttachedComponents.Count; i++)
@@ -77,30 +63,12 @@ public class O_Build_Constructor : O_Build
         rightBuildComponent = null;
     }
 
-    private void CheckConnections(object sender, System.EventArgs e)
-    {
-        outputNode.CheckConnection();
-        leftInputNode.CheckConnection();
-        rightInputNode.CheckConnection();
-    }
-
     private void ConsumeComponent(O_BuildComponent item, ref O_BuildComponent side)
     {
         item.gameObject.SetActive(false);
 
-        item.SplineAnimator.Pause();
-        item.SplineAnimator.ElapsedTime = 0;
-
         item.transform.position = transform.position;
 
         side = item;
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildCreated -= CheckConnections;
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 }

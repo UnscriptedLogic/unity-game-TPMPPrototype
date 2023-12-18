@@ -47,7 +47,7 @@ public class O_Build_GenericBuilder : O_Build
 
             GameObject buildItemObject = Instantiate(buildItemPrefab);
             O_BuildItem buildItem = buildItemObject.GetComponent<O_BuildItem>();
-            buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+            //buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         }
     }
 

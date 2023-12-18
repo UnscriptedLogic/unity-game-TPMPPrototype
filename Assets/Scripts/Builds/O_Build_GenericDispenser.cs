@@ -19,8 +19,6 @@ public class O_Build_GenericDispenser : O_Build
 
         outputNode.Initialize();
 
-        OnBuildDestroyed += CheckConnections;
-
         levelManager.OnTestFactoryClicked += LevelManager_OnTestFactoryClicked;
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
     }
@@ -32,42 +30,21 @@ public class O_Build_GenericDispenser : O_Build
 
     private void LevelManager_OnTestFactoryClicked(object sender, EventArgs e)
     {
-        if (!outputNode.IsConnected) return;
+        if (!outputNode.IsSpawnAreaEmpty) return;
 
-        O_BuildItem buildItem = Instantiate(buildItemPrefab);
-        buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
-    }
-
-    private void CheckConnections(object sender, EventArgs e)
-    {
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
-    {
-        base.OnPlayerStateChanged(playerState);
-        
-        outputNode.CheckConnection();
+        outputNode.DispsenseItem(Instantiate(buildItemPrefab));
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
         if (!isProjectCompleted) return;
 
-        if (!outputNode.IsConnected) return;
+        if (!outputNode.IsSpawnAreaEmpty) return;
 
         if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
         {
-            O_BuildItem buildItem = Instantiate(buildItemPrefab);
-            buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+            outputNode.DispsenseItem(Instantiate(buildItemPrefab));
         }
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 
     public override bool CanBeBuilt()
@@ -78,5 +55,13 @@ public class O_Build_GenericDispenser : O_Build
         }
 
         return true;
+    }
+
+    protected override void OnDestroy()
+    {
+        levelManager.OnTestFactoryClicked -= LevelManager_OnTestFactoryClicked;
+        levelManager.OnProjectCompleted -= LevelManager_OnProjectCompleted;
+
+        base.OnDestroy();
     }
 }

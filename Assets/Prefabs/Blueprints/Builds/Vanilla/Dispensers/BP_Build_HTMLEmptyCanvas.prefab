@@ -52,7 +52,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 587103065592170618}
   buildItemPrefab: {fileID: 308295150809787338, guid: 0a5b013fe0ee5c34e9478709ee9f7aab, type: 3}
-  dispenseOnEveryTick: 20
+  dispenseOnEveryTick: 10
 --- !u!61 &663575030023748880
 BoxCollider2D:
   m_ObjectHideFlags: 0

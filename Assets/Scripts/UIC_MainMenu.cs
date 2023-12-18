@@ -152,7 +152,7 @@ public class UIC_MainMenu : UCanvasController
 
     private void OnQuitBtnClicked()
     {
-        OnQuitBtnClicked();
+        OnQuitBtnClickedEvent?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void OnDestroy()

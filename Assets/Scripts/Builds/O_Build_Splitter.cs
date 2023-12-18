@@ -23,31 +23,8 @@ public class O_Build_Splitter : O_Build
 
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
-    protected override void Start()
-    {
-        base.Start();
-
-        inputNode.Initialize();
-        leftOutputNode.Initialize();
-        rightOutputNode.Initialize();
-        middleOutputNode.Initialize();
-
-        OnBuildCreated += CheckConnections;
-        OnBuildDestroyed += CheckConnections;
-    }
-
-    private void CheckConnections(object sender, System.EventArgs e)
-    {
-        inputNode.CheckConnection();
-        leftOutputNode.CheckConnection();
-        rightOutputNode.CheckConnection();
-        middleOutputNode.CheckConnection();
-    }
-
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
-
         if (buildItems.Count < 1)
         {
             if (inputNode.TryGetBuildItem(out O_BuildItem buildItem))
@@ -60,11 +37,13 @@ public class O_Build_Splitter : O_Build
 
         if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
 
-        if (!leftOutputNode.IsConnected && !rightOutputNode.IsConnected && !middleOutputNode.IsConnected) return;
-
-        BuildBehaviours.CreateBuildItem(buildItems[0], GetNextOutput());
-        buildItems.RemoveAt(0);
-
+        OutputNode outputNode = GetNextOutput();
+        if (outputNode.IsSpawnAreaEmpty)
+        {
+            BuildBehaviours.CreateBuildItem(buildItems[0], outputNode);
+            outputNode.DispsenseItem(buildItems[0]);
+            buildItems.RemoveAt(0);
+        }
     }
 
     private OutputNode GetNextOutput(int depth = 3)
@@ -80,7 +59,7 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
 
-                if (!middleOutputNode.IsConnected)
+                if (!middleOutputNode.IsSpawnAreaEmpty && middleOutputNode.HasConveyorBelt)
                 {
                     GetNextOutput(depth--);
                 }
@@ -89,8 +68,9 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
 
-                if (!rightOutputNode.IsConnected)
+                if (!rightOutputNode.IsSpawnAreaEmpty && rightOutputNode.HasConveyorBelt)
                 {
+
                     GetNextOutput(depth--);
                 }
 
@@ -98,7 +78,7 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
 
-                if (!leftOutputNode.IsConnected)
+                if (!leftOutputNode.IsSpawnAreaEmpty && leftOutputNode.HasConveyorBelt)
                 {
                     GetNextOutput(depth--);
                 }
@@ -128,13 +108,5 @@ public class O_Build_Splitter : O_Build
         }
 
         return outputDirectionNode;
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildCreated -= CheckConnections;
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 }

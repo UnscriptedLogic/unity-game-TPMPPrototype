@@ -1,22 +1,23 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.Splines;
 using UnscriptedEngine;
 
 public class O_Build_ConveyorBelt : O_Build
 {
-    [SerializeField] private SplineInstantiate splineInstantiate;
-    [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private GameObject ui_hud;
     [SerializeField] private Transform endPoint;
 
     [SerializeField] private Transform startPointerAnchor;
     [SerializeField] private Transform endPointerAnchor;
 
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private List<O_BuildItem> conveyorItems = new List<O_BuildItem>();
+    [SerializeField] private float beltSpeed = 0.5f;
+
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
-
-    public SplineContainer ConveyorSplineContainer => splineContainer;
 
     public override void OnBeginPreview()
     {
@@ -28,20 +29,123 @@ public class O_Build_ConveyorBelt : O_Build
         endPointerAnchor.gameObject.SetActive(false);
     }
 
+    private void FixedUpdate()
+    {
+        if (levelManager.NodeTickSystem.HasTickedAfter(2))
+        {
+            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.1f);
+            for (int i = 0; i < collider2Ds.Length; i++)
+            {
+                O_BuildItem buildItem = collider2Ds[i].GetComponent<O_BuildItem>();
+                if (buildItem != null)
+                {
+                    if (conveyorItems.Contains(buildItem)) continue;
+
+                    conveyorItems.Add(buildItem);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < conveyorItems.Count; i++)
+        {
+            if (conveyorItems[i] == null)
+            {
+                conveyorItems.RemoveAt(i);
+                continue;
+            }
+
+            if (!conveyorItems[i].gameObject.activeInHierarchy)
+            {
+                conveyorItems.RemoveAt(i);
+                continue;
+            }
+
+            if (DoesItemHaveSpaceToMove(i))
+            {
+                Vector3[] positions = new Vector3[lineRenderer.positionCount];
+                lineRenderer.GetPositions(positions);
+
+                (int start, int next) = FindTraversedSegment(conveyorItems[i].transform.position, positions);
+
+                float calculatedLerp = Extensions.InverseLerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), conveyorItems[i].transform.position);
+
+                if (calculatedLerp >= 1f && next < lineRenderer.positionCount - 1)
+                {
+                    start = next;
+                    next++;
+                    calculatedLerp = 0f;
+                }
+
+                float distance = Vector3.Distance(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next));
+                conveyorItems[i].transform.position = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((beltSpeed * Time.fixedDeltaTime) / distance));
+            }
+        }
+    }
+
+    private bool DoesItemHaveSpaceToMove(int index)
+    {
+        if (index == 0)
+        {
+            return true;
+        }
+
+        return Vector3.Distance(conveyorItems[index].transform.position, conveyorItems[index - 1].transform.position) >= 0.5f;
+    }
+
+    public (int, int) FindTraversedSegment(Vector3 currentPoint, Vector3[] positions)
+    {
+        for (int i = 0; i < positions.Length - 1; i++)
+        {
+            Vector3 startPoint = positions[i];
+            Vector3 endPoint = positions[i + 1];
+
+            // Check if the current point is on the inferred line segment
+            if (IsPointOnSegment(currentPoint, startPoint, endPoint))
+            {
+                return (i, i + 1);
+            }
+        }
+
+        return default; // Point is not on any inferred line segment
+    }
+
+    private bool IsPointOnSegment(Vector3 point, Vector3 start, Vector3 end)
+    {
+        float epsilon = 0.0001f; // A small value to account for floating-point errors
+
+        // Check if the point is within the bounding box of the inferred line segment
+        bool xInRange = (point.x >= Mathf.Min(start.x, end.x) - epsilon) &&
+                        (point.x <= Mathf.Max(start.x, end.x) + epsilon);
+
+        bool yInRange = (point.y >= Mathf.Min(start.y, end.y) - epsilon) &&
+                        (point.y <= Mathf.Max(start.y, end.y) + epsilon);
+
+        if (xInRange && yInRange)
+        {
+            // Check if the point is collinear with the inferred line segment
+            float crossProduct = (point.y - start.y) * (end.x - start.x) - (point.x - start.x) * (end.y - start.y);
+
+            return Mathf.Abs(crossProduct) < epsilon;
+        }
+
+        return false;
+    }
+
     public override void OnUpdatePreview(Vector3 position, int rotationOffset)
     {
         if (isBuildingStart)
         {
-
             transform.position = position + new Vector3(0.5f, 0.5f, 0f);
             startPointerAnchor.rotation = Quaternion.Euler(Vector3.forward * (rotationOffset - 45));
         }
         else
         {
             endPoint.position = position + new Vector3(0.5f, 0.5f, 0);
-            splineContainer.Spline.SetKnot(splineContainer.Spline.Knots.ToList().Count - 1, CreatePoint(position - transform.position + new Vector3(0.5f, 0.5f, 0), rotationOffset));
 
             endPointerAnchor.rotation = Quaternion.Euler(Vector3.forward * (rotationOffset - 45));
+
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, position + new Vector3(0.5f, 0.5f, 0f));
         }
     }
 
@@ -51,13 +155,6 @@ public class O_Build_ConveyorBelt : O_Build
         {
             DettachUIWidget(hud.gameObject);
         }
-    }
-
-    private static BezierKnot CreatePoint(Vector3 position, int rotation)
-    {
-        BezierKnot bezierKnot = new BezierKnot(position, .5f, .5f, Quaternion.Euler(0f, 0f, rotation));
-
-        return bezierKnot;
     }
 
     public override bool CanBeBuilt()
@@ -75,7 +172,8 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (!isBuildingStart)
         {
-            splineContainer.Spline.Add(CreatePoint(position - transform.position + new Vector3(0.5f, 0.5f, 0), rotationOffset), TangentMode.Linear, 2);
+            //Add a point
+            lineRenderer.positionCount++;
         }
     }
 
@@ -83,30 +181,41 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (isBuildingStart)
         {
-            splineInstantiate.gameObject.SetActive(true);
-
             isBuildingStart = false;
 
-            splineContainer.Spline.Add(CreatePoint(Vector3.zero, rotationOffset), TangentMode.Linear, 2);
+            //Create a start and end point
 
-            splineContainer.Spline.Add(CreatePoint(position - transform.position + new Vector3(0.5f, 0.5f, 0), rotationOffset), TangentMode.Linear, 2);
+            lineRenderer.positionCount = 2;
+
+            lineRenderer.SetPosition(0, position + new Vector3(0.5f, 0.5f, 0f));
+            lineRenderer.SetPosition(1, position + new Vector3(0.5f, 0.5f, 0f));
 
             endPointerAnchor.gameObject.SetActive(true);
         }
         else
         {
+            //Finish building
+
             isBuildingStart = true;
 
             Instantiate(gameObject);
 
-            splineContainer.Spline.Clear();
+            lineRenderer.positionCount = 0;
 
             endPoint.localPosition = Vector3.zero;
 
             endPointerAnchor.gameObject.SetActive(false);
+        }
+    } 
 
-            splineInstantiate.Clear();
-            splineInstantiate.gameObject.SetActive(false);
+    public static class Extensions
+    {
+        //source: https://discussions.unity.com/t/inverselerp-for-vector3/177038/2
+        public static float InverseLerp(Vector3 a, Vector3 b, Vector3 value)
+        {
+            Vector3 AB = b - a;
+            Vector3 AV = value - a;
+            return Vector3.Dot(AV, AB) / Vector3.Dot(AB, AB);
         }
     }
 }

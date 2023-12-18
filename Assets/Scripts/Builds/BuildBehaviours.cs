@@ -82,32 +82,30 @@ public static class BuildBehaviours
     public static void ConsumeItem(O_Build build, O_BuildItem item)
     {
         item.gameObject.SetActive(false);
-
-        item.SplineAnimator.Pause();
-        item.SplineAnimator.ElapsedTime = 0;
-
         item.transform.position = build.transform.position;
     }
 
     public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> buildItems)
     {
         O_BuildItem item = buildItems[0];
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         item.gameObject.SetActive(true);
+        item.transform.position = outputNode.Transform.position;
 
         buildItems.RemoveAt(0);
     }
 
     public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
     {
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        //item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         item.gameObject.SetActive(true);
+        item.transform.position = outputNode.Transform.position;
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
     {
         O_BuildItem item = buildItem;
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        //item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
     }
 }
