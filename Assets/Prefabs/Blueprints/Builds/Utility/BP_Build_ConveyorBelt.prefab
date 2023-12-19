@@ -55,6 +55,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 989381297064996040}
   conveyorItems: []
   beltSpeed: 2
+  globalConveyorMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
 --- !u!120 &989381297064996040
 LineRenderer:
   serializedVersion: 2

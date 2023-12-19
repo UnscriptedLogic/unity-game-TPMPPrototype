@@ -281,8 +281,11 @@ MonoBehaviour:
   playerController: {fileID: 1370719615675873249, guid: bd7dac614ead3c94dbfeb0f9d8043882, type: 3}
   playerPawn: {fileID: 7976657303456889764, guid: 1e7bb38b959d52841b8dff7ede1a3ce8, type: 3}
   gameInstance: {fileID: -2735835447384315871, guid: 79bdda7c0516bde4990fd6c746d46ec7, type: 3}
+  webpageData: {fileID: 11400000, guid: 3186b63c56705844b899ee8d3660d279, type: 2}
   nodeTickInterval: 0.1
   resetEnergy: 3
+  globalConveyorMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
+  globalBeltSpeed: 1
 --- !u!1001 &1309825160
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   category: 0
-  id: html_component_square
+  id: circle
   canvasRoot: {fileID: 2523724293336426818}
   attachedComponents:
   - {fileID: 2232094332348248739}

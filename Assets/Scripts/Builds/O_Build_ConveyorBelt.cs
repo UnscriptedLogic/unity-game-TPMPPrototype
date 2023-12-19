@@ -12,9 +12,8 @@ public class O_Build_ConveyorBelt : O_Build
     [SerializeField] private Transform endPointerAnchor;
 
     [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private List<O_BuildItem> conveyorItems = new List<O_BuildItem>();
-    [SerializeField] private float beltSpeed = 0.5f;
-
+    
+    private List<O_BuildItem> conveyorItems = new List<O_BuildItem>();
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
 
@@ -77,7 +76,17 @@ public class O_Build_ConveyorBelt : O_Build
                 }
 
                 float distance = Vector3.Distance(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next));
-                conveyorItems[i].transform.position = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((beltSpeed * Time.fixedDeltaTime) / distance));
+
+                Vector3 lerpPosition = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((levelManager.GlobalBeltSpeed * Time.fixedDeltaTime) / distance));
+                if (float.IsNaN(lerpPosition.x) || float.IsNaN(lerpPosition.y))
+                {
+                    //Probably out of bounds of the conveyor.
+
+                    conveyorItems.RemoveAt(i);
+                    continue;
+                }
+
+                conveyorItems[i].transform.position = lerpPosition;
             }
         }
     }
@@ -89,7 +98,12 @@ public class O_Build_ConveyorBelt : O_Build
             return true;
         }
 
-        return Vector3.Distance(conveyorItems[index].transform.position, conveyorItems[index - 1].transform.position) >= 0.5f;
+        Vector3 difference = (conveyorItems[index - 1].transform.position - conveyorItems[index].transform.position);
+
+        bool isXFarEnough = Mathf.Abs(difference.x) > 2f;
+        bool isYFarEnough = Mathf.Abs(difference.y) > 1.25f;
+
+        return isXFarEnough || isYFarEnough;
     }
 
     public (int, int) FindTraversedSegment(Vector3 currentPoint, Vector3[] positions)

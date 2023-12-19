@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   category: 0
-  id: html_page_empty
+  id: canvas
   canvasRoot: {fileID: 2523724293336426818}
   attachedComponents:
   - {fileID: 1229332544820564905}
