@@ -7,7 +7,6 @@ using UnscriptedEngine;
 public class O_Build_ConveyorBelt : O_Build
 {
     [SerializeField] private GameObject ui_hud;
-    [SerializeField] private Transform endPoint;
 
     [SerializeField] private Transform startPointerAnchor;
     [SerializeField] private Transform endPointerAnchor;
@@ -134,18 +133,28 @@ public class O_Build_ConveyorBelt : O_Build
 
     public override void OnUpdatePreview(Vector3 position, int rotationOffset)
     {
+        Vector3 correctedPosition = position + new Vector3(0.5f, 0.5f, 0f);
+
         if (isBuildingStart)
         {
-            transform.position = position + new Vector3(0.5f, 0.5f, 0f);
-            startPointerAnchor.rotation = Quaternion.Euler(Vector3.forward * (rotationOffset - 45));
+            transform.position = correctedPosition;
         }
         else
         {
-            endPoint.position = position + new Vector3(0.5f, 0.5f, 0);
+            float deltaX = Mathf.Abs(correctedPosition.x - lineRenderer.GetPosition(lineRenderer.positionCount - 2).x);
+            float deltaY = Mathf.Abs(correctedPosition.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y);
 
-            endPointerAnchor.rotation = Quaternion.Euler(Vector3.forward * (rotationOffset - 45));
+            if (deltaX > deltaY)
+            {
+                correctedPosition.y = lineRenderer.GetPosition(lineRenderer.positionCount - 2).y;
+            }
+            else
+            {
+                correctedPosition.x = lineRenderer.GetPosition(lineRenderer.positionCount - 2).x;
+            }
 
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, position + new Vector3(0.5f, 0.5f, 0f));
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, correctedPosition);
+            endPointerAnchor.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
         }
     }
 
@@ -179,6 +188,8 @@ public class O_Build_ConveyorBelt : O_Build
 
     public override void Build(Vector3 position, int rotationOffset)
     {
+        Vector3 correctedPosition = position + new Vector3(0.5f, 0.5f, 0f);
+
         if (isBuildingStart)
         {
             isBuildingStart = false;
@@ -187,8 +198,8 @@ public class O_Build_ConveyorBelt : O_Build
 
             lineRenderer.positionCount = 2;
 
-            lineRenderer.SetPosition(0, position + new Vector3(0.5f, 0.5f, 0f));
-            lineRenderer.SetPosition(1, position + new Vector3(0.5f, 0.5f, 0f));
+            lineRenderer.SetPosition(0, correctedPosition);
+            lineRenderer.SetPosition(1, correctedPosition);
 
             endPointerAnchor.gameObject.SetActive(true);
         }
@@ -201,9 +212,6 @@ public class O_Build_ConveyorBelt : O_Build
             Instantiate(gameObject);
 
             lineRenderer.positionCount = 0;
-
-            endPoint.localPosition = Vector3.zero;
-
             endPointerAnchor.gameObject.SetActive(false);
         }
     } 
