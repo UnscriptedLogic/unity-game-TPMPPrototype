@@ -51,6 +51,22 @@ public class HUD_CanvasController : UCanvasController
 
         buildPage.SetActive(false);
         deletePage.SetActive(false);
+
+        levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+    }
+
+    private void LevelManager_OnProjectCompleted(object sender, EventArgs e)
+    {
+        defaultPage.gameObject.SetActive(false);
+        buildPage.SetActive(false);
+        deletePage.SetActive(false);
+
+        GetUIComponent<UButtonComponent>("clockin").gameObject.SetActive(false);
+        GetUIComponent<UButtonComponent>("finishproject").gameObject.SetActive(false);
+        GetUIComponent<UButtonComponent>("testfactory").gameObject.SetActive(false);
+
+        UnBindUI(ref GameMode.CastTo<GM_LevelManager>().daysLeft, "time");
+        UnBindUI(ref levelManager.energy, "energy");
     }
 
     private void CloseDeletePageClicked()
@@ -86,5 +102,12 @@ public class HUD_CanvasController : UCanvasController
     public void OnBuildableClicked(string id)
     {
         OnRequestingToBuild?.Invoke(this, id);
+    }
+
+    public override void OnWidgetDetached(ULevelObject context)
+    {
+        levelManager.OnProjectCompleted -= LevelManager_OnProjectCompleted;
+
+        base.OnWidgetDetached(context);
     }
 }

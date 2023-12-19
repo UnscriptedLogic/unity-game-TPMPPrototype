@@ -44,7 +44,11 @@ public class WebPageSO : ScriptableObject
                 if (page.AttachedComponents[i].id == data.RequiredComponents[j].ComponentID)
                 {
                     isComponentValid = AreAllModificationsTheSame(data.RequiredComponents[j].ModificationIDs, page.AttachedComponents[i].ModificationsID);
-                    break;
+
+                    if (isComponentValid)
+                    {
+                        break;
+                    }
                 }
             }
 

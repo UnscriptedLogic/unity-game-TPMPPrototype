@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 920222788414077385}
   - component: {fileID: 2232094332348248739}
   m_Layer: 5
-  m_Name: Square
+  m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8ce21d3e069d64eaa308a02ff21836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: square
+  id: circle
   uiComponent: {fileID: 2294612178257148238}
 --- !u!1 &3730074294632749518
 GameObject:

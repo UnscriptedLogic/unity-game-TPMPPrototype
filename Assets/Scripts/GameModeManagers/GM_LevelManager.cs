@@ -61,6 +61,12 @@ public class GM_LevelManager : UGameModeBase
 
     public void ClockIn()
     {
+        if (daysLeft.Value <= 0)
+        {
+            //No more days left! Finish the project!
+            return;
+        }
+
         daysLeft.Value--;
 
         energy.Value = resetEnergy;

@@ -29,14 +29,14 @@ MonoBehaviour:
       modificationIds: []
     - componentID: square
       modificationIds:
-      - stretch-vertical
+      - stretchvertical
       - color-darkgrey
     - componentID: square
       modificationIds:
       - shrinkheight-50
       - position-top
       - color-purple
-      - stretch-horizontal
+      - stretchhorizontal
     - componentID: circle
       modificationIds:
       - position-right
