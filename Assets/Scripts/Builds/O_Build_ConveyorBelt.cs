@@ -16,19 +16,26 @@ public class O_Build_ConveyorBelt : O_Build
     private List<O_BuildItem> conveyorItems = new List<O_BuildItem>();
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
+    private bool isInPreview;
 
     public override void OnBeginPreview()
     {
         isBuildingStart = true;
 
+        startPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;
+        endPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;
+
         hud = AttachUIWidget(ui_hud) as UIC_ConveyorBeltHUD;
         hud.transform.SetParent(null);
 
         endPointerAnchor.gameObject.SetActive(false);
+        isInPreview = true;
     }
 
     private void FixedUpdate()
     {
+        if (isInPreview) return;
+
         if (levelManager.NodeTickSystem.HasTickedAfter(2))
         {
             Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.1f);
@@ -67,6 +74,11 @@ public class O_Build_ConveyorBelt : O_Build
                 (int start, int next) = FindTraversedSegment(conveyorItems[i].transform.position, positions);
 
                 float calculatedLerp = Extensions.InverseLerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), conveyorItems[i].transform.position);
+
+                if (next == lineRenderer.positionCount - 1 && calculatedLerp >= 1f)
+                {
+                    continue;
+                }
 
                 if (calculatedLerp >= 1f && next < lineRenderer.positionCount - 1)
                 {
@@ -187,8 +199,8 @@ public class O_Build_ConveyorBelt : O_Build
 
     protected override void OnPlayerStateChanged(C_PlayerController.PlayerState isBuildMode)
     {
-        startPointerAnchor.gameObject.SetActive(isBuildMode == C_PlayerController.PlayerState.Building);
-        endPointerAnchor.gameObject.SetActive(isBuildMode == C_PlayerController.PlayerState.Building);
+        startPointerAnchor.GetComponent<SpriteRenderer>().enabled = isBuildMode == C_PlayerController.PlayerState.Building;
+        endPointerAnchor.GetComponent<SpriteRenderer>().enabled = isBuildMode == C_PlayerController.PlayerState.Building;
     }
 
     public override void AlternateBuild(Vector3 position, int rotationOffset)
@@ -223,7 +235,10 @@ public class O_Build_ConveyorBelt : O_Build
 
             isBuildingStart = true;
 
-            Instantiate(gameObject);
+            O_Build_ConveyorBelt newConveyor = Instantiate(gameObject).GetComponent<O_Build_ConveyorBelt>();
+            newConveyor.startPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
+            newConveyor.endPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
+            newConveyor.isInPreview = false;
 
             lineRenderer.positionCount = 0;
             endPointerAnchor.gameObject.SetActive(false);
@@ -238,6 +253,16 @@ public class O_Build_ConveyorBelt : O_Build
             Vector3 AB = b - a;
             Vector3 AV = value - a;
             return Vector3.Dot(AV, AB) / Vector3.Dot(AB, AB);
+        }
+    }
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < conveyorItems.Count; i++)
+        {
+            if (conveyorItems[i] == null) continue;
+
+            Destroy(conveyorItems[i].gameObject);
         }
     }
 }

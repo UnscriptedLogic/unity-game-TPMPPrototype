@@ -73,3 +73,8 @@ MonoBehaviour:
     frameworkCategory: 1
     buildMachineCategory: 3
     build: {fileID: 3835251865746333402, guid: d4bcc27fa85437e44a3e94c8ea8b3b60, type: 3}
+  - id: modifier_expand
+    displayName: Expand Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 3835251865746333402, guid: 4d015105e8ca0a540b04bd4f78f3f07a, type: 3}

@@ -11,8 +11,6 @@ public class O_Build_GenericDispenser : O_Build
 
     [SerializeField] private int dispenseOnEveryTick = 1;
 
-    private bool isProjectCompleted = false;
-
     protected override void Start()
     {
         base.Start();
@@ -20,12 +18,6 @@ public class O_Build_GenericDispenser : O_Build
         outputNode.Initialize();
 
         levelManager.OnTestFactoryClicked += LevelManager_OnTestFactoryClicked;
-        levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
-    }
-
-    private void LevelManager_OnProjectCompleted(object sender, EventArgs e)
-    {
-        isProjectCompleted = true;
     }
 
     private void LevelManager_OnTestFactoryClicked(object sender, EventArgs e)
@@ -37,7 +29,7 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!isProjectCompleted) return;
+        if (!levelManager.IsProjectCompleted) return;
 
         if (!outputNode.IsSpawnAreaEmpty) return;
 
@@ -60,7 +52,6 @@ public class O_Build_GenericDispenser : O_Build
     protected override void OnDestroy()
     {
         levelManager.OnTestFactoryClicked -= LevelManager_OnTestFactoryClicked;
-        levelManager.OnProjectCompleted -= LevelManager_OnProjectCompleted;
 
         base.OnDestroy();
     }

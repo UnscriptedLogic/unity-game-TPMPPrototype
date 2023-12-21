@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.y
@@ -190,7 +190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.y
@@ -284,6 +284,7 @@ MonoBehaviour:
   webpageData: {fileID: 11400000, guid: 3186b63c56705844b899ee8d3660d279, type: 2}
   nodeTickInterval: 0.1
   resetEnergy: 3
+  evaluateTime: 25
   globalConveyorMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
   globalBeltSpeed: 1
 --- !u!1001 &1309825160
@@ -300,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6424352224870186333, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
       propertyPath: m_LocalPosition.y

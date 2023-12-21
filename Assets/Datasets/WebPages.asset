@@ -21,8 +21,8 @@ MonoBehaviour:
       modificationIds:
       - position-center
       - color-purple
-      - expandheight-100
-      - expandwidth-75
+      - expandheight-50
+      - expandwidth-25
   - webpage: {fileID: 7366424205272422799, guid: 660b83d768c127b4eacc43a8a6d1479c, type: 3}
     components:
     - componentID: canvas

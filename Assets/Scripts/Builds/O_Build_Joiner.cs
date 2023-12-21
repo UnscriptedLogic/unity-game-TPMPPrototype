@@ -13,6 +13,8 @@ public class O_Build_Joiner : O_Build
     [SerializeField] private int dispenseOnEveryTick = 4;
     [SerializeField] private int maxStorage = 100;
 
+    private int ticksLeft;
+
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
     private List<InputNode> inputNodes = new List<InputNode>();
@@ -30,12 +32,21 @@ public class O_Build_Joiner : O_Build
     {
         if (buildItems.Count == 0) return;
 
-        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
-
-
-        if (outputNode.IsSpawnAreaEmpty)
+        if (ticksLeft <= 0)
         {
-            CreateBuildItem(buildItems[0], outputNode);
+            if (outputNode.IsSpawnAreaEmpty)
+            {
+                CreateBuildItem(buildItems[0], outputNode);
+
+                if (buildItems.Count > 0)
+                {
+                    ticksLeft = dispenseOnEveryTick;
+                }
+            }
+        }
+        else
+        {
+            ticksLeft--;
         }
     }
 
@@ -68,5 +79,7 @@ public class O_Build_Joiner : O_Build
         item.transform.position = transform.position;
 
         buildItems.Add(item);
+
+        ticksLeft = dispenseOnEveryTick;
     }
 }

@@ -136,14 +136,7 @@ public class O_BuildComponentItem : ULevelObject
         {
             case O_Build_ModifierBase.Side.Width:
 
-                //float newWidth = uiComponent.rect.width * (shrinkPercentage / 100);
-
-                //uiComponent.offsetMin = new Vector2(newWidth * 0.5f, uiComponent.offsetMin.y);
-                //uiComponent.offsetMax = new Vector2(-(uiComponent.offsetMax.x + (newWidth * 0.5f)), uiComponent.offsetMax.y);
-
                 uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width * (shrinkPercentage / 100));
-
-                //uiComponent.sizeDelta = new Vector2(, uiComponent.sizeDelta.y);
 
                 AppendModification($"shrinkwidth-{shrinkPercentage}");
                 break;
@@ -153,6 +146,31 @@ public class O_BuildComponentItem : ULevelObject
                 uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height * (shrinkPercentage / 100));
 
                 AppendModification($"shrinkheight-{shrinkPercentage}");
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void Expand(O_Build_ModifierBase.Side side, float expandPercentage)
+    {
+        float flippedExpandPercentage = 100 - expandPercentage;
+
+        switch (side)
+        {
+            case O_Build_ModifierBase.Side.Width:
+
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width / (flippedExpandPercentage / 100));
+
+                AppendModification($"expandwidth-{expandPercentage}");
+                break;
+
+            case O_Build_ModifierBase.Side.Height:
+
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height / (flippedExpandPercentage / 100));
+
+                AppendModification($"expandheight-{expandPercentage}");
                 break;
 
             default:

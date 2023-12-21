@@ -11,9 +11,15 @@ public class GM_LevelManager : UGameModeBase
     [SerializeField] private WebPageSO webpageData;
     [SerializeField] private float nodeTickInterval = 0.1f;
     [SerializeField] private int resetEnergy = 3;
+    [SerializeField] private float evaluateTime = 10f;
     [SerializeField] private Material globalConveyorMaterial;
 
     private bool isProjectCompleted = false;
+    private bool isProjectEvaluated = false;
+    private float lerp = 0;
+    private float maxFactoryEvaluateSpeed = 8f;
+    private float lerpToMaxSpeedTime = 0.25f;
+    private float _evaluateTime;
 
     public Bindable<int> energy = new Bindable<int>(3);
     public Bindable<int> daysLeft = new Bindable<int>(3);
@@ -42,7 +48,29 @@ public class GM_LevelManager : UGameModeBase
 
     protected override void Update()
     {
-        globalConveyorMaterial.mainTextureOffset -= new Vector2(globalBeltSpeed * 4.25f * Time.deltaTime, 0);
+        AnimateConveyorBeltMaterial();
+
+        if (!isProjectCompleted) return;
+
+        if (!isProjectEvaluated)
+        {
+            lerp += Time.unscaledDeltaTime * lerpToMaxSpeedTime;
+            Time.timeScale = Mathf.Lerp(1f, maxFactoryEvaluateSpeed, lerp);
+
+            _evaluateTime -= Time.unscaledDeltaTime;
+        }
+
+        if (_evaluateTime <= 0f)
+        {
+            Time.timeScale = 1f;
+            isProjectEvaluated = true;
+            Debug.Log("Show end result screen");
+        }
+    }
+
+    private void AnimateConveyorBeltMaterial()
+    {
+        globalConveyorMaterial.mainTextureOffset -= new Vector2(globalBeltSpeed * 2.125f * Time.deltaTime, 0);
 
         if (globalConveyorMaterial.mainTextureOffset.x <= -10)
         {
@@ -74,10 +102,9 @@ public class GM_LevelManager : UGameModeBase
 
     public void FinishProject()
     {
+        _evaluateTime = evaluateTime;
+
         isProjectCompleted = true;
-
-        energy.Value = resetEnergy;
-
         OnProjectCompleted?.Invoke(this, EventArgs.Empty);
     }
 }

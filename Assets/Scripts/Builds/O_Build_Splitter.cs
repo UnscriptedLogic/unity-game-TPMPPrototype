@@ -23,6 +23,8 @@ public class O_Build_Splitter : O_Build
 
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
+    private bool isAwaitingValidSpawn;
+
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
         if (buildItems.Count < 1)
@@ -38,11 +40,16 @@ public class O_Build_Splitter : O_Build
         if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
 
         OutputNode outputNode = GetNextOutput();
+
+        if (isAwaitingValidSpawn) return;
+
         if (outputNode.IsSpawnAreaEmpty)
         {
             BuildBehaviours.CreateBuildItem(buildItems[0], outputNode);
             outputNode.DispsenseItem(buildItems[0]);
             buildItems.RemoveAt(0);
+
+            isAwaitingValidSpawn = false;
         }
     }
 
@@ -51,6 +58,7 @@ public class O_Build_Splitter : O_Build
         if (depth == -1)
         {
             Debug.Log("Could not find a potential output node");
+            isAwaitingValidSpawn = true;
             return default;
         }
 
@@ -59,29 +67,38 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
 
-                if (!middleOutputNode.IsSpawnAreaEmpty && middleOutputNode.HasConveyorBelt)
+                if (!middleOutputNode.HasConveyorBelt || !middleOutputNode.IsBuildingInfront)
                 {
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
 
-                if (!rightOutputNode.IsSpawnAreaEmpty && rightOutputNode.HasConveyorBelt)
+                if (!rightOutputNode.HasConveyorBelt || !rightOutputNode.IsBuildingInfront)
                 {
 
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
 
-                if (!leftOutputNode.IsSpawnAreaEmpty && leftOutputNode.HasConveyorBelt)
+                if (!leftOutputNode.HasConveyorBelt || !leftOutputNode.IsBuildingInfront)
                 {
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             default:

@@ -105,7 +105,10 @@ public abstract class O_Build : ULevelObject
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].GetComponent<O_BuildItem>() != null) return false;
+                    if (colliders[i].GetComponent<O_BuildItem>() != null)
+                    {
+                        return false;
+                    }
                 }
 
                 return true;
@@ -144,7 +147,24 @@ public abstract class O_Build : ULevelObject
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].GetComponent<O_Build_ConveyorBelt>() != null)
+                    if (colliders[i].GetComponentInParent<O_Build_ConveyorBelt>() != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public bool IsBuildingInfront
+        {
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].GetComponentInParent<O_Build>() != null)
                     {
                         return true;
                     }

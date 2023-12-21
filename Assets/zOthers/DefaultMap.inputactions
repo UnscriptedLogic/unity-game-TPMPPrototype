@@ -51,6 +51,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "RotatePressed",
+                    "type": "Button",
+                    "id": "b53bdc74-ff54-48c6-9cc3-3003818fe080",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ConveyorShortcut",
                     "type": "Button",
                     "id": "84d11791-35c0-4c2e-a336-f84313f15eaa",
@@ -60,9 +69,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotatePressed",
+                    "name": "JoinerShortcut",
                     "type": "Button",
-                    "id": "b53bdc74-ff54-48c6-9cc3-3003818fe080",
+                    "id": "8143d356-8657-44b5-8c88-9c09e7ab1ec7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SplitterShortcut",
+                    "type": "Button",
+                    "id": "19495e5d-ba97-4f88-9327-54104d6acc9a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ConstructorShortcut",
+                    "type": "Button",
+                    "id": "02c38c10-cf77-48f7-8150-4565a276b94e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteModeShortcut",
+                    "type": "Button",
+                    "id": "fb13e7cb-0e86-4fe8-88ed-57404e047d00",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -139,7 +175,7 @@
                 {
                     "name": "",
                     "id": "a70189e4-a46c-4332-a506-b3f9cb1cf4dd",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -148,70 +184,59 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "QnE",
-                    "id": "8953ecdc-0e3a-4497-9347-e7dbdf1f7b1a",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "65c72997-5e07-441f-8da1-29c88d621e97",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RotatePressed",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "ba451a08-ac4b-4f59-8649-e8fb4aea4697",
-                    "path": "<Keyboard>/e",
+                    "name": "",
+                    "id": "66884eb8-f44d-4942-bf7d-5e4ff17b7015",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
+                    "action": "JoinerShortcut",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "88c84214-ec5a-462e-aa27-59b074ae7dc1",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotatePressed",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "MouseScroll",
-                    "id": "d0c47dc1-dd8d-464f-b114-8364c39765aa",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotatePressed",
-                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "95bc3bf2-de93-4e1a-b445-46cb79afacf5",
-                    "path": "<Mouse>/scroll/up",
+                    "name": "",
+                    "id": "6a59d032-e99a-4aa7-9324-ef53d4b187ae",
+                    "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
+                    "action": "SplitterShortcut",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "1496d0d3-0ae2-4871-938e-7a966f77d2c0",
-                    "path": "<Mouse>/scroll/down",
+                    "name": "",
+                    "id": "dd4c08ee-15ae-44c0-abf2-f6ce5615c19c",
+                    "path": "<Keyboard>/4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
+                    "action": "ConstructorShortcut",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3353dda6-d86e-4a04-8aad-0fa369dff901",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteModeShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

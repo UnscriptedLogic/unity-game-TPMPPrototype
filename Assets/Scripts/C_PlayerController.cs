@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnscriptedEngine;
@@ -46,16 +48,24 @@ public class C_PlayerController : UController
         
         levelManager = GameMode as GM_LevelManager;
 
+        levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+
         hudCanvas = AttachUIWidget(hudBlueprint) as HUD_CanvasController;
         hudCanvas.OnRequestingToBuild += HudCanvas_OnRequestingToBuild;
         hudCanvas.OnCloseBuildMenu += HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled += HudCanvas_OnDeleteBuildToggled;
 
         defaultActionMap = GetDefaultInputMap();
+        defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
 
         //shortcuts
         defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
+        defaultActionMap.FindAction("JoinerShortcut").performed += InstantJoinerBuild;
+        defaultActionMap.FindAction("SplitterShortcut").performed += InstantSplitterBuild;
+        defaultActionMap.FindAction("ConstructorShortcut").performed += InstantConstructorBuild;
+
+        defaultActionMap.FindAction("DeleteModeShortcut").performed += DeleteModeShortcutPressed;
     }
 
     protected override void OnLevelStopped()
@@ -64,9 +74,7 @@ public class C_PlayerController : UController
         hudCanvas.OnCloseBuildMenu -= HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled -= HudCanvas_OnDeleteBuildToggled;
 
-        defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
-
-        defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
+        UnsubscribeKeybindEvents();
 
         base.OnLevelStopped();
     }
@@ -103,15 +111,7 @@ public class C_PlayerController : UController
     {
         if (playerState.Value == PlayerState.Building)
         {
-            float result = obj.ReadValue<float>();
-            if (result >= 1f)
-            {
-                objectRotation += 45;
-            }
-            else if (result <= -1f)
-            {
-                objectRotation -= 45;
-            }
+            objectRotation -= 90;
 
             if (objectRotation > 360)
             {
@@ -123,6 +123,12 @@ public class C_PlayerController : UController
                 objectRotation = 360;
             }
         }
+    }
+
+    private void LevelManager_OnProjectCompleted(object sender, System.EventArgs e)
+    {
+        playerState.Value = PlayerState.None;
+        UnsubscribeKeybindEvents();
     }
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
@@ -151,13 +157,39 @@ public class C_PlayerController : UController
         playerState.Value = PlayerState.None;
     }
 
-    private void InstantConveyorBuild(InputAction.CallbackContext obj)
+    private void InstantConveyorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_conveyor");
+    private void InstantJoinerBuild(InputAction.CallbackContext obj) => BuildShortcut("util_joiner");
+    private void InstantSplitterBuild(InputAction.CallbackContext obj) => BuildShortcut("util_splitter");
+    private void InstantConstructorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_constructor");
+
+    private void BuildShortcut(string buildID)
     {
         playerState.Value = PlayerState.Building;
-
         hudCanvas.BuildBtnClicked();
+        playerPawn.StartBuildPreview(buildID);
+    }
 
-        playerPawn.StartBuildPreview("util_conveyor");
+    private void ExitBuildModeShortcut(InputAction.CallbackContext context)
+    {
+        playerState.Value = PlayerState.None;
+        hudCanvas.DefaultBtnClicked();
+    }
+
+    private void DeleteModeShortcutPressed(InputAction.CallbackContext context)
+    {
+        if (playerState.Value != PlayerState.Deleting)
+        {
+            playerState.Value = PlayerState.Deleting;
+            hudCanvas.DeleteBtnClicked();
+
+            //If we are in build mode
+            playerPawn.ClearPreview();
+        }
+        else
+        {
+            playerState.Value = PlayerState.None;
+            hudCanvas.CloseDeletePageClicked();
+        }
     }
 
     private void Update()
@@ -184,5 +216,24 @@ public class C_PlayerController : UController
 
         worldPosition = SnapToGrid(worldPosition, 0.5f, Vector3.one);
         return worldPosition;
+    }
+
+    private void UnsubscribeKeybindEvents()
+    {
+        defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
+
+        defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
+        defaultActionMap.FindAction("JoinerShortcut").performed -= InstantJoinerBuild;
+        defaultActionMap.FindAction("SplitterShortcut").performed -= InstantSplitterBuild;
+        defaultActionMap.FindAction("ConstructorShortcut").performed -= InstantConstructorBuild;
+
+        defaultActionMap.FindAction("DeleteModeShortcut").performed -= DeleteModeShortcutPressed;
+    }
+
+    protected override void OnDestroy()
+    {
+        UnsubscribeKeybindEvents();
+
+        base.OnDestroy();
     }
 }

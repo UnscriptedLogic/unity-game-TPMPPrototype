@@ -69,17 +69,19 @@ public class HUD_CanvasController : UCanvasController
         UnBindUI(ref levelManager.energy, "energy");
     }
 
-    private void CloseDeletePageClicked()
+    public void CloseDeletePageClicked()
     {
         defaultPage.SetActive(true);
+        buildPage.SetActive(false);
         deletePage.SetActive(false);
 
         OnDeleteBuildToggled?.Invoke(this, false);
     }
 
-    private void DeleteBtnClicked()
+    public void DeleteBtnClicked()
     {
         defaultPage.SetActive(false);
+        buildPage.SetActive(false);
         deletePage.SetActive(true);
 
         OnDeleteBuildToggled?.Invoke(this, true);
