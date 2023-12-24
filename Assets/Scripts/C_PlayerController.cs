@@ -183,7 +183,7 @@ public class C_PlayerController : UController
             hudCanvas.DeleteBtnClicked();
 
             //If we are in build mode
-            playerPawn.ClearPreview();
+            playerPawn.EndBuildPreview();
         }
         else
         {

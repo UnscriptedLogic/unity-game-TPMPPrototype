@@ -14,7 +14,8 @@ public class P_PlayerPawn : URTSCamera
 
     public void StartBuildPreview(string buildID)
     {
-        ClearPreview();
+        EndBuildPreview();
+
         objectToBuild = Instantiate(buildableDataSet.GetBuildableWithID(buildID).Build);
 
         objectToBuild.OnBeginPreview();
@@ -38,19 +39,10 @@ public class P_PlayerPawn : URTSCamera
         objectToBuild.AlternateBuild(position, rotationOffset);
     }
 
-    public void ClearPreview()
-    {
-        if (objectToBuild != null)
-        {
-            Destroy(objectToBuild.gameObject);
-        }
-    }
-
     public void EndBuildPreview()
     {
         if (objectToBuild == null) return;
 
-        ClearPreview();
         objectToBuild.OnEndPreview();
     }
 

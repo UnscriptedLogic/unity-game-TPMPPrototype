@@ -167,6 +167,7 @@ public class O_Build_ConveyorBelt : O_Build
         }
         else
         {
+            //Logic used to confining the conveyor belts to straight lines
             float deltaX = Mathf.Abs(correctedPosition.x - lineRenderer.GetPosition(lineRenderer.positionCount - 2).x);
             float deltaY = Mathf.Abs(correctedPosition.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y);
 
@@ -190,6 +191,8 @@ public class O_Build_ConveyorBelt : O_Build
         {
             DettachUIWidget(hud.gameObject);
         }
+
+        Destroy(gameObject);
     }
 
     public override bool CanBeBuilt()

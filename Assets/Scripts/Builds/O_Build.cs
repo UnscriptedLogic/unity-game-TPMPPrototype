@@ -220,8 +220,8 @@ public abstract class O_Build : ULevelObject
     }
 
     public virtual void OnEndPreview() 
-    {  
-    
+    {
+        Destroy(gameObject);
     }
 
     public virtual bool CanBeBuilt()
