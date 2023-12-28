@@ -15,12 +15,14 @@ public class C_PlayerController : UController
     }
 
     [SerializeField] private GameObject hudBlueprint;
+    [SerializeField] private GameObject endscreenBP;
 
     private InputActionMap defaultActionMap;
 
     private GM_LevelManager levelManager;
     private HUD_CanvasController hudCanvas;
     private P_PlayerPawn playerPawn;
+    private UIC_ProjectCompletionHUD endScreenUI;
 
     private int objectRotation;
     private Vector2 mousePosition;
@@ -49,6 +51,7 @@ public class C_PlayerController : UController
         levelManager = GameMode as GM_LevelManager;
 
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+        levelManager.OnProjectEvaluationCompleted += LevelManager_OnProjectEvaluationCompleted;
 
         hudCanvas = AttachUIWidget(hudBlueprint) as HUD_CanvasController;
         hudCanvas.OnRequestingToBuild += HudCanvas_OnRequestingToBuild;
@@ -129,6 +132,11 @@ public class C_PlayerController : UController
     {
         playerState.Value = PlayerState.None;
         UnsubscribeKeybindEvents();
+    }
+
+    private void LevelManager_OnProjectEvaluationCompleted(object sender, EventArgs e)
+    {
+        endScreenUI = AttachUIWidget(endscreenBP).CastTo<UIC_ProjectCompletionHUD>();
     }
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
@@ -235,5 +243,10 @@ public class C_PlayerController : UController
         UnsubscribeKeybindEvents();
 
         base.OnDestroy();
+    }
+
+    internal void ReturnToMainMenu()
+    {
+        GameMode.LoadScene(0);
     }
 }

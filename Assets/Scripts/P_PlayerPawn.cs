@@ -53,16 +53,16 @@ public class P_PlayerPawn : URTSCamera
         switch (direction)
         {
             case Direction.Forward:
-                pos += anchor.up * panSpeed * Time.deltaTime;
+                pos += anchor.up * panSpeed * Time.unscaledDeltaTime;
                 break;
             case Direction.Backward:
-                pos += -anchor.up * panSpeed * Time.deltaTime;
+                pos += -anchor.up * panSpeed * Time.unscaledDeltaTime;
                 break;
             case Direction.Left:
-                pos += -anchor.right * panSpeed * Time.deltaTime;
+                pos += -anchor.right * panSpeed * Time.unscaledDeltaTime;
                 break;
             case Direction.Right:
-                pos += anchor.right * panSpeed * Time.deltaTime;
+                pos += anchor.right * panSpeed * Time.unscaledDeltaTime;
                 break;
             default:
                 Debug.Log("Something went wrong here");

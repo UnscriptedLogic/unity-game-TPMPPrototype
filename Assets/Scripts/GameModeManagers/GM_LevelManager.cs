@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -18,7 +16,7 @@ public class GM_LevelManager : UGameModeBase
     private bool isProjectEvaluated = false;
     private float lerp = 0;
     private float maxFactoryEvaluateSpeed = 8f;
-    private float lerpToMaxSpeedTime = 0.25f;
+    private float lerpToMaxSpeedTime = 0.1f;
     private float _evaluateTime;
 
     public Bindable<int> energy = new Bindable<int>(3);
@@ -28,6 +26,7 @@ public class GM_LevelManager : UGameModeBase
 
     public event EventHandler OnTestFactoryClicked;
     public event EventHandler OnProjectCompleted;
+    public event EventHandler OnProjectEvaluationCompleted;
 
     private TickSystem.Ticker ticker;
 
@@ -60,17 +59,20 @@ public class GM_LevelManager : UGameModeBase
             _evaluateTime -= Time.unscaledDeltaTime;
         }
 
+        if (isProjectEvaluated) return;
+
         if (_evaluateTime <= 0f)
         {
             Time.timeScale = 1f;
             isProjectEvaluated = true;
-            Debug.Log("Show end result screen");
+
+            OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
         }
     }
 
     private void AnimateConveyorBeltMaterial()
     {
-        globalConveyorMaterial.mainTextureOffset -= new Vector2(globalBeltSpeed * 2.125f * Time.deltaTime, 0);
+        globalConveyorMaterial.mainTextureOffset -= new Vector2(globalBeltSpeed * 2.115f * Time.deltaTime, 0);
 
         if (globalConveyorMaterial.mainTextureOffset.x <= -10)
         {

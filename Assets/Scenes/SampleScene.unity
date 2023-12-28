@@ -284,7 +284,7 @@ MonoBehaviour:
   webpageData: {fileID: 11400000, guid: 3186b63c56705844b899ee8d3660d279, type: 2}
   nodeTickInterval: 0.1
   resetEnergy: 3
-  evaluateTime: 25
+  evaluateTime: 20
   globalConveyorMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
   globalBeltSpeed: 1
 --- !u!1001 &1309825160

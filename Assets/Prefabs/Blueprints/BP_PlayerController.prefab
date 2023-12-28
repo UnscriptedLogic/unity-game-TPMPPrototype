@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hudBlueprint: {fileID: 2448157513443985993, guid: c6d5fc784c1425145bfc8ac527d417bb, type: 3}
+  endscreenBP: {fileID: 6881280023066906895, guid: 0a6317459a3f5444eac87e21da0bcb22, type: 3}
