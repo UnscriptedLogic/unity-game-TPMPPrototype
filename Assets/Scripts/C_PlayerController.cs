@@ -147,6 +147,9 @@ public class C_PlayerController : UController
     protected override ULevelPawn PossessPawn()
     {
         GM_LevelManager levelManager = GameMode as GM_LevelManager;
+
+        if (!(GameMode as GM_LevelManager)) return null;
+        
         playerPawn = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>();
         return playerPawn;
     }
@@ -245,8 +248,9 @@ public class C_PlayerController : UController
         base.OnDestroy();
     }
 
-    internal void ReturnToMainMenu()
+    public void ReturnToMainMenu()
     {
         GameMode.LoadScene(0);
+        Destroy(gameObject);
     }
 }
