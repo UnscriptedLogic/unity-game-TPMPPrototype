@@ -149,6 +149,7 @@ public class C_PlayerController : UController
         GM_LevelManager levelManager = GameMode as GM_LevelManager;
 
         if (!(GameMode as GM_LevelManager)) return null;
+        if (!(levelManager.GetPlayerPawn() as P_PlayerPawn)) return null;
         
         playerPawn = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>();
         return playerPawn;

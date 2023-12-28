@@ -319,7 +319,7 @@
       "dependencies": {
         "com.unity.inputsystem": "1.7.0"
       },
-      "hash": "deb561a638ae565fe03ce12367b57c21b8598aae"
+      "hash": "75228322acb1bc73b5b9149c48f9744451dd194e"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
