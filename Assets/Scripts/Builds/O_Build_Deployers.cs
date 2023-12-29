@@ -8,11 +8,14 @@ public class O_Build_Deployers : O_Build
     [SerializeField] private UCanvasController canvasController;
     [SerializeField] private Transform websiteCanvasTransform;
     [SerializeField] private InputNode inputNode;
+    [SerializeField] private int requiredRate;
 
     private float elapsedTime = 0f;
-    private Bindable<int> acceptedPagesRate = new Bindable<int>(0);
+    public Bindable<int> acceptedPagesRate = new Bindable<int>(0);
 
     private WebPageSO.PageData currentPageData;
+
+    public bool HasReachedRequiredRate => acceptedPagesRate.Value >= requiredRate;
 
     protected override void Start()
     {

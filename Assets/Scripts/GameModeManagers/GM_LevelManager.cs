@@ -1,24 +1,27 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
 
 public class GM_LevelManager : UGameModeBase
 {
     [Header("Game Mode")]
+    [SerializeField] private List<O_Build_Deployers> deployers;
     [SerializeField] private WebPageSO webpageData;
     [SerializeField] private float nodeTickInterval = 0.1f;
     [SerializeField] private int resetEnergy = 3;
     [SerializeField] private float evaluateTime = 10f;
     [SerializeField] private Material globalConveyorMaterial;
 
+    private Project project;
     private bool isProjectCompleted = false;
     private bool isProjectEvaluated = false;
     private float lerp = 0;
     private float maxFactoryEvaluateSpeed = 8f;
     private float lerpToMaxSpeedTime = 0.1f;
     private float _evaluateTime;
-
+    
     public Bindable<int> energy = new Bindable<int>(3);
     public Bindable<int> daysLeft = new Bindable<int>(3);
 
@@ -35,6 +38,7 @@ public class GM_LevelManager : UGameModeBase
     public int ResetEnergyAmount => resetEnergy;
     public bool IsProjectCompleted => isProjectCompleted;
     public float GlobalBeltSpeed => globalBeltSpeed;
+    public List<O_Build_Deployers> Deployers => deployers;
 
     protected override IEnumerator Start()
     {

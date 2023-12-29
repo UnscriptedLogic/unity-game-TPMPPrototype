@@ -428,6 +428,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3711420991532160943}
     m_Modifications:
+    - target: {fileID: -7871556540511652807, guid: ecfbe741e75ea9b4a8ec40c6391d0aba, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -3888481672020999207, guid: ecfbe741e75ea9b4a8ec40c6391d0aba, type: 3}
       propertyPath: m_Name
       value: Joiner

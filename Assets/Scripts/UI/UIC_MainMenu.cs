@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -18,6 +20,10 @@ public class UIC_MainMenu : UCanvasController
 
     [SerializeField] private GameObject designmk1Details;
 
+    [Header("Projects Page")]
+    [SerializeField] private ProjectUIBtn projectPrefab;
+    [SerializeField] private Transform projectsParent;
+
     private GI_CustomGameInstance gameInstance;
 
     public event EventHandler OnQuitBtnClickedEvent;
@@ -35,7 +41,6 @@ public class UIC_MainMenu : UCanvasController
         Bind<UButtonComponent>("yourprojects", OnYourProjectsBtnClicked);
         Bind<UButtonComponent>("findprojects", OnFindProjectsBtnClicked);
         Bind<UButtonComponent>("shopBtn", OnShopBtnClicked);
-        Bind<UButtonComponent>("testproject", OnProjectClicked);
         Bind<UButtonComponent>("backtomainbtn", OnBackToMainBtnClicked);
 
         //Shop Page
@@ -55,6 +60,21 @@ public class UIC_MainMenu : UCanvasController
         milestoneDetails.SetActive(false);
 
         designmk1Details.SetActive(false);
+
+        LoadProjects();
+    }
+
+    private void LoadProjects()
+    {
+        List<Project> projects = new List<Project>(gameInstance.playerData.Projects);
+
+        for (int i = 0; i < projects.Count; i++)
+        {
+            ProjectUIBtn projectUIBtn = Instantiate(projectPrefab, projectsParent);
+            projectUIBtn.Initialize(projects[i], this);
+
+            Bind<UButtonComponent>(projectUIBtn.ID, OnProjectClicked);
+        }
     }
 
     private void OnBuyMilestone(string id)
@@ -112,7 +132,7 @@ public class UIC_MainMenu : UCanvasController
         }
     }
 
-    private void OnProjectClicked()
+    private void OnProjectClicked(string id)
     {
         GameMode.LoadScene(1);
     }
