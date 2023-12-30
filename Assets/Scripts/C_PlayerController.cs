@@ -27,6 +27,8 @@ public class C_PlayerController : UController
     private int objectRotation;
     private Vector2 mousePosition;
     
+    private bool isPaused;
+
     public Vector3 MouseWorldPosition
     {
         get
@@ -47,11 +49,13 @@ public class C_PlayerController : UController
     protected override void OnLevelStarted()
     {
         base.OnLevelStarted();
-        
+
         levelManager = GameMode as GM_LevelManager;
 
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
         levelManager.OnProjectEvaluationCompleted += LevelManager_OnProjectEvaluationCompleted;
+        levelManager.OnPause += LevelManager_OnPause;
+        levelManager.OnResume += LevelManager_OnResume;
 
         hudCanvas = AttachUIWidget(hudBlueprint) as HUD_CanvasController;
         hudCanvas.OnRequestingToBuild += HudCanvas_OnRequestingToBuild;
@@ -59,16 +63,21 @@ public class C_PlayerController : UController
         hudCanvas.OnDeleteBuildToggled += HudCanvas_OnDeleteBuildToggled;
 
         defaultActionMap = GetDefaultInputMap();
-        defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
-        defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
+        SubscribeKeybindEvents();
+    }
 
-        //shortcuts
-        defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
-        defaultActionMap.FindAction("JoinerShortcut").performed += InstantJoinerBuild;
-        defaultActionMap.FindAction("SplitterShortcut").performed += InstantSplitterBuild;
-        defaultActionMap.FindAction("ConstructorShortcut").performed += InstantConstructorBuild;
+    private void LevelManager_OnResume(object sender, EventArgs e)
+    {
+        isPaused = false;
 
-        defaultActionMap.FindAction("DeleteModeShortcut").performed += DeleteModeShortcutPressed;
+        SubscribeKeybindEvents();
+    }
+
+    private void LevelManager_OnPause(object sender, EventArgs e)
+    {
+        isPaused = true;
+
+        UnsubscribeKeybindEvents();
     }
 
     protected override void OnLevelStopped()
@@ -206,6 +215,8 @@ public class C_PlayerController : UController
 
     private void Update()
     {
+        if (isPaused) return;
+
         if (playerPawn == null) return;
 
         mousePosition = GetDefaultMousePosition();
@@ -230,8 +241,23 @@ public class C_PlayerController : UController
         return worldPosition;
     }
 
+    private void SubscribeKeybindEvents()
+    {
+        defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
+        defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
+
+        //shortcuts
+        defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
+        defaultActionMap.FindAction("JoinerShortcut").performed += InstantJoinerBuild;
+        defaultActionMap.FindAction("SplitterShortcut").performed += InstantSplitterBuild;
+        defaultActionMap.FindAction("ConstructorShortcut").performed += InstantConstructorBuild;
+
+        defaultActionMap.FindAction("DeleteModeShortcut").performed += DeleteModeShortcutPressed;
+    }
+
     private void UnsubscribeKeybindEvents()
     {
+        defaultActionMap.FindAction("Escape").performed -= ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
 
         defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
@@ -245,6 +271,9 @@ public class C_PlayerController : UController
     protected override void OnDestroy()
     {
         UnsubscribeKeybindEvents();
+
+        levelManager.OnPause -= LevelManager_OnPause;
+        levelManager.OnResume -= LevelManager_OnResume;
 
         base.OnDestroy();
     }

@@ -5,6 +5,9 @@ using UnscriptedEngine;
 
 public class HUD_CanvasController : UCanvasController
 {
+    [Header("Canvases")]
+    [SerializeField] private UIC_PauseMenu pauseHUD;
+
     [Header("Pages")]
     [SerializeField] private GameObject defaultPage;
     [SerializeField] private GameObject buildPage;
@@ -26,6 +29,8 @@ public class HUD_CanvasController : UCanvasController
         base.OnWidgetAttached(context);
 
         levelManager = GameMode.CastTo<GM_LevelManager>();
+
+        Bind<UButtonComponent>("pause", OnPause);
 
         Bind<UButtonComponent>("buildBtn", BuildBtnClicked);
         Bind<UButtonComponent>("closeBtn", DefaultBtnClicked);
@@ -53,6 +58,11 @@ public class HUD_CanvasController : UCanvasController
         deletePage.SetActive(false);
 
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+    }
+
+    private void OnPause()
+    {
+        levelManager.GetPlayerController().AttachUIWidget(pauseHUD);
     }
 
     private void LevelManager_OnProjectCompleted(object sender, EventArgs e)
