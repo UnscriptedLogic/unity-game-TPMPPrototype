@@ -174,11 +174,4 @@ public class UIC_MainMenu : UCanvasController
     {
         OnQuitBtnClickedEvent?.Invoke(this, EventArgs.Empty);
     }
-
-    protected override void OnDestroy()
-    {
-        UnBindUI(ref GameMode.GameInstance.CastTo<GI_CustomGameInstance>().credits, "packets");
-
-        base.OnDestroy();
-    }
 }
