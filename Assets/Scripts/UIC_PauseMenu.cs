@@ -23,4 +23,11 @@ public class UIC_PauseMenu : UCanvasController
 
         Destroy(gameObject);
     }
+
+    protected override void OnDestroy()
+    {
+        GameMode.ResumeGame();
+
+        base.OnDestroy();
+    }
 }

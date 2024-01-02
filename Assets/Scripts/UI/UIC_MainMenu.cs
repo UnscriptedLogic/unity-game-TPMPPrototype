@@ -1,11 +1,41 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnscriptedEngine;
 
 public class UIC_MainMenu : UCanvasController
 {
+    [System.Serializable]
+    public class Milestone
+    {
+        [SerializeField] private List<MilestoneUpgrades> milestoneRewards;
+
+        public List<MilestoneUpgrades> MilestoneRewards => milestoneRewards;
+
+        public Milestone(List<MilestoneUpgrades> milestoneRewards)
+        {
+            this.milestoneRewards = milestoneRewards;
+        }
+    }
+
+    [System.Serializable]
+    public class MilestoneUpgrades
+    {
+        [SerializeField] private UpgradeSO upgradeSO;
+        private Action onUpgrade;
+
+        public UpgradeSO UpgradeSO => upgradeSO;
+        public Action OnUpgrade => onUpgrade;
+
+        public MilestoneUpgrades(Action onUpgrade)
+        {
+            this.onUpgrade = onUpgrade;
+        }
+    }
+
     [Header("Pages")]
     [SerializeField] private GameObject mainPage;
     [SerializeField] private GameObject overviewPage;
@@ -15,10 +45,14 @@ public class UIC_MainMenu : UCanvasController
     [SerializeField] private GameObject shopSection;
 
     [Header("Shop Page")]
-    [SerializeField] private GameObject contentTab1;
-    [SerializeField] private GameObject milestoneDetails;
+    [SerializeField] private List<Milestone> milestones;
+    [SerializeField] private Transform milestoneParent;
+    [SerializeField] private MilestoneBtn milestoneButtonPrefab;
+    [SerializeField] private GameObject shopContent;
 
-    [SerializeField] private GameObject designmk1Details;
+    [SerializeField] private UpgradeDetails upgradeDetails;
+
+    private UpgradeManager upgradeManager;
 
     [Header("Projects Page")]
     [SerializeField] private ProjectUIBtn projectPrefab;
@@ -34,6 +68,8 @@ public class UIC_MainMenu : UCanvasController
 
         gameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
+        upgradeManager = GameMode.GetComponent<UpgradeManager>();
+
         Bind<UButtonComponent>("playBtn", OnPlayBtnClicked);
         Bind<UButtonComponent>("quitBtn", OnQuitBtnClicked);
 
@@ -46,27 +82,38 @@ public class UIC_MainMenu : UCanvasController
         //Shop Page
         Bind<UButtonComponent>("level1", OnLevelClicked);
         Bind<UButtonComponent>("level2", OnLevelClicked);
-        BindUI(ref gameInstance.credits, "packets", (value) => $"Credits: {value}");
+        BindUI(ref gameInstance.playerData.Value.credits, "packets", (value) => $"Credits: {value}");
         Bind<UButtonComponent>("shopboundary", CloseMilestoneDetail);
 
-        Bind<UButtonComponent>("designmk1", OnMilestoneClicked);
-
-        Bind<UButtonComponent>("buydesignmk1", OnBuyMilestone);
+        LoadMilestones(0);
 
         overviewPage.SetActive(false);
         findProjectsSection.SetActive(false);
         shopSection.SetActive(false);
-
-        milestoneDetails.SetActive(false);
-
-        designmk1Details.SetActive(false);
+        shopContent.SetActive(false);
+        upgradeDetails.gameObject.SetActive(false);
 
         LoadProjects();
     }
 
+    private void LoadMilestones(int index)
+    {
+        //Clear initial buttons
+        for (int i = milestoneParent.childCount - 1; i >= 0; i--)
+        {
+            Destroy(milestoneParent.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < milestones[index].MilestoneRewards.Count; i++)
+        {
+            MilestoneBtn milestoneButton = Instantiate(milestoneButtonPrefab, milestoneParent);
+            milestoneButton.Initialize(this, milestones[index].MilestoneRewards[i].UpgradeSO.UpgradeIcon, milestones[index].MilestoneRewards[i].UpgradeSO.UpgradeLabel);
+        }
+    }
+
     private void LoadProjects()
     {
-        List<Project> projects = new List<Project>(gameInstance.playerData.Projects);
+        List<Project> projects = new List<Project>(gameInstance.playerData.Value.Projects);
 
         for (int i = 0; i < projects.Count; i++)
         {
@@ -77,63 +124,68 @@ public class UIC_MainMenu : UCanvasController
         }
     }
 
-    private void OnBuyMilestone(string id)
+    public void OnBuyUpgrade(string id)
     {
-        if (gameInstance.credits.Value >= 100)
+        (int milestoneIndex, int rewardIndex) = GetMilestoneByID(id);
+
+        UpgradeSO upgradeSO = milestones[milestoneIndex].MilestoneRewards[rewardIndex].UpgradeSO;
+
+        if (gameInstance.playerData.Value.credits.Value < upgradeSO.Cost)
         {
-            switch (id)
-            {
-                case "designmk1":
-                    break;
-                case "logicmk1":
-                    break;
-                case "utilitymk1":
-                    break;
-                case "designmk2":
-                    break;
-                case "logicmk2":
-                    break;
-                case "utilitymk2":
-                    break;
-                default:
-                    break;
-            }
+            Debug.Log("Not enought credits");
+            return;
         }
+
+        gameInstance.playerData.Value.credits.Value -= upgradeSO.Cost;
+        upgradeManager.Upgrade(milestoneIndex, rewardIndex);
     }
 
-    private void OnMilestoneClicked(string id)
+    public void OnMilestoneClicked(string id)
     {
-        milestoneDetails.SetActive(true);
+        shopContent.SetActive(true);
+        upgradeDetails.gameObject.SetActive(true);
 
-        designmk1Details.SetActive(false);
+        (int milestoneIndex, int rewardIndex) = GetMilestoneByID(id);
 
-        switch (id)
+        upgradeDetails.Initialize(this, milestones[milestoneIndex].MilestoneRewards[rewardIndex].UpgradeSO);
+    }
+
+    private (int, int) GetMilestoneByID(string ID)
+    {
+        for (int i = 0; i < milestones.Count; i++)
         {
-            case "designmk1":
-                designmk1Details.SetActive(true);
-                break;
-            default:
-                break;
+            for (int j = 0; j < milestones[i].MilestoneRewards.Count; j++)
+            {
+                if (milestones[i].MilestoneRewards[j].UpgradeSO.UpgradeLabel == ID)
+                {
+                    return (i, j);
+                }
+            }
         }
+
+        Debug.Log("Couldn't find the milestone with the ID: " + ID);
+        return (0, 0);
     }
 
     private void CloseMilestoneDetail()
     {
-        milestoneDetails.SetActive(false);
+        shopContent.SetActive(false);
     }
 
     private void OnLevelClicked(string id)
     {
-        contentTab1.SetActive(false);
 
-        if (id == "level1")
-        {
-            contentTab1.SetActive(true);
-        }
     }
 
     private void OnProjectClicked(string id)
     {
+        if (!gameInstance.playerData.Value.Projects.DoesPlayerHaveProject(id))
+        {
+            Debug.Log("Something went wrong. You're opening a project that you don't have.");
+            return;
+        }
+
+        gameInstance.Project = gameInstance.playerData.Value.Projects.GetPlayerProjectByName(id);
         GameMode.LoadScene(1);
     }
 

@@ -29,13 +29,14 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!levelManager.IsProjectCompleted) return;
-
-        if (!outputNode.IsSpawnAreaEmpty) return;
-
-        if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
+        if (levelManager.IsProjectCompleted || levelManager.IsSpeedingUpFactoryOverTime)
         {
-            outputNode.DispsenseItem(Instantiate(buildItemPrefab));
+            if (!outputNode.IsSpawnAreaEmpty) return;
+
+            if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
+            {
+                outputNode.DispsenseItem(Instantiate(buildItemPrefab));
+            }
         }
     }
 

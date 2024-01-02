@@ -518,6 +518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7488706733575985738}
   - component: {fileID: 2223366145014453321}
+  - component: {fileID: 1320649392342295201}
   m_Layer: 0
   m_Name: DataArea
   m_TagString: Untagged
@@ -552,6 +553,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3913366172498968066}
   m_CullTransparentMesh: 1
+--- !u!114 &1320649392342295201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3913366172498968066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 30
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &4532240912607370428
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: dismiss
-  useTheme: 1
+  useTheme: 0
 --- !u!1 &6881280023066906895
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +831,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theme: {fileID: 11400000, guid: b7256c6f87dc62e41985585bc059c063, type: 2}
+  requirementParent: {fileID: 7488706733575985738}
+  requirementPrefab: {fileID: 1073008082601187697, guid: 65d3f5f8b6e40614ba77e9de0df00425, type: 3}
+  conditionMetColour: {r: 0.34272787, g: 0.81886786, b: 0.24566028, a: 1}
+  conditionNotMetColour: {r: 0.89433956, g: 0.3466902, b: 0.32229975, a: 1}
+  requirementDisplayInterval: 1
 --- !u!1 &7045356096984172029
 GameObject:
   m_ObjectHideFlags: 0

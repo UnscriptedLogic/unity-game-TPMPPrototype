@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnscriptedEngine;
@@ -18,17 +19,23 @@ public class HUD_CanvasController : UCanvasController
     [SerializeField] private GameObject buildBtnPrefab;
     [SerializeField] private Transform buildBtnsParent;
 
+    [Header("Requirements")]
+    [SerializeField] private Transform requirementsParent;
+    [SerializeField] private RequirementTMP requirementPrefab;
+
     public event EventHandler<string> OnRequestingToBuild;
     public event EventHandler OnCloseBuildMenu;
     public event EventHandler<bool> OnDeleteBuildToggled;
 
     private GM_LevelManager levelManager;
+    private GI_CustomGameInstance customGameInstance;
 
     public override void OnWidgetAttached(ULevelObject context)
     {
         base.OnWidgetAttached(context);
 
         levelManager = GameMode.CastTo<GM_LevelManager>();
+        customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         Bind<UButtonComponent>("pause", OnPause);
 
@@ -54,10 +61,34 @@ public class HUD_CanvasController : UCanvasController
             Bind<UButtonComponent>(builds.DataSet[i].ID, OnBuildableClicked);
         }
 
+        List<Requirement> requirements = new List<Requirement>(customGameInstance.Project.Requirements);
+        for (int i = 0; i < requirements.Count; i++)
+        {
+            RequirementTMP requirementTMP = Instantiate(requirementPrefab, requirementsParent);
+            requirementTMP.Initialize(this, requirements[i].GameDescription, requirements[i].IsConditionMet);
+        }
+
         buildPage.SetActive(false);
         deletePage.SetActive(false);
 
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
+
+        OnObjectCreated += ULevelObject_OnObjectCreated;
+        OnObjectToBeDestroyed += HUD_CanvasController_OnObjectToBeDestroyed;
+    }
+
+    private void ULevelObject_OnObjectCreated(object sender, EventArgs e)
+    {
+        if (!(sender as UIC_ProjectCompletionHUD)) return;
+
+        gameObject.SetActive(false);
+    }
+
+    private void HUD_CanvasController_OnObjectToBeDestroyed(object sender, EventArgs e)
+    {
+        if (!(sender as UIC_ProjectCompletionHUD)) return;
+
+        gameObject.SetActive(true);
     }
 
     private void OnPause()
@@ -119,6 +150,9 @@ public class HUD_CanvasController : UCanvasController
     public override void OnWidgetDetached(ULevelObject context)
     {
         levelManager.OnProjectCompleted -= LevelManager_OnProjectCompleted;
+
+        OnObjectCreated -= ULevelObject_OnObjectCreated;
+        OnObjectToBeDestroyed -= HUD_CanvasController_OnObjectToBeDestroyed;
 
         base.OnWidgetDetached(context);
     }

@@ -14,9 +14,9 @@ public class GM_LevelManager : UGameModeBase
     [SerializeField] private float evaluateTime = 10f;
     [SerializeField] private Material globalConveyorMaterial;
 
-    private Project project;
+    private bool isSpeedingUpFactoryOverTime;
+
     private bool isProjectCompleted = false;
-    private bool isProjectEvaluated = false;
     private float lerp = 0;
     private float maxFactoryEvaluateSpeed = 8f;
     private float lerpToMaxSpeedTime = 0.1f;
@@ -25,7 +25,12 @@ public class GM_LevelManager : UGameModeBase
     public Bindable<int> energy = new Bindable<int>(3);
     public Bindable<int> daysLeft = new Bindable<int>(3);
 
-    [SerializeField] private float globalBeltSpeed = 1f;
+    private GI_CustomGameInstance customGameInstance;
+
+    private float globalBeltSpeed;
+
+    private event Action OnProjectSpeedingUpTime;
+    private event Action OnSpeedUpTimeCompleted;
 
     public event EventHandler OnTestFactoryClicked;
     public event EventHandler OnProjectCompleted;
@@ -39,38 +44,80 @@ public class GM_LevelManager : UGameModeBase
     public bool IsProjectCompleted => isProjectCompleted;
     public float GlobalBeltSpeed => globalBeltSpeed;
     public List<O_Build_Deployers> Deployers => deployers;
+    public bool IsSpeedingUpFactoryOverTime => isSpeedingUpFactoryOverTime;
 
     protected override IEnumerator Start()
     {
-        nodeTickInterval = GameInstance.CastTo<GI_CustomGameInstance>().tickSpeed.Value;
+        customGameInstance = GameInstance.CastTo<GI_CustomGameInstance>();
+     
+        UnityEngine.Random.InitState(customGameInstance.Project.Seed);
 
+        globalBeltSpeed = customGameInstance.playerData.Value.conveyorBeltSpeed.Value;
+        nodeTickInterval = customGameInstance.playerData.Value.tickSpeed.Value;
         ticker = TickSystem.Create("Node Ticker", nodeTickInterval);
 
+        OnProjectSpeedingUpTime += GM_LevelManager_OnProjectSpeedingUpTime;
+        OnSpeedUpTimeCompleted += GM_LevelManager_OnSpeedUpTimeCompleted;
+
         return base.Start();
+    }
+
+    private void GM_LevelManager_OnSpeedUpTimeCompleted()
+    {
+        if (isProjectCompleted)
+        {
+            OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
+            customGameInstance.Project.Complete();
+        }
+        else
+        {
+            daysLeft.Value--;
+            energy.Value = resetEnergy;
+        }
+    }
+
+    private void GM_LevelManager_OnProjectSpeedingUpTime()
+    {
+        if (isProjectCompleted)
+        {
+            customGameInstance.Project.EvaluateRequirements(this);
+
+            //Buffer of 3 seconds so in the rare case of instant approval, it doesn't look janky
+            if (_evaluateTime <= evaluateTime - 3f && customGameInstance.Project.AreAllRequirementsMet)
+            {
+                //All conditions are met. No need to evaluate further
+                _evaluateTime = 0f;
+            }
+        }
     }
 
     protected override void Update()
     {
         AnimateConveyorBeltMaterial();
 
-        if (!isProjectCompleted) return;
+        if (isSpeedingUpFactoryOverTime)
+        {
+            SpeedUpFactoryOverTime();
+        }
+    }
 
-        if (!isProjectEvaluated)
+    private void SpeedUpFactoryOverTime()
+    {
+        if (_evaluateTime > 0f)
         {
             lerp += Time.unscaledDeltaTime * lerpToMaxSpeedTime;
             Time.timeScale = Mathf.Lerp(1f, maxFactoryEvaluateSpeed, lerp);
 
             _evaluateTime -= Time.unscaledDeltaTime;
+
+            OnProjectSpeedingUpTime?.Invoke();
         }
-
-        if (isProjectEvaluated) return;
-
-        if (_evaluateTime <= 0f)
+        else
         {
             Time.timeScale = 1f;
-            isProjectEvaluated = true;
+            OnSpeedUpTimeCompleted?.Invoke();
 
-            OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
+            isSpeedingUpFactoryOverTime = false;
         }
     }
 
@@ -95,22 +142,34 @@ public class GM_LevelManager : UGameModeBase
 
     public void ClockIn()
     {
+        if (IsSpeedingUpFactoryOverTime) return;
+
         if (daysLeft.Value <= 0)
         {
             //No more days left! Finish the project!
             return;
         }
 
-        daysLeft.Value--;
-
-        energy.Value = resetEnergy;
+        _evaluateTime = evaluateTime;
+        isSpeedingUpFactoryOverTime = true;
     }
 
     public void FinishProject()
     {
-        _evaluateTime = evaluateTime;
+        if (IsSpeedingUpFactoryOverTime) return;
 
+        _evaluateTime = evaluateTime;
         isProjectCompleted = true;
+        isSpeedingUpFactoryOverTime = true;
+
         OnProjectCompleted?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected override void OnDisable()
+    {
+        OnProjectSpeedingUpTime -= GM_LevelManager_OnProjectSpeedingUpTime;
+        OnSpeedUpTimeCompleted -= GM_LevelManager_OnSpeedUpTimeCompleted;
+
+        base.OnDisable();
     }
 }
