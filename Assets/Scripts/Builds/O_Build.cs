@@ -191,6 +191,7 @@ public abstract class O_Build : ULevelObject
 
     public static event EventHandler OnBuildCreated;
     public static event EventHandler OnBuildDestroyed;
+    public static event EventHandler OnObjectBuilt;
 
     protected virtual void Start()
     {
@@ -234,10 +235,21 @@ public abstract class O_Build : ULevelObject
         return true;
     }
 
-    public virtual void Build(Vector3 position, int rotationOffset)
+    public virtual void Build(Vector3 position, int rotationOffset, bool keepBuilding)
     {
         O_Build build = Instantiate(gameObject).GetComponent<O_Build>();
         build.OnBuilt();
+        build.FireBuiltEvent();
+
+        if (!keepBuilding)
+        {
+            OnEndPreview();
+        }
+    }
+
+    public void FireBuiltEvent()
+    {
+        OnObjectBuilt?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual void OnBuilt()

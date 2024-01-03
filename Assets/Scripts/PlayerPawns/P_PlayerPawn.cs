@@ -26,11 +26,11 @@ public class P_PlayerPawn : URTSCamera
         objectToBuild.OnUpdatePreview(position, rotationOffset);
     }
 
-    public void AttemptBuild(Vector3 position, int rotationOffset)
+    public void AttemptBuild(Vector3 position, int rotationOffset, bool keepBuilding)
     {
         if (objectToBuild.CanBeBuilt())
         {
-            objectToBuild.Build(position, rotationOffset);
+            objectToBuild.Build(position, rotationOffset, keepBuilding);
         }
     }
 

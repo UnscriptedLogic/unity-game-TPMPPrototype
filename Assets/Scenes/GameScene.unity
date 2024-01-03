@@ -312,7 +312,6 @@ MonoBehaviour:
   resetEnergy: 3
   evaluateTime: 20
   globalConveyorMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
-  globalBeltSpeed: 1
 --- !u!1001 &1309825160
 PrefabInstance:
   m_ObjectHideFlags: 0

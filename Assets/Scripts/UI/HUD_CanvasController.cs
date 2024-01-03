@@ -10,7 +10,6 @@ public class HUD_CanvasController : UCanvasController
     [SerializeField] private UIC_PauseMenu pauseHUD;
 
     [Header("Pages")]
-    [SerializeField] private GameObject defaultPage;
     [SerializeField] private GameObject buildPage;
     [SerializeField] private GameObject deletePage;
 
@@ -24,7 +23,6 @@ public class HUD_CanvasController : UCanvasController
     [SerializeField] private RequirementTMP requirementPrefab;
 
     public event EventHandler<string> OnRequestingToBuild;
-    public event EventHandler OnCloseBuildMenu;
     public event EventHandler<bool> OnDeleteBuildToggled;
 
     private GM_LevelManager levelManager;
@@ -38,9 +36,6 @@ public class HUD_CanvasController : UCanvasController
         customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         Bind<UButtonComponent>("pause", OnPause);
-
-        Bind<UButtonComponent>("buildBtn", BuildBtnClicked);
-        Bind<UButtonComponent>("closeBtn", DefaultBtnClicked);
 
         Bind<UButtonComponent>("deleteBtn", DeleteBtnClicked);
         Bind<UButtonComponent>("closeDeleteBtn", CloseDeletePageClicked);
@@ -68,7 +63,6 @@ public class HUD_CanvasController : UCanvasController
             requirementTMP.Initialize(this, requirements[i].GameDescription, requirements[i].IsConditionMet);
         }
 
-        buildPage.SetActive(false);
         deletePage.SetActive(false);
 
         levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
@@ -98,7 +92,6 @@ public class HUD_CanvasController : UCanvasController
 
     private void LevelManager_OnProjectCompleted(object sender, EventArgs e)
     {
-        defaultPage.gameObject.SetActive(false);
         buildPage.SetActive(false);
         deletePage.SetActive(false);
 
@@ -112,8 +105,7 @@ public class HUD_CanvasController : UCanvasController
 
     public void CloseDeletePageClicked()
     {
-        defaultPage.SetActive(true);
-        buildPage.SetActive(false);
+        buildPage.SetActive(true);
         deletePage.SetActive(false);
 
         OnDeleteBuildToggled?.Invoke(this, false);
@@ -121,25 +113,10 @@ public class HUD_CanvasController : UCanvasController
 
     public void DeleteBtnClicked()
     {
-        defaultPage.SetActive(false);
         buildPage.SetActive(false);
         deletePage.SetActive(true);
 
         OnDeleteBuildToggled?.Invoke(this, true);
-    }
-
-    public void BuildBtnClicked()
-    {
-        defaultPage.SetActive(false);
-        buildPage.SetActive(true);
-    }
-
-    public void DefaultBtnClicked()
-    {
-        defaultPage.SetActive(true);
-        buildPage.SetActive(false);
-
-        OnCloseBuildMenu?.Invoke(this, EventArgs.Empty);
     }
 
     public void OnBuildableClicked(string id)

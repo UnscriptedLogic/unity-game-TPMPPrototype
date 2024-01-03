@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KeepBuilding",
+                    "type": "Button",
+                    "id": "2d34c81a-62db-4eeb-848a-7013cfec52ef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -235,6 +244,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DeleteModeShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e9867fd8-afdc-4f0e-b6a2-ec7d57315a1f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeepBuilding",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

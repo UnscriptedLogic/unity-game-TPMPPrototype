@@ -24,6 +24,7 @@ public class C_PlayerController : UController
     private P_PlayerPawn playerPawn;
     private UIC_ProjectCompletionHUD endScreenUI;
 
+    private bool keepBuilding;
     private int objectRotation;
     private Vector2 mousePosition;
     
@@ -57,13 +58,21 @@ public class C_PlayerController : UController
         levelManager.OnPause += LevelManager_OnPause;
         levelManager.OnResume += LevelManager_OnResume;
 
+        O_Build.OnObjectBuilt += O_Build_OnObjectBuilt;
+
         hudCanvas = AttachUIWidget(hudBlueprint) as HUD_CanvasController;
         hudCanvas.OnRequestingToBuild += HudCanvas_OnRequestingToBuild;
-        hudCanvas.OnCloseBuildMenu += HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled += HudCanvas_OnDeleteBuildToggled;
 
         defaultActionMap = GetDefaultInputMap();
         SubscribeKeybindEvents();
+    }
+
+    private void O_Build_OnObjectBuilt(object sender, EventArgs e)
+    {
+        if (keepBuilding) return;
+
+        playerState.Value = PlayerState.None;
     }
 
     private void LevelManager_OnResume(object sender, EventArgs e)
@@ -83,7 +92,6 @@ public class C_PlayerController : UController
     protected override void OnLevelStopped()
     {
         hudCanvas.OnRequestingToBuild -= HudCanvas_OnRequestingToBuild;
-        hudCanvas.OnCloseBuildMenu -= HudCanvas_OnCloseBuildMenu;
         hudCanvas.OnDeleteBuildToggled -= HudCanvas_OnDeleteBuildToggled;
 
         UnsubscribeKeybindEvents();
@@ -98,8 +106,7 @@ public class C_PlayerController : UController
         switch (playerState.Value)
         {
             case PlayerState.Building:
-                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation);
-
+                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation, keepBuilding);
                 break;
             case PlayerState.Deleting:
                 playerPawn.AttemptDelete(MouseWorldPosition);
@@ -137,6 +144,16 @@ public class C_PlayerController : UController
         }
     }
 
+    private void OnKeepBuildingPressed(InputAction.CallbackContext obj)
+    {
+        keepBuilding = true;
+    }
+
+    private void OnKeepBuildingReleased(InputAction.CallbackContext context)
+    {
+        keepBuilding = false;
+    }
+
     private void LevelManager_OnProjectCompleted(object sender, System.EventArgs e)
     {
         playerState.Value = PlayerState.None;
@@ -171,13 +188,6 @@ public class C_PlayerController : UController
         playerState.Value = PlayerState.Building;
     }
 
-    private void HudCanvas_OnCloseBuildMenu(object sender, System.EventArgs e)
-    {
-        playerPawn.EndBuildPreview();
-
-        playerState.Value = PlayerState.None;
-    }
-
     private void InstantConveyorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_conveyor");
     private void InstantJoinerBuild(InputAction.CallbackContext obj) => BuildShortcut("util_joiner");
     private void InstantSplitterBuild(InputAction.CallbackContext obj) => BuildShortcut("util_splitter");
@@ -186,14 +196,12 @@ public class C_PlayerController : UController
     private void BuildShortcut(string buildID)
     {
         playerState.Value = PlayerState.Building;
-        hudCanvas.BuildBtnClicked();
         playerPawn.StartBuildPreview(buildID);
     }
 
     private void ExitBuildModeShortcut(InputAction.CallbackContext context)
     {
         playerState.Value = PlayerState.None;
-        hudCanvas.DefaultBtnClicked();
     }
 
     private void DeleteModeShortcutPressed(InputAction.CallbackContext context)
@@ -246,6 +254,9 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
 
+        defaultActionMap.FindAction("KeepBuilding").performed += OnKeepBuildingPressed;
+        defaultActionMap.FindAction("KeepBuilding").canceled += OnKeepBuildingReleased;
+
         //shortcuts
         defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
         defaultActionMap.FindAction("JoinerShortcut").performed += InstantJoinerBuild;
@@ -259,6 +270,9 @@ public class C_PlayerController : UController
     {
         defaultActionMap.FindAction("Escape").performed -= ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
+
+        defaultActionMap.FindAction("KeepBuilding").performed -= OnKeepBuildingPressed;
+        defaultActionMap.FindAction("KeepBuilding").canceled -= OnKeepBuildingReleased;
 
         defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
         defaultActionMap.FindAction("JoinerShortcut").performed -= InstantJoinerBuild;
@@ -274,6 +288,8 @@ public class C_PlayerController : UController
 
         levelManager.OnPause -= LevelManager_OnPause;
         levelManager.OnResume -= LevelManager_OnResume;
+
+        O_Build.OnObjectBuilt -= O_Build_OnObjectBuilt;
 
         base.OnDestroy();
     }
