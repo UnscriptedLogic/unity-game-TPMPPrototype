@@ -205,6 +205,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36924639803992952, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 228205346778132356, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -245,9 +249,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 552352908353857303, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 1554951133134642002, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
       propertyPath: m_Name
       value: BP_Build_TutorialDeployer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771559218063732255, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
       propertyPath: canvasController
@@ -293,6 +305,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2e4db12e9a646b44b650e7db2a39553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &675944686 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+  m_PrefabInstance: {fileID: 675944682}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4893d4b74f2c8a48aaf0602bb92d5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1203747240
@@ -433,12 +456,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputContext: {fileID: -944628639613478452, guid: e00ab73552d415844af253e1ee768291, type: 3}
-  playerController: {fileID: 1370719615675873249, guid: bd7dac614ead3c94dbfeb0f9d8043882, type: 3}
+  playerController: {fileID: 1370719615675873249, guid: bb4ca25ca0577e846b65bf98deb82df8, type: 3}
   playerPawn: {fileID: 7976657303456889764, guid: 1e7bb38b959d52841b8dff7ede1a3ce8, type: 3}
   gameInstance: {fileID: -2735835447384315871, guid: 79bdda7c0516bde4990fd6c746d46ec7, type: 3}
-  webpage: {fileID: 11400000, guid: 3186b63c56705844b899ee8d3660d279, type: 2}
+  webpage: {fileID: 11400000, guid: 0b556d0ee81bd1a46bf94b69f8ab61ba, type: 2}
   nodeTickInterval: 0.4
   globalBeltMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
+  deployer: {fileID: 675944686}
+  tutorialLevelHUDPrefab: {fileID: 3076958398427489171, guid: 73b19d3b1f0498648a178c4872283245, type: 3}
+  sections:
+  - buildsToAdd:
+    - util_conveyor
+    - dispenser_htmlemptycanvas
+    pageIndex: 0
+  - buildsToAdd:
+    - modifier_color
+    pageIndex: 1
+  - buildsToAdd:
+    - dispenser_htmlsquare
+    - util_constructor
+    - modifier_stretchvertical
+    pageIndex: 2
+  - buildsToAdd:
+    - modifier_stretchhorizontal
+    - modifier_shrink
+    - modifier_position
+    pageIndex: 3
 --- !u!4 &1272213321
 Transform:
   m_ObjectHideFlags: 0

@@ -65,7 +65,22 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (buildComponent == null) return;
+        if (buildComponent != null)
+        {
+            if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+            {
+                _creationIteration++;
+
+                if (_creationIteration < creationIteration) return;
+
+                BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
+                buildComponent = null;
+
+                _creationIteration = 0;
+            }
+
+            return;
+        }
 
         if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
         {
@@ -81,16 +96,18 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
             }
         }
 
-        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (inputNode.TryGetBuildComponent(out O_BuildPage buildpage))
         {
-            _creationIteration++;
+            buildComponent = buildItem;
 
-            if (_creationIteration < creationIteration) return;
+            BuildBehaviours.ConsumeItem(this, buildComponent);
 
-            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-            buildComponent = null;
+            OnComponentRecieved(buildItem);
 
-            _creationIteration = 0;
+            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            {
+                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+            }
         }
     }
 

@@ -1,22 +1,45 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnscriptedEngine;
 
 public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem, IFactoryValidation
 {
+    [System.Serializable]
+    public class OnSectionCompeletedEventArgs : EventArgs
+    {
+        public List<string> buildsToAdd;
+    }
+
+    [System.Serializable]
+    public class Section
+    {
+        public List<string> buildsToAdd;
+        public int pageIndex;
+    }
+
+    [Header("Tutorial Extensions")]
     [SerializeField] private WebPageSO webpage;
     [SerializeField] private float nodeTickInterval;
     [SerializeField] private Material globalBeltMaterial;
-
+    [SerializeField] private O_Build_TutorialDeployer deployer;
+    [SerializeField] private UIC_TutorialLevelHUD tutorialLevelHUDPrefab;
+    [SerializeField] private List<Section> sections = new List<Section>();
+    
     private bool isProjectCompleted = false;
     private bool isSpeedingUpFactoryOverTime = false;
     private GI_CustomGameInstance customGameInstance;
     private TickSystem.Ticker ticker;
+    
+    private int currentSectionIndex;
 
     public event EventHandler OnTestFactoryClicked;
     public event EventHandler OnProjectCompleted;
     public event EventHandler OnProjectEvaluationCompleted;
+
+    public event EventHandler<OnSectionCompeletedEventArgs> OnSectionStarted;
 
     public WebPageSO WebpageSO => webpage;
     public TickSystem.Ticker NodeTickSystem => ticker;
@@ -34,14 +57,40 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     protected override IEnumerator Start()
     {
         customGameInstance = GameInstance.CastTo<GI_CustomGameInstance>();
-
         ticker = TickSystem.Create("Node Ticker", nodeTickInterval);
 
+        deployer.OnDeployerRecievedValidItem += Deployer_OnDeployerRecievedValidItem;
+
         yield return base.Start();
+
+        GetPlayerController().AttachUIWidget(tutorialLevelHUDPrefab);
+
+        InitializeSection(currentSectionIndex);
+    }
+
+    private void Deployer_OnDeployerRecievedValidItem(object sender, EventArgs e)
+    {
+        currentSectionIndex++;
+        InitializeSection(currentSectionIndex);
+    }
+
+    private void InitializeSection(int currentSectionIndex)
+    {
+        deployer.InitializeDeployer(sections[currentSectionIndex].pageIndex);
+
+        OnSectionStarted?.Invoke(this, new OnSectionCompeletedEventArgs()
+        {
+            buildsToAdd = sections[currentSectionIndex].buildsToAdd
+        });
     }
 
     protected override void Update()
     {
         globalBeltMaterial.AnimateConveyorMaterial(GlobalBeltSpeed);
+    }
+
+    public void TestFactory()
+    {
+        OnTestFactoryClicked?.Invoke(this, EventArgs.Empty);
     }
 }

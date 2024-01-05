@@ -615,7 +615,7 @@ MonoBehaviour:
   - id: darkgrey
     color: {r: 0.23018861, g: 0.23018861, b: 0.23018861, a: 1}
   - id: black
-    color: {r: 0.011764706, g: 0.003921569, b: 0.03529412, a: 1}
+    color: {r: 0.15471691, g: 0.15471691, b: 0.15471691, a: 1}
   - id: red
     color: {r: 1, g: 0.33773577, b: 0.33773577, a: 1}
   - id: blue
@@ -880,6 +880,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4436144011393047449}
     m_Modifications:
+    - target: {fileID: -7871556540511652807, guid: d570b03b213bdcf44a21e4b042554dac, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -3888481672020999207, guid: d570b03b213bdcf44a21e4b042554dac, type: 3}
       propertyPath: m_Name
       value: ModifierBase

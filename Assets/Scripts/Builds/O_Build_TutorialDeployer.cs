@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 using UnscriptedEngine;
@@ -15,10 +16,13 @@ public class O_Build_TutorialDeployer : O_Build
     private WebPageSO.PageData currentPageData;
     private float elapsedTime = 0f;
     private IUsesPageObjects pageObjectInterface;
+    private GameObject webPage;
 
     public Bindable<int> acceptedPagesRate = new Bindable<int>(0);
 
     public bool HasReachedRequiredRate => acceptedPagesRate.Value >= requiredRate.Value;
+
+    public event EventHandler OnDeployerRecievedValidItem;
 
     protected override void Start()
     {
@@ -43,10 +47,20 @@ public class O_Build_TutorialDeployer : O_Build
             Debug.Log("GameMode doesn't use IUsesPageObjects");
             return;
         }
+    }
 
-        int randomIndex = UnityEngine.Random.Range(0, pageObjectInterface.WebpageSO.WebPageDataSet.Count);
-        currentPageData = pageObjectInterface.WebpageSO.WebPageDataSet[randomIndex];
-        Instantiate(currentPageData.WebPage, websiteCanvasTransform);
+    public void InitializeDeployer(int pageIndex)
+    {        
+        if (webPage != null)
+        {
+            Destroy(webPage);
+            webPage = null;
+
+            currentPageData = null;
+        }
+
+        currentPageData = pageObjectInterface.WebpageSO.WebPageDataSet[pageIndex];
+        webPage = Instantiate(currentPageData.WebPage, websiteCanvasTransform);
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
@@ -61,6 +75,8 @@ public class O_Build_TutorialDeployer : O_Build
             if (pageObjectInterface.WebpageSO.IsComponentRequirementsMet(page, currentPageData))
             {
                 acceptedPagesRate.Value++;
+
+                OnDeployerRecievedValidItem?.Invoke(this, EventArgs.Empty);
             }
             else
             {

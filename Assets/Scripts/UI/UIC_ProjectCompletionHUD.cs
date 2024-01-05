@@ -63,7 +63,6 @@ public class UIC_ProjectCompletionHUD : UCanvasController
 
     private void OnDismissPressed()
     {
-        DettachUIWidget(this);
-        Destroy(gameObject);
+        DettachUIWidget(gameObject);
     }
 }

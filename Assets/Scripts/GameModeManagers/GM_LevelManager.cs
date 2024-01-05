@@ -8,6 +8,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
 {
     [Header("Game Mode")]
     [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
+    [SerializeField] private UIC_ProjectCompletionHUD gameCompletedHUD;
     [SerializeField] private List<O_Build_Deployers> deployers;
     [SerializeField] private WebPageSO webpageData;
     [SerializeField] private float nodeTickInterval = 0.1f;
@@ -71,6 +72,8 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         {
             OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
             customGameInstance.Project.Complete();
+
+            GetPlayerController().AttachUIWidget(gameCompletedHUD);
         }
         else
         {

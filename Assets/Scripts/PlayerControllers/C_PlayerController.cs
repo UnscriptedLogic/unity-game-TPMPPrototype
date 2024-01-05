@@ -15,13 +15,11 @@ public class C_PlayerController : UController
     }
 
     [SerializeField] private GameObject hudBlueprint;
-    [SerializeField] private GameObject endscreenBP;
 
     private InputActionMap defaultActionMap;
     private IFactoryValidation factoryValidationInterface;
-    private UIC_BuildHUD hudCanvas;
+    private IBuildHUD hudCanvas;
     private P_PlayerPawn playerPawn;
-    private UIC_ProjectCompletionHUD endScreenUI;
 
     private bool keepBuilding;
     private int objectRotation;
@@ -62,7 +60,6 @@ public class C_PlayerController : UController
         gameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
-        factoryValidationInterface.OnProjectEvaluationCompleted += LevelManager_OnProjectEvaluationCompleted;
         GameMode.OnPause += LevelManager_OnPause;
         GameMode.OnResume += LevelManager_OnResume;
 
@@ -175,11 +172,6 @@ public class C_PlayerController : UController
     {
         playerState.Value = PlayerState.None;
         UnsubscribeKeybindEvents();
-    }
-
-    private void LevelManager_OnProjectEvaluationCompleted(object sender, EventArgs e)
-    {
-        endScreenUI = AttachUIWidget(endscreenBP).CastTo<UIC_ProjectCompletionHUD>();
     }
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
