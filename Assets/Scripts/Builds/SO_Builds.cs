@@ -46,8 +46,12 @@ public class SO_Builds : ScriptableObject
         }
     }
 
+    [SerializeField] private Sprite frameworkIcon;
+    [SerializeField] private string frameworkName;
     [SerializeField] private List<BuildableData> buildableDataSet;
 
+    public Sprite FrameworkIcon => frameworkIcon;
+    public string FrameworkName => frameworkName;
     public List<BuildableData> DataSet => buildableDataSet;
 
     public BuildableData GetBuildableWithID(string id)

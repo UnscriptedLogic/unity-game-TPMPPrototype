@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b628dec6bf36652499dd3b657c8748b4, type: 3}
+  m_Name: Vanilla
+  m_EditorClassIdentifier: 
+  frameworkIcon: {fileID: 7482667652216324306, guid: 865880973597c1a4cac4c2148343f0e6, type: 3}
+  frameworkName: Vanilla
+  buildableDataSet:
+  - id: dispenser_htmlemptycanvas
+    displayName: Empty Canvas
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: 344f066e5f7c7be4cadbb31b000abb2e, type: 3}
+  - id: dispenser_htmlsquare
+    displayName: Square Component
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
+  - id: dispenser_htmlcircle
+    displayName: Circle Component
+    frameworkCategory: 0
+    buildMachineCategory: 0
+    build: {fileID: 2731108159020371978, guid: 9ce3dd07e85c099459da24e26f4e29e7, type: 3}
+  - id: modifier_stretchvertical
+    displayName: Stretch Vertical
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 6127758460252443562, guid: 07407892967d62445a947ec24888e543, type: 3}
+  - id: modifier_stretchhorizontal
+    displayName: Stretch Horizontal
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 6127758460252443562, guid: 0bc36a133f682b7468c7d8fb2e1a4c13, type: 3}
+  - id: modifier_position
+    displayName: Position
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 2360944043468057583, guid: 57ffdb26f13436e4eb56a272051e2cde, type: 3}
+  - id: modifier_color
+    displayName: Color Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 5227923228343801633, guid: 0392911f30610f64483697875b237aed, type: 3}
+  - id: modifier_shrink
+    displayName: Shrink Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 3835251865746333402, guid: d4bcc27fa85437e44a3e94c8ea8b3b60, type: 3}
+  - id: modifier_expand
+    displayName: Expand Modifier
+    frameworkCategory: 1
+    buildMachineCategory: 3
+    build: {fileID: 3835251865746333402, guid: 4d015105e8ca0a540b04bd4f78f3f07a, type: 3}

@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnscriptedEngine;
 public class P_PlayerPawn : URTSCamera
 {
     [Header("Player Pawn Extension")]
-    [SerializeField] private SO_Builds buildableDataSet;
+    [SerializeField] private BuildListSO buildableDataSet;
 
     [SerializeField] private Vector2 panningDetectionThickness;
 
@@ -16,7 +17,8 @@ public class P_PlayerPawn : URTSCamera
     {
         EndBuildPreview();
 
-        objectToBuild = Instantiate(buildableDataSet.GetBuildableWithID(buildID).Build);
+        (int framework, int build) = buildableDataSet.GetBuildableFromID(buildID);
+        objectToBuild = Instantiate(buildableDataSet.Frameworks[framework].DataSet[build].Build);
 
         objectToBuild.OnBeginPreview();
     }
@@ -94,6 +96,32 @@ public class P_PlayerPawn : URTSCamera
         }
 
         if (mousePos.y <= panningDetectionThickness.y)
+        {
+            MoveCamera(Direction.Backward);
+        }
+    }
+
+    public void MovePlayerCameraWASD(Vector2 direction)
+    {
+        Debug.Log(direction.magnitude);
+
+        if (direction.magnitude <= 0f) return;
+
+        //W/S -> y axis and A/D on the x axis
+        if (direction.x > 0)
+        {
+            MoveCamera(Direction.Right);
+        }
+        else if (direction.x < 0)
+        {
+            MoveCamera(Direction.Left);
+        }
+
+        if (direction.y > 0)
+        {
+            MoveCamera(Direction.Forward);
+        }
+        else if (direction.y < 0)
         {
             MoveCamera(Direction.Backward);
         }

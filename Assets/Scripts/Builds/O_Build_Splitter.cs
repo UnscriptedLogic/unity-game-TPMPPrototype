@@ -37,7 +37,7 @@ public class O_Build_Splitter : O_Build
 
         if (buildItems.Count == 0) return;
 
-        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+        if (!levelBuildInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
 
         OutputNode outputNode = GetNextOutput();
 

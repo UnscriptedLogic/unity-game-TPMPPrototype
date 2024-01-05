@@ -15,5 +15,7 @@ public class ProjectUIBtn : UButtonComponent
 
         SetID(project.Name);
         InitializeUIComponent(context);
+
+        projectNameTMP.GetComponent<UTextComponent>().InitializeUIComponent(context);
     }
 }

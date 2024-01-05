@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using static UnscriptedEngine.UObject;
 
@@ -15,6 +16,8 @@ public class PlayerData
 
     private List<Project> projects;
     public Bindable<List<string>> upgradesObtained = new Bindable<List<string>>(new List<string>());
+
+    public bool useMouseCursorToMove = true;
 
     public Bindable<int> credits = new Bindable<int>(0);
     public Bindable<float> conveyorBeltSpeed = new Bindable<float>(0.5f);

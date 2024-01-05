@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using UnscriptedEngine;
 
 public class O_Build_ConveyorBelt : O_Build
 {
@@ -36,9 +33,9 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (isInPreview) return;
 
-        if (levelManager.NodeTickSystem.HasTickedAfter(2))
+        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(2))
         {
-            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.1f);
+            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.2f);
             for (int i = 0; i < collider2Ds.Length; i++)
             {
                 O_BuildItem buildItem = collider2Ds[i].GetComponent<O_BuildItem>();
@@ -89,7 +86,7 @@ public class O_Build_ConveyorBelt : O_Build
 
                 float distance = Vector3.Distance(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next));
 
-                Vector3 lerpPosition = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((levelManager.GlobalBeltSpeed * Time.fixedDeltaTime) / distance));
+                Vector3 lerpPosition = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((levelBuildInterface.GlobalBeltSpeed * Time.fixedDeltaTime) / distance));
                 if (float.IsNaN(lerpPosition.x) || float.IsNaN(lerpPosition.y))
                 {
                     //Probably out of bounds of the conveyor.
@@ -268,4 +265,18 @@ public class O_Build_ConveyorBelt : O_Build
             Destroy(conveyorItems[i].gameObject);
         }
     }
+}
+
+public static class ConveyorBeltExtensions
+{
+    public static void AnimateConveyorMaterial(this Material globalConveyorMaterial, float beltSpeed)
+    {
+        globalConveyorMaterial.mainTextureOffset -= new Vector2(beltSpeed * 2.115f * Time.deltaTime, 0);
+
+        if (globalConveyorMaterial.mainTextureOffset.x <= -10)
+        {
+            globalConveyorMaterial.mainTextureOffset = Vector2.zero;
+        }
+    }
+
 }

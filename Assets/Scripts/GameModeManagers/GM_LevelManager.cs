@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
 
-public class GM_LevelManager : UGameModeBase
+public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, IUsesPageObjects
 {
     [Header("Game Mode")]
+    [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
     [SerializeField] private List<O_Build_Deployers> deployers;
     [SerializeField] private WebPageSO webpageData;
     [SerializeField] private float nodeTickInterval = 0.1f;
@@ -59,7 +60,9 @@ public class GM_LevelManager : UGameModeBase
         OnProjectSpeedingUpTime += GM_LevelManager_OnProjectSpeedingUpTime;
         OnSpeedUpTimeCompleted += GM_LevelManager_OnSpeedUpTimeCompleted;
 
-        return base.Start();
+        yield return base.Start();
+
+        GetPlayerController().AttachUIWidget(gameLevelHUD);
     }
 
     private void GM_LevelManager_OnSpeedUpTimeCompleted()
@@ -93,7 +96,7 @@ public class GM_LevelManager : UGameModeBase
 
     protected override void Update()
     {
-        AnimateConveyorBeltMaterial();
+        globalConveyorMaterial.AnimateConveyorMaterial(globalBeltSpeed);
 
         if (isSpeedingUpFactoryOverTime)
         {
@@ -118,16 +121,6 @@ public class GM_LevelManager : UGameModeBase
             OnSpeedUpTimeCompleted?.Invoke();
 
             isSpeedingUpFactoryOverTime = false;
-        }
-    }
-
-    private void AnimateConveyorBeltMaterial()
-    {
-        globalConveyorMaterial.mainTextureOffset -= new Vector2(globalBeltSpeed * 2.115f * Time.deltaTime, 0);
-
-        if (globalConveyorMaterial.mainTextureOffset.x <= -10)
-        {
-            globalConveyorMaterial.mainTextureOffset = Vector2.zero;
         }
     }
 

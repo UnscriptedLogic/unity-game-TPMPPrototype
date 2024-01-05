@@ -33,7 +33,7 @@ public class O_Build_ExpandModifier : O_Build_ModifierBase
         expandIndex.Value = 0;
         side.Value = Side.Width;
 
-        uiInterface.GetComponent<Canvas>().worldCamera = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
     }
 
     private void OnToggleValueBack()

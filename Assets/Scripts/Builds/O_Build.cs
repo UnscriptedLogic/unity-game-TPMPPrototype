@@ -186,7 +186,8 @@ public abstract class O_Build : ULevelObject
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
-    protected GM_LevelManager levelManager;
+    protected IBuildSystem levelBuildInterface;
+
     protected C_PlayerController.PlayerState playerState;
 
     public static event EventHandler OnBuildCreated;
@@ -195,13 +196,15 @@ public abstract class O_Build : ULevelObject
 
     protected virtual void Start()
     {
-        levelManager = GameMode as GM_LevelManager;
+        levelBuildInterface = GameMode as IBuildSystem;
+        if (levelBuildInterface != null)
+        {
+            levelBuildInterface.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
+        }
 
-        levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged += OnPlayerStateChanged;
+        GameMode.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged += OnPlayerStateChanged;
 
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
-
-        levelManager.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
     }
 
     protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
@@ -283,11 +286,12 @@ public abstract class O_Build : ULevelObject
 
     protected override void OnDestroy()
     {
-        levelManager.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
+        levelBuildInterface.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
 
-        if (levelManager.GetPlayerController().CastTo<C_PlayerController>() != null)
+        C_PlayerController playerController = GameMode.GetPlayerController().CastTo<C_PlayerController>();
+        if (playerController != null)
         {
-            levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged -= OnPlayerStateChanged;
+            playerController.playerState.OnValueChanged -= OnPlayerStateChanged;
         }
 
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);

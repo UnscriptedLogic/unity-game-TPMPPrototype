@@ -31,7 +31,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
     }
 
     private void OnToggleBack()
@@ -65,6 +65,8 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (buildComponent == null) return;
+
         if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
         {
             buildComponent = buildItem;
@@ -79,9 +81,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
             }
         }
 
-        if (buildComponent == null) return;
-
-        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
         {
             _creationIteration++;
 

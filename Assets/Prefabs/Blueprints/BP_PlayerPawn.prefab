@@ -50,7 +50,7 @@ MonoBehaviour:
   smoothing: 0.5
   bounds: {x: 5, y: 10}
   anchor: {fileID: 1945166051983437823}
-  buildableDataSet: {fileID: 11400000, guid: 62d666b1b270c13418addb5a3f1b18ad, type: 2}
+  buildableDataSet: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
   panningDetectionThickness: {x: 10, y: 10}
 --- !u!20 &4742382014545891123
 Camera:

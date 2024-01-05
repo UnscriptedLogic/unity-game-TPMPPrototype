@@ -18,17 +18,18 @@ public class C_PlayerController : UController
     [SerializeField] private GameObject endscreenBP;
 
     private InputActionMap defaultActionMap;
-
-    private GM_LevelManager levelManager;
-    private HUD_CanvasController hudCanvas;
+    private IFactoryValidation factoryValidationInterface;
+    private UIC_BuildHUD hudCanvas;
     private P_PlayerPawn playerPawn;
     private UIC_ProjectCompletionHUD endScreenUI;
 
     private bool keepBuilding;
     private int objectRotation;
     private Vector2 mousePosition;
-    
+    private Vector2 wasdVector;
+
     private bool isPaused;
+    private GI_CustomGameInstance gameInstance;
 
     public Vector3 MouseWorldPosition
     {
@@ -51,21 +52,37 @@ public class C_PlayerController : UController
     {
         base.OnLevelStarted();
 
-        levelManager = GameMode as GM_LevelManager;
+        factoryValidationInterface = GameMode as IFactoryValidation;
+        if (factoryValidationInterface == null)
+        {
+            Debug.Log("GameMode does not use IFactoryValidation");
+            return;
+        }
 
-        levelManager.OnProjectCompleted += LevelManager_OnProjectCompleted;
-        levelManager.OnProjectEvaluationCompleted += LevelManager_OnProjectEvaluationCompleted;
-        levelManager.OnPause += LevelManager_OnPause;
-        levelManager.OnResume += LevelManager_OnResume;
+        gameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
+
+        factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
+        factoryValidationInterface.OnProjectEvaluationCompleted += LevelManager_OnProjectEvaluationCompleted;
+        GameMode.OnPause += LevelManager_OnPause;
+        GameMode.OnResume += LevelManager_OnResume;
 
         O_Build.OnObjectBuilt += O_Build_OnObjectBuilt;
 
-        hudCanvas = AttachUIWidget(hudBlueprint) as HUD_CanvasController;
+        hudCanvas = AttachUIWidget(hudBlueprint) as UIC_BuildHUD;
         hudCanvas.OnRequestingToBuild += HudCanvas_OnRequestingToBuild;
         hudCanvas.OnDeleteBuildToggled += HudCanvas_OnDeleteBuildToggled;
 
         defaultActionMap = GetDefaultInputMap();
+
+        defaultActionMap.FindAction("CameraMovement").performed += C_PlayerController_performed;
+        defaultActionMap.FindAction("CameraMovement").canceled += C_PlayerController_performed;
+
         SubscribeKeybindEvents();
+    }
+
+    private void C_PlayerController_performed(InputAction.CallbackContext obj)
+    {
+        wasdVector = obj.ReadValue<Vector2>();
     }
 
     private void O_Build_OnObjectBuilt(object sender, EventArgs e)
@@ -172,12 +189,9 @@ public class C_PlayerController : UController
 
     protected override ULevelPawn PossessPawn()
     {
-        GM_LevelManager levelManager = GameMode as GM_LevelManager;
-
-        if (!(GameMode as GM_LevelManager)) return null;
-        if (!(levelManager.GetPlayerPawn() as P_PlayerPawn)) return null;
+        if (!(GameMode.GetPlayerPawn() as P_PlayerPawn)) return null;
         
-        playerPawn = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>();
+        playerPawn = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>();
         return playerPawn;
     }
 
@@ -229,7 +243,15 @@ public class C_PlayerController : UController
 
         mousePosition = GetDefaultMousePosition();
 
-        playerPawn.MovePlayerCamera(mousePosition);
+        if (gameInstance.playerData.Value.useMouseCursorToMove)
+        {
+            playerPawn.MovePlayerCamera(mousePosition);
+        }
+        else
+        {
+            playerPawn.MovePlayerCameraWASD(wasdVector);
+        }
+
 
         if (playerState.Value == PlayerState.Building)
         {
@@ -286,8 +308,11 @@ public class C_PlayerController : UController
     {
         UnsubscribeKeybindEvents();
 
-        levelManager.OnPause -= LevelManager_OnPause;
-        levelManager.OnResume -= LevelManager_OnResume;
+        defaultActionMap.FindAction("CameraMovement").performed -= C_PlayerController_performed;
+        defaultActionMap.FindAction("CameraMovement").canceled -= C_PlayerController_performed;
+
+        GameMode.OnPause -= LevelManager_OnPause;
+        GameMode.OnResume -= LevelManager_OnResume;
 
         O_Build.OnObjectBuilt -= O_Build_OnObjectBuilt;
 

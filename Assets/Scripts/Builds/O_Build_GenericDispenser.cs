@@ -1,8 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Splines;
-using UnscriptedEngine;
-using static O_Build;
 
 public class O_Build_GenericDispenser : O_Build
 {
@@ -11,13 +8,30 @@ public class O_Build_GenericDispenser : O_Build
 
     [SerializeField] private int dispenseOnEveryTick = 1;
 
+    private IFactoryValidation validationInterface;
+    private IBuildSystem buildSystemInterface;
+
     protected override void Start()
     {
         base.Start();
 
         outputNode.Initialize();
 
-        levelManager.OnTestFactoryClicked += LevelManager_OnTestFactoryClicked;
+        validationInterface = GameMode as IFactoryValidation;
+        if (validationInterface == null)
+        {
+            Debug.Log("Game mode does not implement IFactoryValidation");
+            return;
+        }
+
+        buildSystemInterface = GameMode as IBuildSystem;
+        if (buildSystemInterface == null)
+        {
+            Debug.Log("Game mode does not implement IBuildSystem");
+            return;
+        }
+
+        validationInterface.OnTestFactoryClicked += LevelManager_OnTestFactoryClicked;
     }
 
     private void LevelManager_OnTestFactoryClicked(object sender, EventArgs e)
@@ -29,11 +43,11 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (levelManager.IsProjectCompleted || levelManager.IsSpeedingUpFactoryOverTime)
+        if (validationInterface.IsProjectCompleted || validationInterface.IsSpeedingUpFactoryOverTime)
         {
             if (!outputNode.IsSpawnAreaEmpty) return;
 
-            if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
+            if (buildSystemInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
             {
                 outputNode.DispsenseItem(Instantiate(buildItemPrefab));
             }
@@ -52,7 +66,7 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void OnDestroy()
     {
-        levelManager.OnTestFactoryClicked -= LevelManager_OnTestFactoryClicked;
+        validationInterface.OnTestFactoryClicked -= LevelManager_OnTestFactoryClicked;
 
         base.OnDestroy();
     }

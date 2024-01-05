@@ -603,7 +603,7 @@ MonoBehaviour:
     transform: {fileID: 2137963905617298994}
   outputNode:
     transform: {fileID: 1021018345672012577}
-  processTickDelay: 4
+  processTickDelay: 6
   creationIteration: 2
   uiInterface: {fileID: 2478061826322866179}
   image: {fileID: 1135460460482637736}

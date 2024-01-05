@@ -39,7 +39,7 @@ public class O_Build_Constructor : O_Build
         }
 
         if (leftBuildComponent == null || rightBuildComponent == null) return;
-        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+        if (!levelBuildInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
 
         O_BuildComponent applyOn = rightBuildComponent;
         O_BuildComponent applyTo = leftBuildComponent;

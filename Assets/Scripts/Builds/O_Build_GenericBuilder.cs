@@ -37,7 +37,7 @@ public class O_Build_GenericBuilder : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
+        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
 
         if (!outputNode.IsConnected) return;
 

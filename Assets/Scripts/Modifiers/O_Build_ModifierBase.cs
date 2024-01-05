@@ -50,7 +50,7 @@ public class O_Build_ModifierBase : O_Build
 
         if (buildComponent == null) return;
 
-        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
         {
             _creationIteration++;
 
