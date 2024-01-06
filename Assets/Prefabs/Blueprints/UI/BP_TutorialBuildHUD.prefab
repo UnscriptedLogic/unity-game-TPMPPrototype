@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theme: {fileID: 11400000, guid: b7256c6f87dc62e41985585bc059c063, type: 2}
+  detailsModalPrefab: {fileID: 8016433729548443582, guid: 49b378e8228596646bd40dbcf0e0a2ff, type: 3}
   buildPage: {fileID: 4609625810034596832}
   deletePage: {fileID: 2243206521927653316}
   builds: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}

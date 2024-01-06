@@ -5,6 +5,11 @@ using UnscriptedEngine;
 
 public class UIC_BuildHUD : UCanvasController, IBuildHUD
 {
+    [Header("Canvases")]
+    [SerializeField] private UIC_BuildingDetailsModal detailsModalPrefab;
+
+    private UIC_BuildingDetailsModal detailsModal;
+
     [Header("Pages")]
     [SerializeField] protected GameObject buildPage;
     [SerializeField] protected GameObject deletePage;
@@ -134,11 +139,24 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
     public void OnBuildableClicked(string id)
     {
+        if (detailsModal == null)
+        {
+            detailsModal = GameMode.GetPlayerController().AttachUIWidget(detailsModalPrefab);
+        }
+
+        detailsModal.InitializeModal(id);
+
         OnRequestingToBuild?.Invoke(this, id);
     }
 
     public override void OnWidgetDetached(ULevelObject context)
     {
+        if (detailsModal != null)
+        {
+            DettachUIWidget(detailsModal);
+            Destroy(detailsModal.gameObject);
+        }
+
         factoryValidationInterface.OnProjectCompleted -= LevelManager_OnProjectCompleted;
 
         OnObjectCreated -= ULevelObject_OnObjectCreated;

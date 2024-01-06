@@ -303,7 +303,7 @@ MonoBehaviour:
   playerController: {fileID: 1370719615675873249, guid: bd7dac614ead3c94dbfeb0f9d8043882, type: 3}
   playerPawn: {fileID: 7976657303456889764, guid: 1e7bb38b959d52841b8dff7ede1a3ce8, type: 3}
   gameInstance: {fileID: -2735835447384315871, guid: 79bdda7c0516bde4990fd6c746d46ec7, type: 3}
-  gameLevelHUD: {fileID: 2397274376861952020, guid: e840a4ad94710664381e7a282ed52cb3, type: 3}
+  gameLevelHUD: {fileID: 5184909656748342564, guid: e840a4ad94710664381e7a282ed52cb3, type: 3}
   gameCompletedHUD: {fileID: 4270492970469888923, guid: 0a6317459a3f5444eac87e21da0bcb22, type: 3}
   deployers:
   - {fileID: 1309825161}

@@ -16,22 +16,35 @@ MonoBehaviour:
   frameworkName: Utility
   buildableDataSet:
   - id: util_conveyor
-    displayName: Conveyor
+    displayName: Conveyor Belt
+    description: Conveyor belts transport items between nodes. They can overlap each
+      other and can go for as long as you wish. They also become visually bugged
+      when placing points close to each other. Woops...
     frameworkCategory: 1
     buildMachineCategory: 4
     build: {fileID: 1281026800053470207, guid: 348a47304ba02874e9d0b6bb3f2710eb, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 195b9e5aa76d9a841a8aa4b5e0acf639, type: 3}
   - id: util_joiner
     displayName: Joiner
+    description: Joins 3 conveyor belt lines into 1 output line.
     frameworkCategory: 1
     buildMachineCategory: 4
     build: {fileID: 4637216370504582894, guid: 507a30dc7447db04ba67e04415e67651, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: e80f1a8c92cd6764980e7bbc0870523d, type: 3}
   - id: util_splitter
     displayName: Splitter
+    description: Splits 1 input line into 3 output lines in a clockwise direction.
+      Splitters will only dispense items if a conveyor belt is present in the output
     frameworkCategory: 1
     buildMachineCategory: 4
     build: {fileID: 2755233388485305449, guid: 65269e7cc8f40bd4aa58f8e20f745c1f, type: 3}
-  - id: util_constructor
-    displayName: Constructor
+    functionalityVideo: {fileID: 32900000, guid: ab0f8e60010107d49b4272763eb460fd, type: 3}
+  - id: util_merger
+    displayName: Merger
+    description: Merges 2 components onto one another. Prioritizes canvases as the
+      bottom layer but If both given items are components, overlays the left onto
+      the right.
     frameworkCategory: 1
     buildMachineCategory: 4
     build: {fileID: 7920708871764187601, guid: 15efdb618e71f954598459931fa31d6e, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 986c763fc809a864d8d6e4b29f490313, type: 3}

@@ -70,6 +70,7 @@ public class UIC_MainMenu : UCanvasController
 
         upgradeManager = GameMode.GetComponent<UpgradeManager>();
 
+        Bind<UButtonComponent>("tutorialBtn", OnTutorialButtonClicked);
         Bind<UButtonComponent>("playBtn", OnPlayBtnClicked);
         Bind<UButtonComponent>("quitBtn", OnQuitBtnClicked);
 
@@ -94,6 +95,11 @@ public class UIC_MainMenu : UCanvasController
         upgradeDetails.gameObject.SetActive(false);
 
         LoadProjects();
+    }
+
+    private void OnTutorialButtonClicked()
+    {
+        GameMode.LoadScene(2);
     }
 
     private void LoadMilestones(int index)

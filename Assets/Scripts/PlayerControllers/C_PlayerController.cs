@@ -197,7 +197,7 @@ public class C_PlayerController : UController
     private void InstantConveyorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_conveyor");
     private void InstantJoinerBuild(InputAction.CallbackContext obj) => BuildShortcut("util_joiner");
     private void InstantSplitterBuild(InputAction.CallbackContext obj) => BuildShortcut("util_splitter");
-    private void InstantConstructorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_constructor");
+    private void InstantConstructorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_merger");
 
     private void BuildShortcut(string buildID)
     {

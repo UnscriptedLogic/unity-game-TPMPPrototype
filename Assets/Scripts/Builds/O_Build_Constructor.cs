@@ -45,8 +45,8 @@ public class O_Build_Constructor : O_Build
         O_BuildComponent applyTo = leftBuildComponent;
         if (leftBuildComponent as O_BuildPage)
         {
-            applyOn = rightBuildComponent;
-            applyTo = leftBuildComponent;
+            applyOn = leftBuildComponent;
+            applyTo = rightBuildComponent;
         }
 
         for (int i = 0; i < applyTo.AttachedComponents.Count; i++)

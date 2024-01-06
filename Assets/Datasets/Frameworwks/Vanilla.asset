@@ -17,46 +17,75 @@ MonoBehaviour:
   buildableDataSet:
   - id: dispenser_htmlemptycanvas
     displayName: Empty Canvas
+    description: The base of all web pages. These are the backgrounds where components
+      are layered on top of to produce websites. Canvases are not normally accepted
+      in modification nodes.
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: 344f066e5f7c7be4cadbb31b000abb2e, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 6a615c55d2acd674d954e7feee81dea8, type: 3}
   - id: dispenser_htmlsquare
     displayName: Square Component
+    description: The basis of all rectangular elements of a website. Stretch, shrink,
+      and color these components at will to get your desired design.
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: c1eaa26deb545ae46841d13d6bffe227, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 14fee3382eb352d4d875ff5fbfe46aca, type: 3}
   - id: dispenser_htmlcircle
     displayName: Circle Component
+    description: The basis of all circular components of a website. Stretch, shrink,
+      and color these components at will to get your desired design.
     frameworkCategory: 0
     buildMachineCategory: 0
     build: {fileID: 2731108159020371978, guid: 9ce3dd07e85c099459da24e26f4e29e7, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 51ca716c73a00894098fb73e8179cbe6, type: 3}
   - id: modifier_stretchvertical
-    displayName: Stretch Vertical
-    frameworkCategory: 1
+    displayName: Vertical Stretcher
+    description: Stretches the component to the entire height of the bounds regardless
+      of position.
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 6127758460252443562, guid: 07407892967d62445a947ec24888e543, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 9876031b2d539ad47baf67777f2fce87, type: 3}
   - id: modifier_stretchhorizontal
-    displayName: Stretch Horizontal
-    frameworkCategory: 1
+    displayName: Horizontal Stretcher
+    description: Stretches the component to the entire width of the bounds regardless
+      of position.
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 6127758460252443562, guid: 0bc36a133f682b7468c7d8fb2e1a4c13, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 4a3810974b68ec64cb53ee8ae509f17f, type: 3}
   - id: modifier_position
     displayName: Position
-    frameworkCategory: 1
+    description: Positions a component relative to the bounds. The position is affected
+      by the size of the component so as to prevent components from bleeding out
+      of the bounds.
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 2360944043468057583, guid: 57ffdb26f13436e4eb56a272051e2cde, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 2a63c0789d80cb8448623e7d64fede06, type: 3}
   - id: modifier_color
     displayName: Color Modifier
-    frameworkCategory: 1
+    description: Colors the component to the selected color. This is modifier node
+      accepts canvases
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 5227923228343801633, guid: 0392911f30610f64483697875b237aed, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 9c17f31af49b3c8418fb71848b45361a, type: 3}
   - id: modifier_shrink
     displayName: Shrink Modifier
-    frameworkCategory: 1
+    description: Shrinks the component by the selected dimension by a selected percentage.
+      The shrink effect is not affected by the component's bounds.
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 3835251865746333402, guid: d4bcc27fa85437e44a3e94c8ea8b3b60, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: a7c5b6e737524b246af0caf50bccc022, type: 3}
   - id: modifier_expand
     displayName: Expand Modifier
-    frameworkCategory: 1
+    description: Expands the component by the selected dimension by a selected percentage.
+      The expand effect is not affected by the component's bounds.
+    frameworkCategory: 0
     buildMachineCategory: 3
     build: {fileID: 3835251865746333402, guid: 4d015105e8ca0a540b04bd4f78f3f07a, type: 3}
+    functionalityVideo: {fileID: 32900000, guid: 9bf5bca6a5c598140b31de234b3bf5b9, type: 3}

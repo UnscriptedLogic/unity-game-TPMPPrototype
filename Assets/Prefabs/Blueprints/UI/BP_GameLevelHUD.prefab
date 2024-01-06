@@ -1012,7 +1012,7 @@ GameObject:
   - component: {fileID: 2229394768216883690}
   - component: {fileID: 6029725345019960263}
   - component: {fileID: 4525533413818473291}
-  - component: {fileID: 2397274376861952020}
+  - component: {fileID: 5184909656748342564}
   m_Layer: 0
   m_Name: BP_GameLevelHUD
   m_TagString: Untagged
@@ -1105,7 +1105,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2397274376861952020
+--- !u!114 &5184909656748342564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7190923741403843437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d28dd0be0bb83548b4cd544831d5d46, type: 3}
+  m_Script: {fileID: 11500000, guid: e4df9a56905b6424f92eb5dd03603099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   theme: {fileID: 11400000, guid: b7256c6f87dc62e41985585bc059c063, type: 2}
