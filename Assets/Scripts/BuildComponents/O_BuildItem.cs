@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Splines;
 using UnscriptedEngine;
 
 public class O_BuildItem : ULevelObject
@@ -9,4 +8,25 @@ public class O_BuildItem : ULevelObject
 
     public string ID => id;
     public FrameworkCategory Category => category;
+
+    protected IUsesPageObjects pageObjectInterface;
+
+    protected virtual void Start()
+    {
+        pageObjectInterface = GameMode as IUsesPageObjects;
+        if (pageObjectInterface == null)
+        {
+            Debug.LogWarning("The current GameMode doesn't use IUsesPageObjects");
+            return;
+        }
+
+        pageObjectInterface.OnClearAllObjects += PageObjectInterface_OnClearAllObjects;
+    }
+
+    private void PageObjectInterface_OnClearAllObjects(object sender, System.EventArgs e)
+    {
+        pageObjectInterface.OnClearAllObjects -= PageObjectInterface_OnClearAllObjects;
+
+        Destroy(gameObject);
+    }
 }

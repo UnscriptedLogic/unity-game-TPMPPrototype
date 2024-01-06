@@ -21,8 +21,6 @@ public class O_Build_Deployers : O_Build
 
     protected override void OnLevelStarted()
     {
-        requiredRate.Value = UnityEngine.Random.Range(requiredRateRange.x, requiredRateRange.y);
-
         pageObjectInterface = GameMode as IUsesPageObjects;
         if (pageObjectInterface == null)
         {
@@ -37,6 +35,8 @@ public class O_Build_Deployers : O_Build
         canvasController.OnWidgetAttached(this);
         canvasController.BindUI(ref acceptedPagesRate, "rate", value => $"{value} pages/min");
         canvasController.BindUI(ref requiredRate, "required", value => $"Min. {value}");
+
+        requiredRate.Value = UnityEngine.Random.Range(requiredRateRange.x, requiredRateRange.y);
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)

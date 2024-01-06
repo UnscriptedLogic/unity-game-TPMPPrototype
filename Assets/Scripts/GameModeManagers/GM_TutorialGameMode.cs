@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -40,6 +39,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     public event EventHandler OnProjectEvaluationCompleted;
 
     public event EventHandler<OnSectionCompeletedEventArgs> OnSectionStarted;
+    public event EventHandler OnClearAllObjects;
 
     public WebPageSO WebpageSO => webpage;
     public TickSystem.Ticker NodeTickSystem => ticker;
@@ -71,7 +71,17 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     private void Deployer_OnDeployerRecievedValidItem(object sender, EventArgs e)
     {
         currentSectionIndex++;
-        InitializeSection(currentSectionIndex);
+
+        GetPlayerPawn().CastTo<P_PlayerPawn>().MoveCameraToPosition(new Vector3(0f, 0f, -10f), () =>
+        {
+            if (currentSectionIndex >= sections.Count)
+            {
+
+                return;
+            }
+
+            InitializeSection(currentSectionIndex);
+        });
     }
 
     private void InitializeSection(int currentSectionIndex)
@@ -92,5 +102,10 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     public void TestFactory()
     {
         OnTestFactoryClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void FireClearObjectsEvent()
+    {
+        OnClearAllObjects?.Invoke(this, EventArgs.Empty);
     }
 }

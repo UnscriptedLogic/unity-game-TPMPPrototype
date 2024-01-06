@@ -24,6 +24,13 @@ public class Requirement
     public string Name => name;
     public string GameDescription => gameDescription;
     public string RealWorldDescription => realWorldDescription;
+
+    public void SetDetails(string name, string gameDesc, string worldDesc)
+    {
+        this.name = name;
+        this.gameDescription = gameDesc;
+        this.realWorldDescription = worldDesc;
+    }
 }
 
 public class DeployersMeetRateRequirement : Requirement

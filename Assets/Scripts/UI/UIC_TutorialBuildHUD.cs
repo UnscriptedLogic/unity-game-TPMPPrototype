@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnscriptedEngine;
 
 public class UIC_TutorialBuildHUD : UIC_BuildHUD
 {
+    [SerializeField] private Transform newBuildPage;
+
+
     private GM_TutorialGameMode tutorialGameMode;
     private List<string> availableBuilds;
     private string lastSelectedFrameworkID;

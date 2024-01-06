@@ -37,6 +37,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     public event EventHandler OnTestFactoryClicked;
     public event EventHandler OnProjectCompleted;
     public event EventHandler OnProjectEvaluationCompleted;
+    public event EventHandler OnClearAllObjects;
 
     private TickSystem.Ticker ticker;
 
@@ -167,5 +168,10 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         OnSpeedUpTimeCompleted -= GM_LevelManager_OnSpeedUpTimeCompleted;
 
         base.OnDisable();
+    }
+
+    public void FireClearObjectsEvent()
+    {
+        OnClearAllObjects?.Invoke(this, EventArgs.Empty);
     }
 }

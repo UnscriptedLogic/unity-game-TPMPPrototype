@@ -18,8 +18,8 @@ MonoBehaviour:
   - id: util_conveyor
     displayName: Conveyor Belt
     description: Conveyor belts transport items between nodes. They can overlap each
-      other and can go for as long as you wish. They also become visually bugged
-      when placing points close to each other. Woops...
+      other and can go for as long as you wish but is not advised to overlap itself.
+      They also become visually bugged when placing points close to each other. Woops...
     frameworkCategory: 1
     buildMachineCategory: 4
     build: {fileID: 1281026800053470207, guid: 348a47304ba02874e9d0b6bb3f2710eb, type: 3}

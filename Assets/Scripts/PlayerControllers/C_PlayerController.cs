@@ -189,7 +189,7 @@ public class C_PlayerController : UController
 
     private void HudCanvas_OnRequestingToBuild(object sender, string e)
     {
-        playerPawn.StartBuildPreview(e);
+        playerPawn.StartBuildPreview(e, CalculateBuildPosition());
 
         playerState.Value = PlayerState.Building;
     }
@@ -202,7 +202,7 @@ public class C_PlayerController : UController
     private void BuildShortcut(string buildID)
     {
         playerState.Value = PlayerState.Building;
-        playerPawn.StartBuildPreview(buildID);
+        playerPawn.StartBuildPreview(buildID, CalculateBuildPosition());
     }
 
     private void ExitBuildModeShortcut(InputAction.CallbackContext context)

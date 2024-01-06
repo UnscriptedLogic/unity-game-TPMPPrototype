@@ -262,6 +262,46 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: glintImage
+      value: 
+      objectReference: {fileID: 1160048409}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 675944688}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: acceptedGlint.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: acceptedGlint.b
+      value: 0.3903524
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: acceptedGlint.g
+      value: 0.9622642
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: acceptedGlint.r
+      value: 0.39478216
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: rejectedGlint.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: rejectedGlint.b
+      value: 0.3754716
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: rejectedGlint.g
+      value: 0.3754716
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: rejectedGlint.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174946225329939824, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
       propertyPath: canvasController
       value: 
       objectReference: {fileID: 675944685}
@@ -316,6 +356,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4893d4b74f2c8a48aaf0602bb92d5eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!225 &675944688 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6432554972360576305, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+  m_PrefabInstance: {fileID: 675944682}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1160048409 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6956786112742927821, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+  m_PrefabInstance: {fileID: 675944682}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1203747240
@@ -474,7 +530,7 @@ MonoBehaviour:
     pageIndex: 1
   - buildsToAdd:
     - dispenser_htmlsquare
-    - util_constructor
+    - util_merger
     - modifier_stretchvertical
     pageIndex: 2
   - buildsToAdd:

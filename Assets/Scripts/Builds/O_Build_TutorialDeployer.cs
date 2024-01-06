@@ -1,6 +1,8 @@
+using DG.Tweening;
 using JetBrains.Annotations;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnscriptedEngine;
 
 public class O_Build_TutorialDeployer : O_Build
@@ -9,8 +11,12 @@ public class O_Build_TutorialDeployer : O_Build
     [SerializeField] private Transform websiteCanvasTransform;
     [SerializeField] private InputNode inputNode;
     [SerializeField] private Vector2Int requiredRateRange = new Vector2Int(10, 24);
-    
     [SerializeField] private bool useRate;
+
+    [SerializeField] private Image glintImage;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Color acceptedGlint;
+    [SerializeField] private Color rejectedGlint;
 
     private Bindable<int> requiredRate = new Bindable<int>(0);
     private WebPageSO.PageData currentPageData;
@@ -76,11 +82,18 @@ public class O_Build_TutorialDeployer : O_Build
             {
                 acceptedPagesRate.Value++;
 
+                glintImage.color = acceptedGlint;
+                canvasGroup.alpha = 1;
+                canvasGroup.DOFade(0f, 0.5f).SetEase(Ease.InSine);
+
                 OnDeployerRecievedValidItem?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 //Preferrably we wanna show some form of feedback when the wrong page is given (and why?)
+                glintImage.color = rejectedGlint;
+                canvasGroup.alpha = 1;
+                canvasGroup.DOFade(0f, 0.5f).SetEase(Ease.InSine);
             }
         }
     }

@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -10,12 +12,13 @@ public class P_PlayerPawn : URTSCamera
 
     private O_Build objectToBuild;
 
-    public void StartBuildPreview(string buildID)
+    public void StartBuildPreview(string buildID, Vector3 position)
     {
         EndBuildPreview();
 
         (int framework, int build) = buildableDataSet.GetBuildableFromID(buildID);
         objectToBuild = Instantiate(buildableDataSet.Frameworks[framework].DataSet[build].Build);
+        objectToBuild.transform.position = position;
 
         objectToBuild.OnBeginPreview();
     }
@@ -142,5 +145,10 @@ public class P_PlayerPawn : URTSCamera
 
             break;
         }
+    }
+
+    public void MoveCameraToPosition(Vector3 position, Action OnComplete)
+    {
+        transform.DOMove(position, 1.5f).SetEase(Ease.InOutExpo).OnComplete(() => OnComplete());
     }
 }
