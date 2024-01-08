@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
 
-public class O_Build_Deployers : O_Build
+public class O_Build_Deployers : O_Build, IDeployer
 {
     [SerializeField] private UCanvasController canvasController;
     [SerializeField] private Transform websiteCanvasTransform;

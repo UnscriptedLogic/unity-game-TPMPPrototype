@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.28 123.85">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #6d6e7a;
+        font-family: Poppins-Medium, Poppins;
+        font-size: 50px;
+        font-weight: 500;
+        letter-spacing: -.09em;
+      }
+
+      .cls-2 {
+        fill: #b4b4bc;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <rect class="cls-2" width="192.28" height="123.85" rx="4.76" ry="4.76"/>
+    <text class="cls-1" transform="translate(10.94 79.77)"><tspan x="0" y="0">Canvas</tspan></text>
+  </g>
+</svg>

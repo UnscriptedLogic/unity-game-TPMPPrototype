@@ -43,3 +43,4 @@ MonoBehaviour:
       - color-red
       - shrinkheight-50
       - stretchhorizontal
+      - position-top

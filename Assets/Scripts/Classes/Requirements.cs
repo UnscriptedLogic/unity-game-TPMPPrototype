@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnscriptedEngine;
 using static UnscriptedEngine.UObject;
 
 public static class Requirements
@@ -19,7 +20,7 @@ public class Requirement
 
     public Bindable<bool> IsConditionMet = new Bindable<bool>(false);
 
-    public virtual bool EvaluateCondition(GM_LevelManager levelManager) => false;
+    public virtual bool EvaluateCondition(UGameModeBase gameMode) => false;
 
     public string Name => name;
     public string GameDescription => gameDescription;
@@ -43,37 +44,15 @@ public class DeployersMeetRateRequirement : Requirement
             "As web developers, it is part of our duty to consider the advantages and limitations of each technology with this factor in mind.";
     }
 
-    public override bool EvaluateCondition(GM_LevelManager levelManager)
+    public override bool EvaluateCondition(UGameModeBase gameMode)
     {
-        for (int i = 0; i < levelManager.Deployers.Count; i++)
+        IFactoryValidation validationInterface = gameMode as IFactoryValidation;
+
+        IDeployer[] deployers = validationInterface.GetDeployers();
+
+        for (int i = 0; i < deployers.Length; i++)
         {
-            if (!levelManager.Deployers[i].HasReachedRequiredRate)
-            {
-                IsConditionMet.Value = false;
-                return false;
-            }
-        }
-
-        IsConditionMet.Value = true;
-        return true;
-    }
-}
-
-public class PagesRequirement : Requirement
-{
-    public PagesRequirement()
-    {
-        name = "Pages Requirement";
-        gameDescription = "All deployers must be recieving their required page at their required rate";
-        realWorldDescription = "Every visit to a web page uses resources, be it loading user data or performing calculations. " +
-            "As web developers, it is part of our duty to consider the advantages and limitations of each technology with this factor in mind.";
-    }
-
-    public override bool EvaluateCondition(GM_LevelManager levelManager)
-    {
-        for (int i = 0; i < levelManager.Deployers.Count; i++)
-        {
-            if (!levelManager.Deployers[i].HasReachedRequiredRate)
+            if (!deployers[i].HasReachedRequiredRate)
             {
                 IsConditionMet.Value = false;
                 return false;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnscriptedEngine;
 
 [System.Serializable]
 public class Project
@@ -37,7 +38,7 @@ public class Project
         this.seed = seed;
     }   
 
-    public void EvaluateRequirements(GM_LevelManager context)
+    public void EvaluateRequirements(UGameModeBase context)
     {
         for (int i = 0; i < requirements.Count; i++)
         {

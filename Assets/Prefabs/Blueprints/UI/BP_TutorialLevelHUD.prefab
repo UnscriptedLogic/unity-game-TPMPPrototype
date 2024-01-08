@@ -1060,7 +1060,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1121,6 +1121,9 @@ MonoBehaviour:
   pauseHUD: {fileID: 8856760924750400771, guid: 71395e50527ffe448b37cffad8bc2361, type: 3}
   requirementsParent: {fileID: 2115991293569847146}
   requirementPrefab: {fileID: 5233815059947063227, guid: d38de0f8b3b549f42906d26411ba3de0, type: 3}
+  buttonParent: {fileID: 3884375664707909509}
+  clockInGO: {fileID: 8550288721558030621}
+  finishProjectGO: {fileID: 4341315659675659693}
 --- !u!1 &7952609093458694729
 GameObject:
   m_ObjectHideFlags: 0

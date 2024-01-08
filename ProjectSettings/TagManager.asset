@@ -43,6 +43,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ConveyorBelt
+    uniqueID: 2709207759
+    locked: 0
+  - name: Nodes
+    uniqueID: 4081161811
+    locked: 0
   - name: ItemViewports
     uniqueID: 3049914599
     locked: 0

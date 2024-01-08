@@ -174,4 +174,15 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     {
         OnClearAllObjects?.Invoke(this, EventArgs.Empty);
     }
+
+    public IDeployer[] GetDeployers()
+    {
+        IDeployer[] deployers = new IDeployer[this.deployers.Count];
+        for (int i = 0; i < deployers.Length; i++)
+        {
+            deployers[i] = this.deployers[i] as IDeployer;
+        }
+
+        return deployers;
+    }
 }

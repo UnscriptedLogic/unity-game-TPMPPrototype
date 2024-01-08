@@ -29,4 +29,9 @@ public class O_BuildItem : ULevelObject
 
         Destroy(gameObject);
     }
+
+    private void OnDisable()
+    {
+        pageObjectInterface.OnClearAllObjects -= PageObjectInterface_OnClearAllObjects;
+    }
 }

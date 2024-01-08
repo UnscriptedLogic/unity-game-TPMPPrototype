@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnscriptedEngine;
 
-public class O_Build_TutorialDeployer : O_Build
+public class O_Build_TutorialDeployer : O_Build, IDeployer
 {
     [SerializeField] private UCanvasController canvasController;
     [SerializeField] private Transform websiteCanvasTransform;
@@ -13,10 +13,21 @@ public class O_Build_TutorialDeployer : O_Build
     [SerializeField] private Vector2Int requiredRateRange = new Vector2Int(10, 24);
     [SerializeField] private bool useRate;
 
+    [Header("Accepted Glint Settings")]
     [SerializeField] private Image glintImage;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Color acceptedGlint;
     [SerializeField] private Color rejectedGlint;
+
+    [Header("Deployer Changed Settings")]
+    [SerializeField] private Image deployerChangedImage;
+    [SerializeField] private CanvasGroup deployerChangedCanvasGroup;
+    [SerializeField] private Color changedDeployerColor;
+
+    [SerializeField] private Transform deployerNameTransform;
+    [SerializeField] private GameObject labelTMP;
+    [SerializeField] private GameObject requiredTMP;
+    [SerializeField] private GameObject rateTMP;
 
     private Bindable<int> requiredRate = new Bindable<int>(0);
     private WebPageSO.PageData currentPageData;
@@ -35,12 +46,6 @@ public class O_Build_TutorialDeployer : O_Build
         base.Start();
 
         canvasController.OnWidgetAttached(this);
-
-        if (useRate)
-        {
-            canvasController.BindUI(ref acceptedPagesRate, "rate", value => $"{value} pages/min");
-            canvasController.BindUI(ref requiredRate, "required", value => $"Min. {value}");
-        }
     }
 
     protected override void OnLevelStarted()
@@ -110,5 +115,23 @@ public class O_Build_TutorialDeployer : O_Build
             elapsedTime = 0f;
             acceptedPagesRate.Value = 0;
         }
+    }
+
+    public void StartUsingRate()
+    {
+        deployerChangedImage.color = changedDeployerColor;
+        deployerChangedCanvasGroup.alpha = 1;
+        deployerChangedCanvasGroup.DOFade(0f, 0.5f).SetEase(Ease.InSine);
+
+        labelTMP.transform.position = deployerNameTransform.position;
+        requiredTMP.SetActive(true);
+        rateTMP.SetActive(true);
+
+        requiredRate = new Bindable<int>(0);
+
+        canvasController.BindUI(ref acceptedPagesRate, "rate", value => $"{value} pages/min");
+        canvasController.BindUI(ref requiredRate, "required", value => $"Min. {value}");
+
+        requiredRate.Value = 17;
     }
 }

@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnscriptedEngine;
 
 public class O_Build_ConveyorBelt : O_Build
 {
@@ -234,6 +237,7 @@ public class O_Build_ConveyorBelt : O_Build
             newConveyor.endPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
             newConveyor.isInPreview = false;
             newConveyor.FireBuiltEvent();
+            newConveyor.BuildToMesh();
 
             lineRenderer.positionCount = 0;
             endPointerAnchor.gameObject.SetActive(false);
@@ -243,7 +247,22 @@ public class O_Build_ConveyorBelt : O_Build
                 OnEndPreview();
             }
         }
-    } 
+    }
+
+    private void BuildToMesh()
+    {
+        EdgeCollider2D edgeCollider = lineRenderer.AddComponent<EdgeCollider2D>();
+
+        List<Vector2> edges = new List<Vector2>();
+
+        for (int i = 0; i < lineRenderer.positionCount; i++)
+        {
+            Vector3 point = lineRenderer.GetPosition(i);
+            edges.Add(new Vector2(point.x, point.y) - (Vector2)lineRenderer.GetPosition(0));
+        }
+
+        edgeCollider.SetPoints(edges);
+    }
 
     public static class Extensions
     {

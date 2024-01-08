@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,8 +7,9 @@ using UnscriptedEngine;
 
 public class UIC_TutorialBuildHUD : UIC_BuildHUD
 {
+    [Header("Tutorial Extensions")]
     [SerializeField] private Transform newBuildPage;
-
+    [SerializeField] private CanvasGroup notificationCanvasGroup;
 
     private GM_TutorialGameMode tutorialGameMode;
     private List<string> availableBuilds;
@@ -20,11 +23,18 @@ public class UIC_TutorialBuildHUD : UIC_BuildHUD
         availableBuilds = new List<string>();
 
         tutorialGameMode.OnSectionStarted += TutorialGameMode_OnSectionCompleted;
+
+        newBuildPage.gameObject.SetActive(false);
     }
 
     private void TutorialGameMode_OnSectionCompleted(object sender, GM_TutorialGameMode.OnSectionCompeletedEventArgs args)
     {
         availableBuilds.AddRange(args.buildsToAdd);
+
+        if (args.buildsToAdd.Count > 0 && tutorialGameMode.CurrentSectionIndex > 0)
+        {
+            StartCoroutine(AnimateNotification());
+        }
 
         if (!string.IsNullOrEmpty(lastSelectedFrameworkID))
         {
@@ -72,5 +82,31 @@ public class UIC_TutorialBuildHUD : UIC_BuildHUD
             BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
             buildBtn.Initialize(this, framework.DataSet[i].DisplayName, framework.DataSet[i].ID);
         }
+    }
+
+    private IEnumerator AnimateNotification()
+    {
+        notificationCanvasGroup.alpha = 1f;
+        newBuildPage.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        newBuildPage.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.1f);
+
+        newBuildPage.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        newBuildPage.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.1f);
+
+        newBuildPage.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        notificationCanvasGroup.DOFade(0f, 2f).OnComplete(() => newBuildPage.gameObject.SetActive(false));
     }
 }

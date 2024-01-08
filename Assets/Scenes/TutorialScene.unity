@@ -253,6 +253,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 907796902125345819, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1232.1089
+      objectReference: {fileID: 0}
     - target: {fileID: 1554951133134642002, guid: 9deb380fd5deb164da6a3d9419691f7b, type: 3}
       propertyPath: m_Name
       value: BP_Build_TutorialDeployer
@@ -515,6 +519,8 @@ MonoBehaviour:
   playerController: {fileID: 1370719615675873249, guid: bb4ca25ca0577e846b65bf98deb82df8, type: 3}
   playerPawn: {fileID: 7976657303456889764, guid: 1e7bb38b959d52841b8dff7ede1a3ce8, type: 3}
   gameInstance: {fileID: -2735835447384315871, guid: 79bdda7c0516bde4990fd6c746d46ec7, type: 3}
+  gameCompletedHUD: {fileID: 4270492970469888923, guid: b2be15f023f9bcf4197420f5823b7fa0, type: 3}
+  evaluateTime: 25
   webpage: {fileID: 11400000, guid: 0b556d0ee81bd1a46bf94b69f8ab61ba, type: 2}
   nodeTickInterval: 0.4
   globalBeltMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
@@ -538,6 +544,11 @@ MonoBehaviour:
     - modifier_shrink
     - modifier_position
     pageIndex: 3
+  - buildsToAdd:
+    - util_joiner
+    - util_splitter
+    pageIndex: 3
+  resetEnergy: 3
 --- !u!4 &1272213321
 Transform:
   m_ObjectHideFlags: 0
