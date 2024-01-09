@@ -70,7 +70,11 @@ public class O_Build_ModifierBase : O_Build
             if (!(build != null && colliders[i].gameObject != gameObject)) continue;
 
             O_Build_ConveyorBelt conveyorBelt = build as O_Build_ConveyorBelt;
-            return conveyorBelt != null;
+            if (conveyorBelt != null)
+            {
+                conveyorBelt.SplitConveyorBelt(this);
+                return true;
+            }
         }
 
         return true;

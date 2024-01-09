@@ -96,18 +96,8 @@ public static class BuildBehaviours
 
     public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
     {
-        bool hasConveyor = outputNode.HasConveyorBelt(out O_Build_ConveyorBelt conveyorBelt);
-        bool hasBuildingInfront = outputNode.IsBuildingInfront;
-
-        if (!(hasConveyor || hasBuildingInfront)) return;
-        
         item.gameObject.SetActive(true);
         item.transform.position = outputNode.Transform.position;
-     
-        if (hasConveyor)
-        {
-            conveyorBelt.AddItemToBelt(item);
-        }
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)

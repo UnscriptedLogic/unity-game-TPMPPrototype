@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnscriptedEngine;
@@ -103,9 +104,82 @@ public class O_Build_ConveyorBelt : O_Build
         }
     }
 
-    public void AddItemToBelt(O_BuildItem itemToAdd)
+    public void SplitConveyorBelt(O_Build instigator)
     {
-        conveyorItems.Add(itemToAdd);
+        Debug.Log($"{instigator} wants to split the conveyor belt");
+
+        //Check where on the belt it is
+        for (int i = 0; i < lineRenderer.positionCount - 1; i++)
+        {
+            if (!IsPointOnSegment(instigator.transform.position, lineRenderer.GetPosition(i), lineRenderer.GetPosition(i + 1))) continue;
+
+            Vector3[] positions = new Vector3[lineRenderer.positionCount];
+            lineRenderer.GetPositions(positions);
+
+            Vector3[] firstHalf = new Vector3[i - 0];
+            Vector3[] secondHalf = new Vector3[lineRenderer.positionCount - i];
+
+            Extensions.SplitArray(positions, i + 1, out firstHalf, out secondHalf);
+
+            if (firstHalf.Length > 1f)
+            {
+                lineRenderer.positionCount = firstHalf.Length;
+                lineRenderer.SetPositions(firstHalf);
+
+                //Extending the end to the edge of the node
+                Vector3 instigatorPos = instigator.transform.position;
+                Vector3 firstHalfEndPos = firstHalf[firstHalf.Length - 1];
+
+                float offset = instigator.CellSize.x * 0.5f;
+                if (instigatorPos.x == firstHalfEndPos.x)
+                {
+                    offset = instigator.CellSize.y * 0.5f;
+                }
+
+                float distance = Vector3.Distance(instigatorPos, firstHalfEndPos) - offset;
+                Vector3 dir = (instigatorPos - firstHalfEndPos).normalized;
+
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, firstHalfEndPos + (dir * distance));
+
+                endPointerAnchor.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+                BuildToMesh();
+            }
+
+            if (secondHalf.Length > 1f)
+            {
+                //Extending the end to the edge of the node
+                Vector3 instigatorPos = instigator.transform.position;
+                Vector3 secondHalfStartPos = secondHalf[0];
+
+                float offset = instigator.CellSize.x * 0.5f;
+                if (instigatorPos.x == secondHalfStartPos.x)
+                {
+                    offset = instigator.CellSize.y * 0.5f;
+                }
+
+                float distance = Vector3.Distance(instigatorPos, secondHalfStartPos) - offset;
+                Vector3 dir = (instigatorPos - secondHalfStartPos).normalized;
+
+                Vector3[] secondHalfPoints = new Vector3[secondHalf.Length + 1];
+                secondHalfPoints[0] = secondHalfStartPos + (dir * distance);
+                for (int j = 1; j < secondHalfPoints.Length; j++)
+                {
+                    secondHalfPoints[j] = secondHalf[j-1];
+                }
+
+                //Create 2nd conveyor belt body
+                CreateNewConveyorBelt(secondHalfPoints);
+            }
+
+            return;
+        }
+
+        //Recalculate body collider
+
+        //EDGE CASES:
+        //What if the instigator is on the ends of the belt
+        //What if the instigator is on the turn of the belt
     }
 
     private bool DoesItemHaveSpaceToMove(int index)
@@ -258,12 +332,41 @@ public class O_Build_ConveyorBelt : O_Build
         }
     }
 
+    /// <summary>
+    /// Creates a new conveyor belt along with its points
+    /// </summary>
+    /// <param name="points"></param>
+    private void CreateNewConveyorBelt(Vector3[] points)
+    {
+        O_Build_ConveyorBelt newConveyor = Instantiate(gameObject).GetComponent<O_Build_ConveyorBelt>();
+        newConveyor.startPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
+        newConveyor.endPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
+        newConveyor.isInPreview = false;
+
+        //position alignment
+        newConveyor.transform.position = points[0];
+        newConveyor.startPointerAnchor.transform.position = points[0];
+        newConveyor.endPointerAnchor.transform.position = points[points.Length - 1];
+
+        //Initialize Points
+        newConveyor.lineRenderer.positionCount = points.Length;
+        newConveyor.lineRenderer.SetPositions(points);
+
+        newConveyor.FireBuiltEvent();
+        newConveyor.BuildToMesh();
+    }
+
     private void BuildToMesh()
     {
-        EdgeCollider2D edgeCollider = lineRenderer.AddComponent<EdgeCollider2D>();
+        EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
+        if (edgeCollider == null)
+        {
+            edgeCollider = lineRenderer.AddComponent<EdgeCollider2D>();
+        }
+
+        edgeCollider.points = new Vector2[lineRenderer.positionCount];
 
         List<Vector2> edges = new List<Vector2>();
-
         for (int i = 0; i < lineRenderer.positionCount; i++)
         {
             Vector3 point = lineRenderer.GetPosition(i);
@@ -281,6 +384,13 @@ public class O_Build_ConveyorBelt : O_Build
             Vector3 AB = b - a;
             Vector3 AV = value - a;
             return Vector3.Dot(AV, AB) / Vector3.Dot(AB, AB);
+        }
+
+        //source: https://stackoverflow.com/questions/1841246/c-sharp-splitting-an-array
+        public static void SplitArray<T>(T[] array, int index, out T[] first, out T[] second)
+        {
+            first = array.Take(index).ToArray();
+            second = array.Skip(index).ToArray();
         }
     }
 

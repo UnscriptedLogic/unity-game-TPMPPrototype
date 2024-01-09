@@ -170,9 +170,6 @@ public abstract class O_Build : ULevelObject
 
         public void DispsenseItem<T>(T gameObject) where T : O_BuildItem
         {
-            Debug.Log(HasConveyorBelt(), transform.gameObject);
-            Debug.Log(IsBuildingInfront, transform.gameObject);
-
             if (IsBuildingInfront || HasConveyorBelt())
             {
                 gameObject.transform.position = transform.position;
@@ -194,6 +191,8 @@ public abstract class O_Build : ULevelObject
     public static event EventHandler OnBuildDestroyed;
     public static event EventHandler OnObjectBuilt;
 
+    public Vector2 CellSize => cellSize;
+
     protected virtual void Start()
     {
         levelBuildInterface = GameMode as IBuildSystem;
@@ -207,15 +206,9 @@ public abstract class O_Build : ULevelObject
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
     }
 
-    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
-    {
+    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e) { }
 
-    }
-
-    public virtual void OnBeginPreview() 
-    { 
-    
-    }
+    public virtual void OnBeginPreview() { }
     
     public virtual void OnUpdatePreview(Vector3 position, int rotationOffset) 
     {
