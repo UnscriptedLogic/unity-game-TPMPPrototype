@@ -17,22 +17,6 @@ public class O_Build_GenericBuilder : O_Build
 
         inputNode.Initialize();
         outputNode.Initialize();
-
-        OnBuildDestroyed += CheckConnections;
-    }
-
-    private void CheckConnections(object sender, System.EventArgs e)
-    {
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
-    {
-        base.OnPlayerStateChanged(playerState);
-
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
@@ -90,12 +74,5 @@ public class O_Build_GenericBuilder : O_Build
                 break;
             }
         }
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 }

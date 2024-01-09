@@ -92,11 +92,7 @@ public abstract class O_Build : ULevelObject
 
         public Transform Transform => transform;
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
-        public bool IsConnected
-        {
-            get { return isConnected; }
-            set { isConnected = value; }
-        }
+        public bool IsConnected => HasConveyorBelt() || IsBuildingInfront;
 
         public bool IsSpawnAreaEmpty
         {
@@ -120,41 +116,36 @@ public abstract class O_Build : ULevelObject
             collider = transform.GetComponent<BoxCollider2D>();
         }
 
-        public void CheckConnection()
+        public bool HasConveyorBelt()
         {
-            isConnected = false;
-            
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.25f);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (!colliders[i].CompareTag(START_CONSTRUCT_POINT)) continue;
-
-                O_Build_ConveyorBelt conveyorBelt = colliders[i].GetComponentInParent<O_Build_ConveyorBelt>();
-                if (!colliders[i].GetComponentInParent<O_Build_ConveyorBelt>()) continue;
-
-                IsConnected = true;
-                this.conveyorBelt = conveyorBelt;
-                break;
+                conveyorBelt = colliders[i].GetComponent<O_Build_ConveyorBelt>();
+                if (conveyorBelt != null)
+                {
+                    return true;
+                }
             }
 
-            collider.enabled = !isConnected;
+            conveyorBelt = null;
+            return false;
         }
 
-        public bool HasConveyorBelt
+        public bool HasConveyorBelt(out O_Build_ConveyorBelt conveyorBelt)
         {
-            get
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+            for (int i = 0; i < colliders.Length; i++)
             {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
-                for (int i = 0; i < colliders.Length; i++)
+                conveyorBelt = colliders[i].GetComponent<O_Build_ConveyorBelt>();
+                if (conveyorBelt != null)
                 {
-                    if (colliders[i].GetComponentInParent<O_Build_ConveyorBelt>() != null)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-
-                return false;
             }
+
+            conveyorBelt = null;
+            return false;
         }
 
         public bool IsBuildingInfront
@@ -164,7 +155,10 @@ public abstract class O_Build : ULevelObject
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].GetComponentInParent<O_Build>() != null)
+                    O_Build build = colliders[i].GetComponentInParent<O_Build>();
+                    Debug.Log(build.transform);
+                    Debug.Log(transform);
+                    if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
                     {
                         return true;
                     }
@@ -176,7 +170,13 @@ public abstract class O_Build : ULevelObject
 
         public void DispsenseItem<T>(T gameObject) where T : O_BuildItem
         {
-            gameObject.transform.position = transform.position;
+            Debug.Log(HasConveyorBelt(), transform.gameObject);
+            Debug.Log(IsBuildingInfront, transform.gameObject);
+
+            if (IsBuildingInfront || HasConveyorBelt())
+            {
+                gameObject.transform.position = transform.position;
+            }
         }
     }
 
@@ -230,12 +230,7 @@ public abstract class O_Build : ULevelObject
 
     public virtual bool CanBeBuilt()
     {
-        if (!IsOverlapping())
-        {
-            return false;
-        }
-
-        return true;
+        return IsAreaEmpty();
     }
 
     public virtual void Build(Vector3 position, int rotationOffset, bool keepBuilding)
@@ -270,7 +265,7 @@ public abstract class O_Build : ULevelObject
         this.playerState = playerState;
     }
 
-    public bool IsOverlapping()
+    public virtual bool IsAreaEmpty()
     {
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, cellSize, 0);
         for (int i = 0; i < colliders.Length; i++)

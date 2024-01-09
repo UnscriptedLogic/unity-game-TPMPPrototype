@@ -103,6 +103,11 @@ public class O_Build_ConveyorBelt : O_Build
         }
     }
 
+    public void AddItemToBelt(O_BuildItem itemToAdd)
+    {
+        conveyorItems.Add(itemToAdd);
+    }
+
     private bool DoesItemHaveSpaceToMove(int index)
     {
         if (index == 0)
@@ -197,6 +202,10 @@ public class O_Build_ConveyorBelt : O_Build
 
     public override bool CanBeBuilt()
     {
+        //Start point
+
+        //End point
+
         return true;
     }
 

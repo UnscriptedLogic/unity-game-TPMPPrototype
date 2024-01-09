@@ -26,8 +26,6 @@ public class O_Build_ModifierBase : O_Build
 
         inputNode.Initialize();
         outputNode.Initialize();
-    
-        OnBuildDestroyed += CheckConnections;
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
@@ -63,27 +61,21 @@ public class O_Build_ModifierBase : O_Build
         }
     }
 
+    public override bool IsAreaEmpty()
+    {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, cellSize, 0);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            O_Build build = colliders[i].GetComponent<O_Build>();
+            if (!(build != null && colliders[i].gameObject != gameObject)) continue;
+
+            O_Build_ConveyorBelt conveyorBelt = build as O_Build_ConveyorBelt;
+            return conveyorBelt != null;
+        }
+
+        return true;
+    }
+
     protected virtual void OnComponentRecieved(O_BuildComponent component) { }
     protected virtual void ForEveryAttachedComponent(O_BuildComponentItem itemComponent) { }
-
-    protected void CheckConnections(object sender, EventArgs e)
-    {
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
-    {
-        base.OnPlayerStateChanged(playerState);
-
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
-    }
 }

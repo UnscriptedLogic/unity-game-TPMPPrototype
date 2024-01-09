@@ -56,7 +56,7 @@ public class O_Build_GenericDispenser : O_Build
 
     public override bool CanBeBuilt()
     {
-        if (!IsOverlapping())
+        if (!IsAreaEmpty())
         {
             return false;
         }

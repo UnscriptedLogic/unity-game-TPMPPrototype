@@ -67,7 +67,7 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
 
-                if (!middleOutputNode.HasConveyorBelt || !middleOutputNode.IsBuildingInfront)
+                if (!middleOutputNode.HasConveyorBelt() || !middleOutputNode.IsBuildingInfront)
                 {
                     GetNextOutput(--depth);
                     break;
@@ -79,7 +79,7 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
 
-                if (!rightOutputNode.HasConveyorBelt || !rightOutputNode.IsBuildingInfront)
+                if (!rightOutputNode.HasConveyorBelt() || !rightOutputNode.IsBuildingInfront)
                 {
 
                     GetNextOutput(--depth);
@@ -92,7 +92,7 @@ public class O_Build_Splitter : O_Build
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
 
-                if (!leftOutputNode.HasConveyorBelt || !leftOutputNode.IsBuildingInfront)
+                if (!leftOutputNode.HasConveyorBelt() || !leftOutputNode.IsBuildingInfront)
                 {
                     GetNextOutput(--depth);
                     break;

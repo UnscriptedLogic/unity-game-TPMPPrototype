@@ -96,15 +96,23 @@ public static class BuildBehaviours
 
     public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
     {
-        //item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        bool hasConveyor = outputNode.HasConveyorBelt(out O_Build_ConveyorBelt conveyorBelt);
+        bool hasBuildingInfront = outputNode.IsBuildingInfront;
+
+        if (!(hasConveyor || hasBuildingInfront)) return;
+        
         item.gameObject.SetActive(true);
         item.transform.position = outputNode.Transform.position;
+     
+        if (hasConveyor)
+        {
+            conveyorBelt.AddItemToBelt(item);
+        }
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
     {
         O_BuildItem item = buildItem;
-        //item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
     }
