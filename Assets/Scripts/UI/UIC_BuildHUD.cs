@@ -76,8 +76,6 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
             Destroy(buildFrameworkBtnsParent.GetChild(i).gameObject);
         }
 
-        buildFrameworkBtnsParent.gameObject.SetActive(true);
-
         SO_Builds framework = GetFrameworkByID(id);
 
         //Individual Framework ah
