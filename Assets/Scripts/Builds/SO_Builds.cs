@@ -25,6 +25,7 @@ public class SO_Builds : ScriptableObject
     [System.Serializable]
     public struct BuildableData
     {
+        [SerializeField] private Sprite iconSpr;
         [SerializeField] private string id;
         [SerializeField] private string displayName;
         [SerializeField][TextArea(3, 5)] private string description;
@@ -33,6 +34,7 @@ public class SO_Builds : ScriptableObject
         [SerializeField] private O_Build build;
         [SerializeField] private VideoClip functionalityVideo;
 
+        public Sprite Icon => iconSpr; 
         public string ID => id;
         public string DisplayName => displayName;
         public string Description => description;
@@ -41,8 +43,9 @@ public class SO_Builds : ScriptableObject
         public O_Build Build => build;
         public VideoClip FunctionalityVideo => functionalityVideo;
 
-        public BuildableData(string id, string displayName, string description, FrameworkCategory frameworkCategory, BuildMachineCategory buildMachineCategory, O_Build build, VideoClip functionalityVideo)
+        public BuildableData(Sprite iconSpr, string id, string displayName, string description, FrameworkCategory frameworkCategory, BuildMachineCategory buildMachineCategory, O_Build build, VideoClip functionalityVideo)
         {
+            this.iconSpr = iconSpr;
             this.id = id;
             this.displayName = displayName;
             this.description = description;

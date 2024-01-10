@@ -17,8 +17,11 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     [Header("Components")]
     [SerializeField] protected BuildListSO builds;
     [SerializeField] protected GameObject buildBtnPrefab;
+    [SerializeField] protected GameObject frameworkBtnPrefab;
     [SerializeField] protected Transform buildBtnsParent;
     [SerializeField] protected Transform buildFrameworkBtnsParent;
+
+    private string lastFramework;
 
     public event EventHandler<string> OnRequestingToBuild;
     public event EventHandler<bool> OnDeleteBuildToggled;
@@ -56,7 +59,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
             SO_Builds framework = builds.Frameworks[i];
 
             //Framework button
-            UButtonComponent frameworkBtn = Instantiate(buildBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
+            UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
             frameworkBtn.SetID(framework.FrameworkName);
             frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
             frameworkBtn.InitializeUIComponent(this);
@@ -68,7 +71,16 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     protected virtual void ShowFrameworkBuilds(string id)
     {
         //Toggles the panel
-        buildFrameworkBtnsParent.gameObject.SetActive(!buildFrameworkBtnsParent.gameObject.activeInHierarchy);
+        buildFrameworkBtnsParent.gameObject.SetActive(true);
+        if (lastFramework == id)
+        {
+            if (buildFrameworkBtnsParent.gameObject.activeInHierarchy)
+            {
+                buildFrameworkBtnsParent.gameObject.SetActive(false);
+                lastFramework = "";
+                return;
+            }
+        }
 
         //Clear the parent just in case
         for (int i = buildFrameworkBtnsParent.childCount - 1; i >= 0; i--)
@@ -78,12 +90,15 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
         SO_Builds framework = GetFrameworkByID(id);
 
-        //Individual Framework ah
+        //Individual Framework
         for (int i = 0; i < framework.DataSet.Count; i++)
         {
             BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
-            buildBtn.Initialize(this, framework.DataSet[i].DisplayName, framework.DataSet[i].ID);
+            buildBtn.Initialize(this, framework.DataSet[i]);
         }
+
+        lastFramework = id;
+
     }
 
     protected SO_Builds GetFrameworkByID(string frameworkName)

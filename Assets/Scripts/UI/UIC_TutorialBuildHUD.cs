@@ -80,7 +80,7 @@ public class UIC_TutorialBuildHUD : UIC_BuildHUD
             if (!availableBuilds.Contains(framework.DataSet[i].ID)) continue;
 
             BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
-            buildBtn.Initialize(this, framework.DataSet[i].DisplayName, framework.DataSet[i].ID);
+            buildBtn.Initialize(this, framework.DataSet[i]);
         }
     }
 

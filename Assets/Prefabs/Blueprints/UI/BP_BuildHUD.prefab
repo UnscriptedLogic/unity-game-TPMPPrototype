@@ -309,7 +309,8 @@ MonoBehaviour:
   buildPage: {fileID: 8264704203560873604}
   deletePage: {fileID: 1411556176206801203}
   builds: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
-  buildBtnPrefab: {fileID: 2174352807374571904, guid: c4b0d8a289e680143a7b17cb6abf1a9c, type: 3}
+  buildBtnPrefab: {fileID: 2174352807374571904, guid: 7e92fef23741e7e45a3ad9e7bba52cef, type: 3}
+  frameworkBtnPrefab: {fileID: 2174352807374571904, guid: c4b0d8a289e680143a7b17cb6abf1a9c, type: 3}
   buildBtnsParent: {fileID: 6404191685170002700}
   buildFrameworkBtnsParent: {fileID: 9009706479619194363}
 --- !u!1 &2699543584763985766
@@ -954,6 +955,6 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 30, y: 30}
+  m_Spacing: {x: 8, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
