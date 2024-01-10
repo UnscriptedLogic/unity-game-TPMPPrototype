@@ -122,7 +122,8 @@ MonoBehaviour:
   buildPage: {fileID: 4609625810034596832}
   deletePage: {fileID: 2243206521927653316}
   builds: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
-  buildBtnPrefab: {fileID: 2174352807374571904, guid: c4b0d8a289e680143a7b17cb6abf1a9c, type: 3}
+  buildBtnPrefab: {fileID: 2174352807374571904, guid: 7e92fef23741e7e45a3ad9e7bba52cef, type: 3}
+  frameworkBtnPrefab: {fileID: 2174352807374571904, guid: c4b0d8a289e680143a7b17cb6abf1a9c, type: 3}
   buildBtnsParent: {fileID: 4973278868101918939}
   buildFrameworkBtnsParent: {fileID: 1823156870384936271}
   newBuildPage: {fileID: 6413892642031671792}

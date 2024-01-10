@@ -21,6 +21,7 @@ public class BuildBtn : UButtonComponent, IPointerEnterHandler, IPointerExitHand
         SetID(data.ID);
 
         nameTMP.text = data.DisplayName;
+        nameTMP.GetComponent<UTextComponent>().InitializeUIComponent(context);
 
         if (!context.CastTo<UIC_BuildHUD>()) return;
         hudCanvas = context.CastTo<UIC_BuildHUD>();

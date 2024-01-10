@@ -42,7 +42,7 @@ MonoBehaviour:
     buildMachineCategory: 4
     build: {fileID: 2755233388485305449, guid: 65269e7cc8f40bd4aa58f8e20f745c1f, type: 3}
     functionalityVideo: {fileID: 32900000, guid: ab0f8e60010107d49b4272763eb460fd, type: 3}
-  - iconSpr: {fileID: 21300000, guid: d46695919897eec45a964b78fe161b6d, type: 3}
+  - iconSpr: {fileID: 21300000, guid: 7bbbe638e12eac74b9532d7f42664349, type: 3}
     id: util_merger
     displayName: Merger
     description: Merges 2 components onto one another. Prioritizes canvases as the
