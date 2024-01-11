@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnscriptedEngine;
@@ -11,6 +10,7 @@ public class C_PlayerController : UController
     {
         Building,
         Deleting,
+        Selecting,
         None,
     }
 
@@ -121,11 +121,25 @@ public class C_PlayerController : UController
         switch (playerState.Value)
         {
             case PlayerState.Building:
-                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation, isShiftPressed);
+                playerPawn.AttemptBuild(CalculateSnappedPosition(), objectRotation, isShiftPressed);
                 break;
             
             case PlayerState.Deleting:
                 playerPawn.AttemptDelete(MouseWorldPosition);
+                break;
+
+            case PlayerState.Selecting:
+
+                if (isShiftPressed)
+                {
+                    playerState.Value = PlayerState.None;
+
+                    isDraggingToSelect = true;
+                    playerPawn.BeginDragToSelect(MouseWorldPosition, isShiftPressed);
+                    return;
+                }
+
+                playerPawn.BeginDragToMove(CalculateSnappedPosition());
                 break;
 
             case PlayerState.None:
@@ -151,9 +165,26 @@ public class C_PlayerController : UController
                 break;
             case PlayerState.Deleting:
                 break;
+            case PlayerState.Selecting:
+                playerPawn.EndDragToMove(CalculateSnappedPosition());
+
+                if (Vector3.Distance(playerPawn.StartDragPosition, CalculateSnappedPosition()) <= 0.1f && playerPawn.CanAllSelectedBeBuilt())
+                {
+                    playerPawn.ClearSelection();
+                    playerState.Value = PlayerState.None;
+                }
+                break;
+
             case PlayerState.None:
                 isDraggingToSelect = false;
+
                 playerPawn.EndDragToSelect(MouseWorldPosition);
+
+                if (playerPawn.SelectionDict.Count > 0)
+                {
+                    playerState.Value = PlayerState.Selecting;
+                }
+
                 break;
             default:
                 break;
@@ -164,7 +195,7 @@ public class C_PlayerController : UController
     {
         if (playerState.Value == PlayerState.Building)
         {
-            playerPawn.AttemptAlternateBuild(CalculateBuildPosition(), objectRotation);
+            playerPawn.AttemptAlternateBuild(CalculateSnappedPosition(), objectRotation);
         }
     }
 
@@ -217,7 +248,7 @@ public class C_PlayerController : UController
 
     private void HudCanvas_OnRequestingToBuild(object sender, string e)
     {
-        playerPawn.StartBuildPreview(e, CalculateBuildPosition());
+        playerPawn.StartBuildPreview(e, CalculateSnappedPosition());
 
         playerState.Value = PlayerState.Building;
     }
@@ -230,11 +261,24 @@ public class C_PlayerController : UController
     private void BuildShortcut(string buildID)
     {
         playerState.Value = PlayerState.Building;
-        playerPawn.StartBuildPreview(buildID, CalculateBuildPosition());
+        playerPawn.StartBuildPreview(buildID, CalculateSnappedPosition());
     }
 
-    private void ExitBuildModeShortcut(InputAction.CallbackContext context)
+    private void OnEscapeKeyPressed(InputAction.CallbackContext context)
     {
+        if (playerState.Value == PlayerState.Selecting)
+        {
+            if (playerPawn.CanAllSelectedBeBuilt())
+            {
+                playerPawn.ClearSelection();
+            }
+            else
+            {
+                //Don't switch if there are still selected items
+                return;
+            }
+        }
+
         playerState.Value = PlayerState.None;
     }
 
@@ -276,29 +320,35 @@ public class C_PlayerController : UController
             playerPawn.MovePlayerCameraWASD(wasdVector);
         }
 
-
         switch (playerState.Value)
         {
             case PlayerState.Building:
-                Vector3 worldPosition = CalculateBuildPosition();
+                Vector3 worldPosition = CalculateSnappedPosition();
                 playerPawn.UpdateBuildPreview(worldPosition, objectRotation);
                 break;
+            
             case PlayerState.Deleting:
                 break;
+
+            case PlayerState.Selecting:
+                playerPawn.UpdateDragToMove(CalculateSnappedPosition());
+                break;
+
             case PlayerState.None:
 
                 if (isDraggingToSelect)
                 {
-                    playerPawn.UpdateDragToSelect(MouseWorldPosition);
+                    playerPawn.UpdateDragToSelect(CalculateSnappedPosition());
                 }
 
                 break;
+
             default:
                 break;
         }
     }
 
-    private Vector3 CalculateBuildPosition()
+    private Vector3 CalculateSnappedPosition()
     {
         Vector3 worldPosition = MouseWorldPosition;
 
@@ -310,7 +360,7 @@ public class C_PlayerController : UController
 
     private void SubscribeKeybindEvents()
     {
-        defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
+        defaultActionMap.FindAction("Escape").performed += OnEscapeKeyPressed;
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
 
         defaultActionMap.FindAction("KeepBuilding").performed += OnShiftPressed;
@@ -328,7 +378,7 @@ public class C_PlayerController : UController
 
     private void UnsubscribeKeybindEvents()
     {
-        defaultActionMap.FindAction("Escape").performed -= ExitBuildModeShortcut;
+        defaultActionMap.FindAction("Escape").performed -= OnEscapeKeyPressed;
         defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
 
         defaultActionMap.FindAction("KeepBuilding").performed -= OnShiftPressed;

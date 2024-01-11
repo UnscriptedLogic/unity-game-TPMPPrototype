@@ -15,14 +15,30 @@ public class P_PlayerPawn : URTSCamera
     [SerializeField] private GameObject selectionBoxPrefab;
     [SerializeField] private GameObject selectionObjectPrefab;
 
-    private Vector3 startPosition;
     private Vector3 prevPosition;
+
+    private Vector3 startSelectionPosition;
 
     private O_Build objectToBuild;
     private BoxCollider2D selectionCollider;
+
     private bool isDraggingToSelect;
 
+    private Vector3 originalSelectionParentPosition;
+    private Vector3 startDragPosition;
+    private bool isDraggingToMove;
+
+    private Transform selectionParent;
     private Dictionary<O_Build, GameObject> selectionDict = new Dictionary<O_Build, GameObject>();
+
+    public Dictionary<O_Build, GameObject> SelectionDict => selectionDict;
+    public Vector3 StartDragPosition => startDragPosition;
+    public Transform SelectionParent => selectionParent;
+
+    private void Start()
+    {
+        selectionParent = new GameObject("SelectionParent").transform;
+    }
 
     public void StartBuildPreview(string buildID, Vector3 position)
     {
@@ -50,16 +66,11 @@ public class P_PlayerPawn : URTSCamera
 
     public void BeginDragToSelect(Vector3 position, bool keepSelection)
     {
-        startPosition = position;
+        startSelectionPosition = position;
 
         if (!keepSelection)
         {
-            for (int i = 0; i < selectionDict.Count; i++)
-            {
-                Destroy(selectionDict.ElementAt(i).Value);
-            }
-
-            selectionDict.Clear();
+            ClearSelection();
         }
 
         selectionCollider = Instantiate(selectionBoxPrefab, position, Quaternion.identity, transform).GetComponent<BoxCollider2D>();
@@ -68,12 +79,66 @@ public class P_PlayerPawn : URTSCamera
         isDraggingToSelect = true;
     }
 
+    public void BeginDragToMove(Vector3 position)
+    {
+        startDragPosition = position;
+        originalSelectionParentPosition = selectionParent.position;
+        isDraggingToMove = true;
+    }
+
+    public void UpdateDragToMove(Vector3 position)
+    {
+        if (isDraggingToMove)
+        {
+            Vector3 direction = (position - startDragPosition).normalized;
+            float distance = Vector3.Distance(position, startDragPosition);
+
+            selectionParent.transform.position = originalSelectionParentPosition + (direction * distance);
+        }
+    }
+
+    public void EndDragToMove(Vector3 position)
+    {
+        isDraggingToMove = false;
+    }
+
+    public bool CanAllSelectedBeBuilt()
+    {
+        for (int i = 0; i < selectionDict.Count; i++)
+        {
+            if (selectionDict.ElementAt(i).Key.CanBeBuilt()) continue;
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public void ClearSelection()
+    {
+        if (!CanAllSelectedBeBuilt()) return;
+
+        for (int i = selectionDict.Count - 1; i >= 0; i--)
+        {
+            selectionDict.ElementAt(i).Key.transform.SetParent(null);
+            Destroy(selectionDict.ElementAt(i).Value);
+
+            selectionDict.Remove(selectionDict.ElementAt(i).Key);
+        }
+
+        if (selectionParent.childCount == 0)
+        {
+            selectionParent.position = Vector3.zero;
+            selectionDict.Clear();
+        }
+    }
+
     public void UpdateDragToSelect(Vector3 position)
     {
         if (Vector3.Distance(position, prevPosition) <= 0.01f) return;
 
-        selectionCollider.transform.position = CalculateMidPoint(startPosition, position);
-        selectionCollider.transform.localScale = CalculateScale(startPosition, position);
+        selectionCollider.transform.position = CalculateMidPoint(startSelectionPosition, position);
+        selectionCollider.transform.localScale = CalculateScale(startSelectionPosition, position);
 
         prevPosition = position;
     }
@@ -230,6 +295,8 @@ public class P_PlayerPawn : URTSCamera
             selectionObject.transform.localScale = new Vector3(build.CellSize.x * 1.5f, build.CellSize.y * 1.5f);
 
             selectionDict.Add(build, selectionObject);
+
+            build.transform.SetParent(selectionParent);
         }
     }
 
@@ -245,6 +312,8 @@ public class P_PlayerPawn : URTSCamera
             Destroy(selectionDict[build]);
 
             selectionDict.Remove(build);
+
+            build.transform.SetParent(null);
         }
     }
 
