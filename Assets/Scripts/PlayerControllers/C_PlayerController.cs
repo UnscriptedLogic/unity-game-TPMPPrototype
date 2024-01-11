@@ -21,7 +21,7 @@ public class C_PlayerController : UController
     private IBuildHUD hudCanvas;
     private P_PlayerPawn playerPawn;
 
-    private bool keepBuilding;
+    private bool isShiftPressed;
     private int objectRotation;
     private Vector2 mousePosition;
     private Vector2 wasdVector;
@@ -85,7 +85,7 @@ public class C_PlayerController : UController
 
     private void O_Build_OnObjectBuilt(object sender, EventArgs e)
     {
-        if (keepBuilding) return;
+        if (isShiftPressed) return;
 
         playerState.Value = PlayerState.None;
     }
@@ -121,14 +121,14 @@ public class C_PlayerController : UController
         switch (playerState.Value)
         {
             case PlayerState.Building:
-                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation, keepBuilding);
+                playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation, isShiftPressed);
                 break;
             case PlayerState.Deleting:
                 playerPawn.AttemptDelete(MouseWorldPosition);
                 break;
             case PlayerState.None:
                 isDraggingToSelect = true;
-                playerPawn.BeginDragToSelect(MouseWorldPosition);
+                playerPawn.BeginDragToSelect(MouseWorldPosition, isShiftPressed);
                 break;
             default:
                 break;
@@ -137,6 +137,11 @@ public class C_PlayerController : UController
 
     public override void OnDefaultLeftMouseUp()
     {
+        if (!isDraggingToSelect)
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+        }
+
         switch (playerState.Value)
         {
             case PlayerState.Building:
@@ -178,14 +183,14 @@ public class C_PlayerController : UController
         }
     }
 
-    private void OnKeepBuildingPressed(InputAction.CallbackContext obj)
+    private void OnShiftPressed(InputAction.CallbackContext obj)
     {
-        keepBuilding = true;
+        isShiftPressed = true;
     }
 
-    private void OnKeepBuildingReleased(InputAction.CallbackContext context)
+    private void OnShiftReleased(InputAction.CallbackContext context)
     {
-        keepBuilding = false;
+        isShiftPressed = false;
     }
 
     private void LevelManager_OnProjectCompleted(object sender, System.EventArgs e)
@@ -300,8 +305,8 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("Escape").performed += ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed += OnRotatePressed;
 
-        defaultActionMap.FindAction("KeepBuilding").performed += OnKeepBuildingPressed;
-        defaultActionMap.FindAction("KeepBuilding").canceled += OnKeepBuildingReleased;
+        defaultActionMap.FindAction("KeepBuilding").performed += OnShiftPressed;
+        defaultActionMap.FindAction("KeepBuilding").canceled += OnShiftReleased;
 
         //shortcuts
         defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
@@ -317,8 +322,8 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("Escape").performed -= ExitBuildModeShortcut;
         defaultActionMap.FindAction("RotatePressed").performed -= OnRotatePressed;
 
-        defaultActionMap.FindAction("KeepBuilding").performed -= OnKeepBuildingPressed;
-        defaultActionMap.FindAction("KeepBuilding").canceled -= OnKeepBuildingReleased;
+        defaultActionMap.FindAction("KeepBuilding").performed -= OnShiftPressed;
+        defaultActionMap.FindAction("KeepBuilding").canceled -= OnShiftReleased;
 
         defaultActionMap.FindAction("ConveyorShortcut").performed -= InstantConveyorBuild;
         defaultActionMap.FindAction("JoinerShortcut").performed -= InstantJoinerBuild;

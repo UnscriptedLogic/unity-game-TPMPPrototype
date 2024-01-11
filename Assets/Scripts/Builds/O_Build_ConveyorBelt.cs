@@ -21,6 +21,8 @@ public class O_Build_ConveyorBelt : O_Build
 
     public override void OnBeginPreview()
     {
+        base.OnBeginPreview();
+
         isBuildingStart = true;
 
         startPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;

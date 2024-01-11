@@ -54,6 +54,7 @@ MonoBehaviour:
   buildableDataSet: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
   panningDetectionThickness: {x: 10, y: 10}
   selectionBoxPrefab: {fileID: 1570542016348658295, guid: 166b549c2e310914d8e2f82827a0a881, type: 3}
+  selectionObjectPrefab: {fileID: 4465675268063034965, guid: c2e7468988b170b42b9b7e4adb2c60d8, type: 3}
 --- !u!20 &4742382014545891123
 Camera:
   m_ObjectHideFlags: 0

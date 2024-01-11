@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnscriptedEngine;
@@ -10,15 +11,18 @@ public class P_PlayerPawn : URTSCamera
     [Header("Player Pawn Extension")]
     [SerializeField] private BuildListSO buildableDataSet;
     [SerializeField] private Vector2 panningDetectionThickness;
+
     [SerializeField] private GameObject selectionBoxPrefab;
+    [SerializeField] private GameObject selectionObjectPrefab;
 
     private Vector3 startPosition;
     private Vector3 prevPosition;
 
     private O_Build objectToBuild;
     private BoxCollider2D selectionCollider;
+    private bool isDraggingToSelect;
 
-    private List<O_Build> selection;
+    private Dictionary<O_Build, GameObject> selectionDict = new Dictionary<O_Build, GameObject>();
 
     public void StartBuildPreview(string buildID, Vector3 position)
     {
@@ -44,12 +48,24 @@ public class P_PlayerPawn : URTSCamera
         }
     }
 
-    public void BeginDragToSelect(Vector3 position)
+    public void BeginDragToSelect(Vector3 position, bool keepSelection)
     {
         startPosition = position;
 
-        selection = new List<O_Build>();
+        if (!keepSelection)
+        {
+            for (int i = 0; i < selectionDict.Count; i++)
+            {
+                Destroy(selectionDict.ElementAt(i).Value);
+            }
+
+            selectionDict.Clear();
+        }
+
         selectionCollider = Instantiate(selectionBoxPrefab, position, Quaternion.identity, transform).GetComponent<BoxCollider2D>();
+        selectionCollider.transform.localScale = Vector3.zero;
+
+        isDraggingToSelect = true;
     }
 
     public void UpdateDragToSelect(Vector3 position)
@@ -79,12 +95,12 @@ public class P_PlayerPawn : URTSCamera
 
     public void EndDragToSelect(Vector3 position)
     {
-        for (int i = 0; i < selection.Count; i++)
-        {
-            Debug.Log(selection[i].gameObject.name);
-        }
+        isDraggingToSelect = false;
 
-        Destroy(selectionCollider.gameObject);
+        if (selectionCollider != null)
+        {
+            Destroy(selectionCollider.gameObject);
+        }
     }
 
     public void AttemptAlternateBuild(Vector3 position, int rotationOffset)
@@ -208,20 +224,27 @@ public class P_PlayerPawn : URTSCamera
         O_Build build = collision.GetComponent<O_Build>();
         if (build != null)
         {
-            if (selection.Contains(build)) return;
+            if (selectionDict.ContainsKey(build)) return;
 
-            selection.Add(build);
+            GameObject selectionObject = Instantiate(selectionObjectPrefab, build.transform.position, Quaternion.identity, build.transform);
+            selectionObject.transform.localScale = new Vector3(build.CellSize.x * 1.5f, build.CellSize.y * 1.5f);
+
+            selectionDict.Add(build, selectionObject);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (!isDraggingToSelect) return;
+
         O_Build build = collision.GetComponent<O_Build>();
         if (build != null)
         {
-            if (!selection.Contains(build)) return;
+            if (!selectionDict.ContainsKey(build)) return;
 
-            selection.Remove(build);
+            Destroy(selectionDict[build]);
+
+            selectionDict.Remove(build);
         }
     }
 }

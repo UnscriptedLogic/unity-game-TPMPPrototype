@@ -32,6 +32,8 @@ public class UIC_BuildingDetailsModal : UCanvasController
         showBtn = GetUIComponent<UButtonComponent>("show");
 
         showBtn.gameObject.SetActive(false);
+
+        O_Build.OnObjectBuilt += O_Build_OnBuildCreated;
     }
 
     private void OnShow()
@@ -52,5 +54,19 @@ public class UIC_BuildingDetailsModal : UCanvasController
         buildName.TMP.text = build.DisplayName;
         buildDesc.TMP.text = build.Description;
         functionalityVideoPlayer.clip = build.FunctionalityVideo;
+
+        OnShow();
+    }
+
+    private void O_Build_OnBuildCreated(object sender, System.EventArgs e)
+    {
+        OnHide();
+    }
+
+    public override void OnWidgetDetached(ULevelObject context)
+    {
+        O_Build.OnObjectBuilt -= O_Build_OnBuildCreated;
+
+        base.OnWidgetDetached(context);
     }
 }

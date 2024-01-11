@@ -188,6 +188,7 @@ public abstract class O_Build : ULevelObject
     public static event EventHandler OnBuildCreated;
     public static event EventHandler OnBuildDestroyed;
     public static event EventHandler OnObjectBuilt;
+    public static event EventHandler OnPreviewingBuild;
 
     public Vector2 CellSize => cellSize;
 
@@ -206,7 +207,10 @@ public abstract class O_Build : ULevelObject
 
     protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e) { }
 
-    public virtual void OnBeginPreview() { }
+    public virtual void OnBeginPreview() 
+    {
+        OnPreviewingBuild?.Invoke(this, EventArgs.Empty);
+    }
     
     public virtual void OnUpdatePreview(Vector3 position, int rotationOffset) 
     {
