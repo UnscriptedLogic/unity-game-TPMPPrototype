@@ -326,4 +326,17 @@ public class P_PlayerPawn : URTSCamera
 
         selectionDict.Clear();
     }
+
+    public void RotateSelection(int selectionRotation)
+    {
+        Vector3 origin = new Vector3();
+        for (int i = 0; i < selectionDict.Count; i++)
+        {
+            origin += selectionDict.ElementAt(i).Key.transform.position;
+        }
+
+        origin /= selectionDict.Count;
+
+        selectionParent.RotateAround(origin, Vector3.forward, selectionRotation);
+    }
 }

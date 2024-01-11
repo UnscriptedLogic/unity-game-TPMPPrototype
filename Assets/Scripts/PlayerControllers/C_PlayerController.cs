@@ -23,6 +23,7 @@ public class C_PlayerController : UController
 
     private bool isShiftPressed;
     private int objectRotation;
+    private int selectionRotation;
     private Vector2 mousePosition;
     private Vector2 wasdVector;
 
@@ -201,19 +202,43 @@ public class C_PlayerController : UController
 
     private void OnRotatePressed(InputAction.CallbackContext obj)
     {
-        if (playerState.Value == PlayerState.Building)
+        switch (playerState.Value)
         {
-            objectRotation -= 90;
+            case PlayerState.Building:
+                objectRotation -= 90;
 
-            if (objectRotation > 360)
-            {
-                objectRotation = 0;
-            }
+                if (objectRotation > 360)
+                {
+                    objectRotation = 0;
+                }
 
-            if (objectRotation < 0)
-            {
-                objectRotation = 360;
-            }
+                if (objectRotation < 0)
+                {
+                    objectRotation = 360;
+                }
+                break;
+            case PlayerState.Deleting:
+                break;
+            case PlayerState.Selecting:
+                selectionRotation -= 90;
+
+                if (selectionRotation > 360)
+                {
+                    selectionRotation = 0;
+                }
+
+                if (selectionRotation < 0)
+                {
+                    selectionRotation = 360;
+                }
+
+                playerPawn.RotateSelection(selectionRotation);
+
+                break;
+            case PlayerState.None:
+                break;
+            default:
+                break;
         }
     }
 
