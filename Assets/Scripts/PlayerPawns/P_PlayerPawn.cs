@@ -247,4 +247,14 @@ public class P_PlayerPawn : URTSCamera
             selectionDict.Remove(build);
         }
     }
+
+    public void DeleteAllSelected()
+    {
+        for (int i = 0; i < selectionDict.Count; i++)
+        {
+            selectionDict.ElementAt(i).Key.DeleteSelf();
+        }
+
+        selectionDict.Clear();
+    }
 }

@@ -123,13 +123,16 @@ public class C_PlayerController : UController
             case PlayerState.Building:
                 playerPawn.AttemptBuild(CalculateBuildPosition(), objectRotation, isShiftPressed);
                 break;
+            
             case PlayerState.Deleting:
                 playerPawn.AttemptDelete(MouseWorldPosition);
                 break;
+
             case PlayerState.None:
                 isDraggingToSelect = true;
                 playerPawn.BeginDragToSelect(MouseWorldPosition, isShiftPressed);
                 break;
+            
             default:
                 break;
         }
@@ -252,6 +255,11 @@ public class C_PlayerController : UController
         }
     }
 
+    private void DelKeyPressed(InputAction.CallbackContext context)
+    {
+        playerPawn.DeleteAllSelected();
+    }
+
     private void Update()
     {
         if (isPaused) return;
@@ -315,6 +323,7 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("ConstructorShortcut").performed += InstantConstructorBuild;
 
         defaultActionMap.FindAction("DeleteModeShortcut").performed += DeleteModeShortcutPressed;
+        defaultActionMap.FindAction("Del").performed += DelKeyPressed;
     }
 
     private void UnsubscribeKeybindEvents()
@@ -331,6 +340,7 @@ public class C_PlayerController : UController
         defaultActionMap.FindAction("ConstructorShortcut").performed -= InstantConstructorBuild;
 
         defaultActionMap.FindAction("DeleteModeShortcut").performed -= DeleteModeShortcutPressed;
+        defaultActionMap.FindAction("Del").performed += DelKeyPressed;
     }
 
     protected override void OnDestroy()
