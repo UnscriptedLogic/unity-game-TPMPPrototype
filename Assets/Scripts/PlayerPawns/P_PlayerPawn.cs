@@ -1,5 +1,7 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -7,10 +9,16 @@ public class P_PlayerPawn : URTSCamera
 {
     [Header("Player Pawn Extension")]
     [SerializeField] private BuildListSO buildableDataSet;
-
     [SerializeField] private Vector2 panningDetectionThickness;
+    [SerializeField] private GameObject selectionBoxPrefab;
+
+    private Vector3 startPosition;
+    private Vector3 prevPosition;
 
     private O_Build objectToBuild;
+    private BoxCollider2D selectionCollider;
+
+    private List<O_Build> selection;
 
     public void StartBuildPreview(string buildID, Vector3 position)
     {
@@ -34,6 +42,49 @@ public class P_PlayerPawn : URTSCamera
         {
             objectToBuild.Build(position, rotationOffset, keepBuilding);
         }
+    }
+
+    public void BeginDragToSelect(Vector3 position)
+    {
+        startPosition = position;
+
+        selection = new List<O_Build>();
+        selectionCollider = Instantiate(selectionBoxPrefab, position, Quaternion.identity, transform).GetComponent<BoxCollider2D>();
+    }
+
+    public void UpdateDragToSelect(Vector3 position)
+    {
+        if (Vector3.Distance(position, prevPosition) <= 0.01f) return;
+
+        selectionCollider.transform.position = CalculateMidPoint(startPosition, position);
+        selectionCollider.transform.localScale = CalculateScale(startPosition, position);
+
+        prevPosition = position;
+    }
+
+    private Vector3 CalculateScale(Vector3 startPosition, Vector3 position)
+    {
+        float x = position.x - startPosition.x;
+        float y = position.y - startPosition.y;
+        return new Vector3(x, y, 1f);
+    }
+
+    private Vector3 CalculateMidPoint(Vector3 startPosition, Vector3 position)
+    {
+        Vector3 dir = (position - startPosition).normalized;
+        float distance = Vector3.Distance(position, startPosition);
+
+        return startPosition + (dir * (distance * 0.5f));
+    }
+
+    public void EndDragToSelect(Vector3 position)
+    {
+        for (int i = 0; i < selection.Count; i++)
+        {
+            Debug.Log(selection[i].gameObject.name);
+        }
+
+        Destroy(selectionCollider.gameObject);
     }
 
     public void AttemptAlternateBuild(Vector3 position, int rotationOffset)
@@ -150,5 +201,27 @@ public class P_PlayerPawn : URTSCamera
     public void MoveCameraToPosition(Vector3 position, Action OnComplete)
     {
         transform.DOMove(position, 1.5f).SetEase(Ease.InOutExpo).OnComplete(() => OnComplete());
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        O_Build build = collision.GetComponent<O_Build>();
+        if (build != null)
+        {
+            if (selection.Contains(build)) return;
+
+            selection.Add(build);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        O_Build build = collision.GetComponent<O_Build>();
+        if (build != null)
+        {
+            if (!selection.Contains(build)) return;
+
+            selection.Remove(build);
+        }
     }
 }

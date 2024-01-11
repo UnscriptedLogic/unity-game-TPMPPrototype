@@ -38,6 +38,7 @@ public class C_PlayerController : UController
     }
 
     public Bindable<PlayerState> playerState;
+    private bool isDraggingToSelect;
 
     protected override void Awake()
     {
@@ -126,6 +127,25 @@ public class C_PlayerController : UController
                 playerPawn.AttemptDelete(MouseWorldPosition);
                 break;
             case PlayerState.None:
+                isDraggingToSelect = true;
+                playerPawn.BeginDragToSelect(MouseWorldPosition);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void OnDefaultLeftMouseUp()
+    {
+        switch (playerState.Value)
+        {
+            case PlayerState.Building:
+                break;
+            case PlayerState.Deleting:
+                break;
+            case PlayerState.None:
+                isDraggingToSelect = false;
+                playerPawn.EndDragToSelect(MouseWorldPosition);
                 break;
             default:
                 break;
@@ -230,7 +250,6 @@ public class C_PlayerController : UController
     private void Update()
     {
         if (isPaused) return;
-
         if (playerPawn == null) return;
 
         mousePosition = GetDefaultMousePosition();
@@ -245,11 +264,24 @@ public class C_PlayerController : UController
         }
 
 
-        if (playerState.Value == PlayerState.Building)
+        switch (playerState.Value)
         {
-            Vector3 worldPosition = CalculateBuildPosition();
+            case PlayerState.Building:
+                Vector3 worldPosition = CalculateBuildPosition();
+                playerPawn.UpdateBuildPreview(worldPosition, objectRotation);
+                break;
+            case PlayerState.Deleting:
+                break;
+            case PlayerState.None:
 
-            playerPawn.UpdateBuildPreview(worldPosition, objectRotation);
+                if (isDraggingToSelect)
+                {
+                    playerPawn.UpdateDragToSelect(MouseWorldPosition);
+                }
+
+                break;
+            default:
+                break;
         }
     }
 

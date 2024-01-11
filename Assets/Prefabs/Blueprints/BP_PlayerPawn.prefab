@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7976657303456889764}
   - component: {fileID: 4742382014545891123}
   - component: {fileID: -8114258485270295886}
+  - component: {fileID: 6518563332074393712}
   m_Layer: 0
   m_Name: BP_PlayerPawn
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
   anchor: {fileID: 1945166051983437823}
   buildableDataSet: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
   panningDetectionThickness: {x: 10, y: 10}
+  selectionBoxPrefab: {fileID: 1570542016348658295, guid: 166b549c2e310914d8e2f82827a0a881, type: 3}
 --- !u!20 &4742382014545891123
 Camera:
   m_ObjectHideFlags: 0
@@ -147,3 +149,30 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!50 &6518563332074393712
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103975493324920040}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

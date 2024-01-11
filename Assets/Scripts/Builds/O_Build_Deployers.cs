@@ -9,7 +9,9 @@ public class O_Build_Deployers : O_Build, IDeployer
     [SerializeField] private Transform websiteCanvasTransform;
     [SerializeField] private InputNode inputNode;
     [SerializeField] private Vector2Int requiredRateRange = new Vector2Int(10, 24);
-    
+
+    [SerializeField] private CanvasRecievedItemGlint canvasGlint;
+
     private Bindable<int> requiredRate = new Bindable<int>(0);
     private WebPageSO.PageData currentPageData;
     private float elapsedTime = 0f;
@@ -51,10 +53,13 @@ public class O_Build_Deployers : O_Build, IDeployer
             if (pageObjectInterface.WebpageSO.IsComponentRequirementsMet(page, currentPageData))
             {
                 acceptedPagesRate.Value++;
+
+                canvasGlint.FlashSuccess();
             }
             else
             {
                 //Preferrably we wanna show some form of feedback when the wrong page is given (and why?)
+                canvasGlint.FlashError();
             }
         }
     }

@@ -156,8 +156,6 @@ public abstract class O_Build : ULevelObject
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     O_Build build = colliders[i].GetComponentInParent<O_Build>();
-                    Debug.Log(build.transform);
-                    Debug.Log(transform);
                     if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
                     {
                         return true;
