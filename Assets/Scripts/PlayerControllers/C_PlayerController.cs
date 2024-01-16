@@ -23,7 +23,6 @@ public class C_PlayerController : UController
 
     private bool isShiftPressed;
     private int objectRotation;
-    private int selectionRotation;
     private Vector2 mousePosition;
     private Vector2 wasdVector;
 
@@ -220,19 +219,7 @@ public class C_PlayerController : UController
             case PlayerState.Deleting:
                 break;
             case PlayerState.Selecting:
-                selectionRotation -= 90;
-
-                if (selectionRotation > 360)
-                {
-                    selectionRotation = 0;
-                }
-
-                if (selectionRotation < 0)
-                {
-                    selectionRotation = 360;
-                }
-
-                playerPawn.RotateSelection(selectionRotation);
+                playerPawn.RotateSelection();
 
                 break;
             case PlayerState.None:
@@ -363,7 +350,7 @@ public class C_PlayerController : UController
 
                 if (isDraggingToSelect)
                 {
-                    playerPawn.UpdateDragToSelect(CalculateSnappedPosition());
+                    playerPawn.UpdateDragToSelect(MouseWorldPosition);
                 }
 
                 break;

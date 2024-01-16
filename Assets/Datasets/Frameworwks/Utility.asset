@@ -52,3 +52,11 @@ MonoBehaviour:
     buildMachineCategory: 4
     build: {fileID: 7920708871764187601, guid: 15efdb618e71f954598459931fa31d6e, type: 3}
     functionalityVideo: {fileID: 32900000, guid: 986c763fc809a864d8d6e4b29f490313, type: 3}
+  - iconSpr: {fileID: 21300000, guid: 7bbbe638e12eac74b9532d7f42664349, type: 3}
+    id: util_visualizer
+    displayName: Visualizer
+    description: Displays the web page on a bigger screen.
+    frameworkCategory: 1
+    buildMachineCategory: 4
+    build: {fileID: 8898570568248611152, guid: 09ab61a35bdb00245b8f5214c2f0c86d, type: 3}
+    functionalityVideo: {fileID: 0}

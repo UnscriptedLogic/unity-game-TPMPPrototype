@@ -85,25 +85,37 @@ public static class BuildBehaviours
         item.transform.position = build.transform.position;
     }
 
-    public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> buildItems)
+    public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> inventory)
     {
-        O_BuildItem item = buildItems[0];
+        if (!outputNode.IsConnected) return;
+
+        O_BuildItem item = inventory[0];
         item.gameObject.SetActive(true);
         item.transform.position = outputNode.Transform.position;
 
-        buildItems.RemoveAt(0);
+        outputNode.GetBuildInfront().GiveItem(inventory[0]);
+
+        inventory.RemoveAt(0);
     }
 
     public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
     {
+        if (!outputNode.IsConnected) return;
+
         item.gameObject.SetActive(true);
         item.transform.position = outputNode.Transform.position;
+
+        outputNode.GetBuildInfront().GiveItem(item);
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
     {
+        if (!outputNode.IsConnected) return;
+
         O_BuildItem item = buildItem;
         item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
+
+        outputNode.GetBuildInfront().GiveItem(item);
     }
 }

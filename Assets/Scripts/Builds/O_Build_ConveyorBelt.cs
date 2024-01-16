@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnscriptedEngine;
 
 public class O_Build_ConveyorBelt : O_Build
 {
@@ -14,7 +13,6 @@ public class O_Build_ConveyorBelt : O_Build
 
     [SerializeField] private LineRenderer lineRenderer;
     
-    private List<O_BuildItem> conveyorItems = new List<O_BuildItem>();
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
     private bool isInPreview;
@@ -47,25 +45,25 @@ public class O_Build_ConveyorBelt : O_Build
                 O_BuildItem buildItem = collider2Ds[i].GetComponent<O_BuildItem>();
                 if (buildItem != null)
                 {
-                    if (conveyorItems.Contains(buildItem)) continue;
+                    if (inventory.Contains(buildItem)) continue;
 
-                    conveyorItems.Add(buildItem);
+                    inventory.Add(buildItem);
                     break;
                 }
             }
         }
 
-        for (int i = 0; i < conveyorItems.Count; i++)
+        for (int i = 0; i < inventory.Count; i++)
         {
-            if (conveyorItems[i] == null)
+            if (inventory[i] == null)
             {
-                conveyorItems.RemoveAt(i);
+                inventory.RemoveAt(i);
                 continue;
             }
 
-            if (!conveyorItems[i].gameObject.activeInHierarchy)
+            if (!inventory[i].gameObject.activeInHierarchy)
             {
-                conveyorItems.RemoveAt(i);
+                inventory.RemoveAt(i);
                 continue;
             }
 
@@ -74,9 +72,9 @@ public class O_Build_ConveyorBelt : O_Build
                 Vector3[] positions = new Vector3[lineRenderer.positionCount];
                 lineRenderer.GetPositions(positions);
 
-                (int start, int next) = FindTraversedSegment(conveyorItems[i].transform.position, positions);
+                (int start, int next) = FindTraversedSegment(inventory[i].transform.position, positions);
 
-                float calculatedLerp = Extensions.InverseLerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), conveyorItems[i].transform.position);
+                float calculatedLerp = Extensions.InverseLerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), inventory[i].transform.position);
 
                 if (next == lineRenderer.positionCount - 1 && calculatedLerp >= 1f)
                 {
@@ -97,11 +95,11 @@ public class O_Build_ConveyorBelt : O_Build
                 {
                     //Probably out of bounds of the conveyor.
 
-                    conveyorItems.RemoveAt(i);
+                    inventory.RemoveAt(i);
                     continue;
                 }
 
-                conveyorItems[i].transform.position = lerpPosition;
+                inventory[i].transform.position = lerpPosition;
             }
         }
     }
@@ -182,33 +180,27 @@ public class O_Build_ConveyorBelt : O_Build
 
             return;
         }
-
-        //Recalculate body collider
-
-        //EDGE CASES:
-        //What if the instigator is on the ends of the belt
-        //What if the instigator is on the turn of the belt
     }
 
     private void RearrangeConveyorItems(O_Build_ConveyorBelt secondHalf)
     {
-        for (int i = 0; i < conveyorItems.Count; i++)
+        for (int i = 0; i < inventory.Count; i++)
         {
-            if (!IsItemWithinBeltBoundaries(conveyorItems[i]))
+            if (!IsItemWithinBeltBoundaries(inventory[i]))
             {
                 if (secondHalf == null)
                 {
-                    Destroy(conveyorItems[i]);
+                    Destroy(inventory[i]);
                     return;
                 }
 
-                if (secondHalf.IsItemWithinBeltBoundaries(conveyorItems[i]))
+                if (secondHalf.IsItemWithinBeltBoundaries(inventory[i]))
                 {
-                    secondHalf.conveyorItems.Add(conveyorItems[i]);
+                    secondHalf.inventory.Add(inventory[i]);
                 }
                 else
                 {
-                    Destroy(conveyorItems[i].gameObject);
+                    Destroy(inventory[i].gameObject);
                 }
             }
         }
@@ -234,12 +226,14 @@ public class O_Build_ConveyorBelt : O_Build
             return true;
         }
 
-        Vector3 difference = (conveyorItems[index - 1].transform.position - conveyorItems[index].transform.position);
+        //Vector3 difference = (inventory[index - 1].transform.position - inventory[index].transform.position);
 
-        bool isXFarEnough = Mathf.Abs(difference.x) > 2f;
-        bool isYFarEnough = Mathf.Abs(difference.y) > 1.25f;
+        //bool isXFarEnough = Mathf.Abs(difference.x) > 2f;
+        //bool isYFarEnough = Mathf.Abs(difference.y) > 1.25f;
 
-        return isXFarEnough || isYFarEnough;
+        //return isXFarEnough || isYFarEnough;
+
+        return Vector3.Distance(inventory[index - 1].transform.position, inventory[index].transform.position) >= 0.35;
     }
 
     public (int, int) FindTraversedSegment(Vector3 currentPoint, Vector3[] positions)
@@ -443,11 +437,11 @@ public class O_Build_ConveyorBelt : O_Build
 
     private void OnDisable()
     {
-        for (int i = 0; i < conveyorItems.Count; i++)
+        for (int i = 0; i < inventory.Count; i++)
         {
-            if (conveyorItems[i] == null) continue;
+            if (inventory[i] == null) continue;
 
-            Destroy(conveyorItems[i].gameObject);
+            Destroy(inventory[i].gameObject);
         }
     }
 }

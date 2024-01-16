@@ -11,6 +11,8 @@ public class O_BuildComponent : O_BuildItem
 
     public List<O_BuildComponentItem> AttachedComponents => attachedComponents;
 
+    public Transform CanvasRoot => canvasRoot;
+
     public void AttachComponent(O_BuildComponentItem buildComponent)
     {
         AttachedComponents.Add(buildComponent);

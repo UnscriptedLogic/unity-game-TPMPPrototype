@@ -327,7 +327,7 @@ public class P_PlayerPawn : URTSCamera
         selectionDict.Clear();
     }
 
-    public void RotateSelection(int selectionRotation)
+    public void RotateSelection()
     {
         Vector3 origin = new Vector3();
         for (int i = 0; i < selectionDict.Count; i++)
@@ -337,6 +337,6 @@ public class P_PlayerPawn : URTSCamera
 
         origin /= selectionDict.Count;
 
-        selectionParent.RotateAround(origin, Vector3.forward, selectionRotation);
+        selectionParent.RotateAround(origin, Vector3.forward, 90);
     }
 }

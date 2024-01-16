@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
-using static O_Build;
 
 public abstract class O_Build : ULevelObject
 {
@@ -94,6 +94,21 @@ public abstract class O_Build : ULevelObject
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
         public bool IsConnected => HasConveyorBelt() || IsBuildingInfront;
 
+        public O_Build GetBuildInfront()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                O_Build build = colliders[i].GetComponentInParent<O_Build>();
+                if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
+                {
+                    return build;
+                }
+            }
+
+            return null;
+        }
+
         public bool IsSpawnAreaEmpty
         {
             get
@@ -181,6 +196,8 @@ public abstract class O_Build : ULevelObject
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
+    protected List<O_BuildItem> inventory;
+
     protected IBuildSystem levelBuildInterface;
 
     protected C_PlayerController.PlayerState playerState;
@@ -194,6 +211,8 @@ public abstract class O_Build : ULevelObject
 
     protected virtual void Start()
     {
+        inventory = new List<O_BuildItem>();
+
         levelBuildInterface = GameMode as IBuildSystem;
         if (levelBuildInterface != null)
         {
@@ -287,6 +306,11 @@ public abstract class O_Build : ULevelObject
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
 
         base.OnDestroy();
+    }
+
+    public virtual void GiveItem(O_BuildItem item)
+    {
+        inventory.Add(item);
     }
 
     public virtual void DeleteSelf()

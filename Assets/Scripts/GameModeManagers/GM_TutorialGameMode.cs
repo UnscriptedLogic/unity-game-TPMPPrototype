@@ -9,6 +9,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     [System.Serializable]
     public class OnSectionCompeletedEventArgs : EventArgs
     {
+        public int sectionIndex;
         public List<string> buildsToAdd;
     }
 
@@ -26,9 +27,10 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
     [SerializeField] private float nodeTickInterval;
     [SerializeField] private Material globalBeltMaterial;
     [SerializeField] private O_Build_TutorialDeployer deployer;
-    [SerializeField] private UIC_TutorialLevelHUD tutorialLevelHUDPrefab;
     [SerializeField] private List<Section> sections = new List<Section>();
     [SerializeField] private int resetEnergy = 3;
+
+    [SerializeField] private UIC_TutorialLevelHUD tutorialLevelHUDPrefab;
 
     public Bindable<int> energy = new Bindable<int>(0);
     public Bindable<int> daysLeft = new Bindable<int>(3);
@@ -55,6 +57,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
 
     public event EventHandler<OnSectionCompeletedEventArgs> OnSectionStarted;
     public event EventHandler OnClearAllObjects;
+    public event EventHandler OnLastSection;
 
     private event Action OnProjectSpeedingUpTime;
     private event Action OnSpeedUpTimeCompleted;
@@ -158,7 +161,8 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
 
         OnSectionStarted?.Invoke(this, new OnSectionCompeletedEventArgs()
         {
-            buildsToAdd = sections[currentSectionIndex].buildsToAdd
+            buildsToAdd = sections[currentSectionIndex].buildsToAdd,
+            sectionIndex = currentSectionIndex,
         });
     }
 
@@ -177,6 +181,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
             {
                 isRatePassed = true;
                 playerTutorialLevelHUD.ShowFinishProject();
+                OnLastSection?.Invoke(this, EventArgs.Empty);
             }
         }
     }

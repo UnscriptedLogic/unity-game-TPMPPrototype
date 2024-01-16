@@ -54,6 +54,8 @@ public class O_Build_ModifierBase : O_Build
 
             if (_creationIteration < creationIteration) return;
 
+            OnComponentToDispense(buildComponent);
+
             BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
             buildComponent = null;
 
@@ -82,4 +84,5 @@ public class O_Build_ModifierBase : O_Build
 
     protected virtual void OnComponentRecieved(O_BuildComponent component) { }
     protected virtual void ForEveryAttachedComponent(O_BuildComponentItem itemComponent) { }
+    protected virtual void OnComponentToDispense(O_BuildComponent component) { }
 }

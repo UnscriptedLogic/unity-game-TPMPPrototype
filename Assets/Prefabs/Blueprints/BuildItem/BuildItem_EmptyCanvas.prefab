@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.29999998}
+  m_LocalScale: {x: 0.29999998, y: 0.3, z: 0.29999998}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 418484280950649440}
@@ -72,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -810692103
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: fc4ddeaed8e5f9e48a5cf0024cf52f4f, type: 3}
   m_Color: {r: 0.6528301, g: 0.6528301, b: 0.6528301, a: 1}
   m_FlipX: 0
@@ -212,15 +212,15 @@ RectTransform:
   m_GameObject: {fileID: 3730074294632749518}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.00015, y: 0.00015, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 227319221466903872}
   m_Father: {fileID: 418484280950649440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3723982061721578150
@@ -243,8 +243,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -1245052697
-  m_SortingOrder: 0
+  m_SortingLayerID: -810692103
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &8163908790114414040
 MonoBehaviour:
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1726773250281533725
 MonoBehaviour:
   m_ObjectHideFlags: 0
