@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnscriptedEngine;
 
-public class C_PlayerController : UController
+public class C_PlayerController : UController, IPlayerState
 {
     public enum PlayerState
     {
@@ -37,8 +37,10 @@ public class C_PlayerController : UController
         }
     }
 
-    public Bindable<PlayerState> playerState;
+    private Bindable<PlayerState> playerState;
     private bool isDraggingToSelect;
+
+    public Bindable<PlayerState> CurrentPlayerState => playerState;
 
     protected override void Awake()
     {
@@ -87,7 +89,7 @@ public class C_PlayerController : UController
     {
         if (isShiftPressed) return;
 
-        playerState.Value = PlayerState.None;
+        CurrentPlayerState.Value = PlayerState.None;
     }
 
     private void LevelManager_OnResume(object sender, EventArgs e)
@@ -118,7 +120,7 @@ public class C_PlayerController : UController
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        switch (playerState.Value)
+        switch (CurrentPlayerState.Value)
         {
             case PlayerState.Building:
                 playerPawn.AttemptBuild(CalculateSnappedPosition(), objectRotation, isShiftPressed);
@@ -132,7 +134,7 @@ public class C_PlayerController : UController
 
                 if (isShiftPressed)
                 {
-                    playerState.Value = PlayerState.None;
+                    CurrentPlayerState.Value = PlayerState.None;
 
                     isDraggingToSelect = true;
                     playerPawn.BeginDragToSelect(MouseWorldPosition, isShiftPressed);
@@ -159,7 +161,7 @@ public class C_PlayerController : UController
             if (EventSystem.current.IsPointerOverGameObject()) return;
         }
 
-        switch (playerState.Value)
+        switch (CurrentPlayerState.Value)
         {
             case PlayerState.Building:
                 break;
@@ -171,7 +173,7 @@ public class C_PlayerController : UController
                 if (Vector3.Distance(playerPawn.StartDragPosition, CalculateSnappedPosition()) <= 0.1f && playerPawn.CanAllSelectedBeBuilt())
                 {
                     playerPawn.ClearSelection();
-                    playerState.Value = PlayerState.None;
+                    CurrentPlayerState.Value = PlayerState.None;
                 }
                 break;
 
@@ -182,7 +184,7 @@ public class C_PlayerController : UController
 
                 if (playerPawn.SelectionDict.Count > 0)
                 {
-                    playerState.Value = PlayerState.Selecting;
+                    CurrentPlayerState.Value = PlayerState.Selecting;
                 }
 
                 break;
@@ -193,7 +195,7 @@ public class C_PlayerController : UController
 
     public override void OnDefaultRightMouseDown()
     {
-        if (playerState.Value == PlayerState.Building)
+        if (CurrentPlayerState.Value == PlayerState.Building)
         {
             playerPawn.AttemptAlternateBuild(CalculateSnappedPosition(), objectRotation);
         }
@@ -201,7 +203,7 @@ public class C_PlayerController : UController
 
     private void OnRotatePressed(InputAction.CallbackContext obj)
     {
-        switch (playerState.Value)
+        switch (CurrentPlayerState.Value)
         {
             case PlayerState.Building:
                 objectRotation -= 90;
@@ -241,13 +243,13 @@ public class C_PlayerController : UController
 
     private void LevelManager_OnProjectCompleted(object sender, System.EventArgs e)
     {
-        playerState.Value = PlayerState.None;
+        CurrentPlayerState.Value = PlayerState.None;
         UnsubscribeKeybindEvents();
     }
 
     private void HudCanvas_OnDeleteBuildToggled(object sender, bool value)
     {
-        playerState.Value = value ? PlayerState.Deleting : PlayerState.None;
+        CurrentPlayerState.Value = value ? PlayerState.Deleting : PlayerState.None;
     }
 
     protected override ULevelPawn PossessPawn()
@@ -262,7 +264,7 @@ public class C_PlayerController : UController
     {
         playerPawn.StartBuildPreview(e, CalculateSnappedPosition());
 
-        playerState.Value = PlayerState.Building;
+        CurrentPlayerState.Value = PlayerState.Building;
     }
 
     private void InstantConveyorBuild(InputAction.CallbackContext obj) => BuildShortcut("util_conveyor");
@@ -272,13 +274,13 @@ public class C_PlayerController : UController
 
     private void BuildShortcut(string buildID)
     {
-        playerState.Value = PlayerState.Building;
+        CurrentPlayerState.Value = PlayerState.Building;
         playerPawn.StartBuildPreview(buildID, CalculateSnappedPosition());
     }
 
     private void OnEscapeKeyPressed(InputAction.CallbackContext context)
     {
-        if (playerState.Value == PlayerState.Selecting)
+        if (CurrentPlayerState.Value == PlayerState.Selecting)
         {
             if (playerPawn.CanAllSelectedBeBuilt())
             {
@@ -291,14 +293,14 @@ public class C_PlayerController : UController
             }
         }
 
-        playerState.Value = PlayerState.None;
+        CurrentPlayerState.Value = PlayerState.None;
     }
 
     private void DeleteModeShortcutPressed(InputAction.CallbackContext context)
     {
-        if (playerState.Value != PlayerState.Deleting)
+        if (CurrentPlayerState.Value != PlayerState.Deleting)
         {
-            playerState.Value = PlayerState.Deleting;
+            CurrentPlayerState.Value = PlayerState.Deleting;
             hudCanvas.DeleteBtnClicked();
 
             //If we are in build mode
@@ -306,7 +308,7 @@ public class C_PlayerController : UController
         }
         else
         {
-            playerState.Value = PlayerState.None;
+            CurrentPlayerState.Value = PlayerState.None;
             hudCanvas.CloseDeletePageClicked();
         }
     }
@@ -332,7 +334,7 @@ public class C_PlayerController : UController
             playerPawn.MovePlayerCameraWASD(wasdVector);
         }
 
-        switch (playerState.Value)
+        switch (CurrentPlayerState.Value)
         {
             case PlayerState.Building:
                 Vector3 worldPosition = CalculateSnappedPosition();

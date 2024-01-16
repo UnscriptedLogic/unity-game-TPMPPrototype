@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -199,6 +200,7 @@ public abstract class O_Build : ULevelObject
     protected List<O_BuildItem> inventory;
 
     protected IBuildSystem levelBuildInterface;
+    protected IPlayerState playerStateUser;
 
     protected C_PlayerController.PlayerState playerState;
 
@@ -219,7 +221,13 @@ public abstract class O_Build : ULevelObject
             levelBuildInterface.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
         }
 
-        GameMode.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged += OnPlayerStateChanged;
+        playerStateUser = GameMode.GetPlayerController() as IPlayerState;
+        if (playerStateUser != null)
+        {
+            playerStateUser.CurrentPlayerState.OnValueChanged += OnPlayerStateChanged;
+
+            Debug.LogWarning("Player Controller does not use IPlayerState!");
+        }
 
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
     }
@@ -297,10 +305,9 @@ public abstract class O_Build : ULevelObject
     {
         levelBuildInterface.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
 
-        C_PlayerController playerController = GameMode.GetPlayerController().CastTo<C_PlayerController>();
-        if (playerController != null)
+        if (playerStateUser != null)
         {
-            playerController.playerState.OnValueChanged -= OnPlayerStateChanged;
+            playerStateUser.CurrentPlayerState.OnValueChanged -= OnPlayerStateChanged;
         }
 
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);

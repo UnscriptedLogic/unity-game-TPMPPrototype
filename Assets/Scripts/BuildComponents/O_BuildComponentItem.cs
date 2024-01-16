@@ -136,14 +136,15 @@ public class O_BuildComponentItem : ULevelObject
         {
             case O_Build_ModifierBase.Side.Width:
 
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width * (shrinkPercentage / 100));
+                float percentageShrinkWidth = (uiComponent.rect.width / 100) * shrinkPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width - percentageShrinkWidth);
 
                 AppendModification($"shrinkwidth-{shrinkPercentage}");
                 break;
 
             case O_Build_ModifierBase.Side.Height:
-
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height * (shrinkPercentage / 100));
+                float percentageShrinkHeight = (uiComponent.rect.height / 100) * shrinkPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height - percentageShrinkHeight);
 
                 AppendModification($"shrinkheight-{shrinkPercentage}");
                 break;
@@ -155,20 +156,18 @@ public class O_BuildComponentItem : ULevelObject
 
     public void Expand(O_Build_ModifierBase.Side side, float expandPercentage)
     {
-        float flippedExpandPercentage = 100 - expandPercentage;
-
         switch (side)
         {
             case O_Build_ModifierBase.Side.Width:
-
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width / (flippedExpandPercentage / 100));
+                float percentageExpandWidth = (uiComponent.rect.width / 100) * expandPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width + percentageExpandWidth);
 
                 AppendModification($"expandwidth-{expandPercentage}");
                 break;
 
             case O_Build_ModifierBase.Side.Height:
-
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height / (flippedExpandPercentage / 100));
+                float percentageExpandHeight = (uiComponent.rect.height / 100) * expandPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height + percentageExpandHeight);
 
                 AppendModification($"expandheight-{expandPercentage}");
                 break;

@@ -17,9 +17,9 @@ MonoBehaviour:
   buildableDataSet:
   - iconSpr: {fileID: 21300000, guid: e3eedd5860c40fb479c5dc0df9ed7d72, type: 3}
     id: dispenser_htmlemptycanvas
-    displayName: Empty Canvas
+    displayName: Web Page
     description: The base of all web pages. These are the backgrounds where components
-      are layered on top of to produce websites. Canvases are not normally accepted
+      are layered on top of to produce websites. Web Pages are not normally accepted
       in modification nodes.
     frameworkCategory: 0
     buildMachineCategory: 0

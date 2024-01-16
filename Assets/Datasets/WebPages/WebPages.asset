@@ -44,3 +44,26 @@ MonoBehaviour:
       - shrinkheight-50
       - shrinkwidth-50
       - color-purple
+  - webpage: {fileID: 7366424205272422799, guid: a71e0eeaeb1dd994594cbf245c53390a, type: 3}
+    components:
+    - componentID: canvas
+      modificationIds: []
+    - componentID: square
+      modificationIds:
+      - stretchvertical
+      - position-center
+      - expandwidth-100
+      - expandwidth-100
+      - color-lightgray
+    - componentID: square
+      modificationIds:
+      - shrinkheight-50
+      - position-top
+      - color-purple
+      - stretchhorizontal
+    - componentID: square
+      modificationIds:
+      - shrinkheight-50
+      - position-bottom
+      - color-darkgrey
+      - stretchhorizontal

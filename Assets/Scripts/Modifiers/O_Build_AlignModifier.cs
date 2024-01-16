@@ -23,7 +23,7 @@ public class O_Build_AlignModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
     }
 
     private void OnToggleBack()

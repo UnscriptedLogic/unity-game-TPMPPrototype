@@ -32,7 +32,7 @@ public class O_Build_ShrinkModifier : O_Build_ModifierBase
         shrinkIndex.Value = 0;
         side.Value = Side.Width;
 
-        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
     }
 
     private void OnToggleValueBack()

@@ -20,7 +20,8 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     [SerializeField] private List<ColorSet> colors = new List<ColorSet>();
 
-    private int index;
+    [Header("Debug only")]
+    [SerializeField] private int index;
 
     protected override void Start()
     {
@@ -31,7 +32,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
     }
 
     private void OnToggleBack()
