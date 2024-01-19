@@ -17,9 +17,9 @@ public class O_Build_Splitter : O_Build
     [SerializeField] private OutputNode rightOutputNode;
     [SerializeField] private OutputNode middleOutputNode;
 
-    [SerializeField] private int dispenseOnEveryTick = 2;
+    [SerializeField] private int nodeConsumeTime = 4;
 
-    private OutputDirection outputDirection;
+    private OutputDirection outputDirection = OutputDirection.RIGHT;
 
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
@@ -27,17 +27,19 @@ public class O_Build_Splitter : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        base.NodeTickSystem_OnTick(sender, e);
+
         if (buildItems.Count < 1)
         {
             if (inputNode.TryGetBuildItem(out O_BuildItem buildItem))
             {
                 BuildBehaviours.ConsumeItem(this, buildItem, ref buildItems);
+                ticksLeft = nodeConsumeTime;
             } 
         }
 
         if (buildItems.Count == 0) return;
-
-        if (!levelBuildInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+        if (ticksLeft > 0) return;
 
         OutputNode outputNode = GetNextOutput();
 
@@ -66,7 +68,6 @@ public class O_Build_Splitter : O_Build
         {
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
-
                 if (!middleOutputNode.HasConveyorBelt() || !middleOutputNode.IsBuildingInfront)
                 {
                     GetNextOutput(--depth);
@@ -78,7 +79,6 @@ public class O_Build_Splitter : O_Build
                 break;
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
-
                 if (!rightOutputNode.HasConveyorBelt() || !rightOutputNode.IsBuildingInfront)
                 {
 
@@ -91,7 +91,6 @@ public class O_Build_Splitter : O_Build
                 break;
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
-
                 if (!leftOutputNode.HasConveyorBelt() || !leftOutputNode.IsBuildingInfront)
                 {
                     GetNextOutput(--depth);

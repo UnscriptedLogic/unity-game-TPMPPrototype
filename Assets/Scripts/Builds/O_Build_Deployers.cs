@@ -30,15 +30,17 @@ public class O_Build_Deployers : O_Build, IDeployer
             return;
         }
 
-        int randomIndex = UnityEngine.Random.Range(0, pageObjectInterface.WebpageSO.WebPageDataSet.Count);
-        currentPageData = pageObjectInterface.WebpageSO.WebPageDataSet[randomIndex];
-        Instantiate(currentPageData.WebPage, websiteCanvasTransform);
-
         canvasController.OnWidgetAttached(this);
         canvasController.BindUI(ref acceptedPagesRate, "rate", value => $"{value} pages/min");
         canvasController.BindUI(ref requiredRate, "required", value => $"Min. {value}");
 
         requiredRate.Value = UnityEngine.Random.Range(requiredRateRange.x, requiredRateRange.y);
+    }
+
+    public void InitializeDeployers(int index)
+    {
+        currentPageData = pageObjectInterface.WebpageSO.WebPageDataSet[index];
+        Instantiate(currentPageData.WebPage, websiteCanvasTransform);
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)

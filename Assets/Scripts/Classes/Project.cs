@@ -5,8 +5,9 @@ using UnscriptedEngine;
 [System.Serializable]
 public class Project
 {
-    private string name;
-    private string description;
+    [SerializeField] private Sprite thumbnail;
+    [SerializeField] private string name;
+    [SerializeField][TextArea(3, 5)] private string description;
     private bool isCompleted;
 
     //This is the defining factor of the randomness in the project. 
@@ -21,6 +22,7 @@ public class Project
 
     public string Name => name;
     public string Description => description;
+    public Sprite Thumbnail => thumbnail;
     public bool IsCompleted => isCompleted;
     public List<Requirement> Requirements => requirements;
     public List<int> PageIndexes => pageIndexes;

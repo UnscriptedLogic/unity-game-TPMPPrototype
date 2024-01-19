@@ -26,7 +26,7 @@ MonoBehaviour:
     Bootstrap.
 
 
-    Bootstrap is a toolkit that makes websites look good and work
-    well without needing to start from scratch. It''s like a shortcut to a polished
+    Bootstrap is a ui library that makes websites look good and
+    work well without needing to start from scratch. It''s like a shortcut to a polished
     and functional website design.'
   cost: 100

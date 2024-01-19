@@ -13,8 +13,6 @@ public class O_Build_Joiner : O_Build
     [SerializeField] private int dispenseOnEveryTick = 4;
     [SerializeField] private int maxStorage = 100;
 
-    private int ticksLeft;
-
     private List<O_BuildItem> buildItems = new List<O_BuildItem>();
 
     private List<InputNode> inputNodes = new List<InputNode>();
@@ -30,23 +28,19 @@ public class O_Build_Joiner : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        base.NodeTickSystem_OnTick(sender, e);
+
+        if (ticksLeft > 0) return;
         if (buildItems.Count == 0) return;
 
-        if (ticksLeft <= 0)
+        if (outputNode.IsSpawnAreaEmpty)
         {
-            if (outputNode.IsSpawnAreaEmpty)
-            {
-                CreateBuildItem(buildItems[0], outputNode);
+            CreateBuildItem(buildItems[0], outputNode);
 
-                if (buildItems.Count > 0)
-                {
-                    ticksLeft = dispenseOnEveryTick;
-                }
+            if (buildItems.Count > 0)
+            {
+                ticksLeft = dispenseOnEveryTick;
             }
-        }
-        else
-        {
-            ticksLeft--;
         }
     }
 

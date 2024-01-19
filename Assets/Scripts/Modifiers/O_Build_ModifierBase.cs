@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -69,14 +70,16 @@ public class O_Build_ModifierBase : O_Build
         for (int i = 0; i < colliders.Length; i++)
         {
             O_Build build = colliders[i].GetComponent<O_Build>();
-            if (!(build != null && colliders[i].gameObject != gameObject)) continue;
+            if (build == null) continue;
+            if (colliders[i].gameObject == gameObject) continue;
 
             O_Build_ConveyorBelt conveyorBelt = build as O_Build_ConveyorBelt;
             if (conveyorBelt != null)
             {
                 conveyorBelt.SplitConveyorBelt(this);
-                return true;
             }
+
+            return conveyorBelt != null;
         }
 
         return true;

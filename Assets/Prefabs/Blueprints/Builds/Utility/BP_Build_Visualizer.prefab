@@ -92,7 +92,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -213805485
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &7333780761137975999
 MonoBehaviour:
@@ -374,6 +374,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 0987d8b82fcfdb94fa14b0aaadfec517, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7871556540511652807, guid: 0987d8b82fcfdb94fa14b0aaadfec517, type: 3}
       propertyPath: m_SortingLayerID
       value: -213805485
       objectReference: {fileID: 0}
@@ -543,7 +547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 8d9e8d299b50dc34089d9b3a833962c0, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 8d9e8d299b50dc34089d9b3a833962c0, type: 3}
       propertyPath: m_SortingLayerID

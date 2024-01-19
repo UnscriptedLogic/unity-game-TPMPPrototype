@@ -12,12 +12,5 @@ public class C_StartPlayerController : UController
         base.OnLevelStarted();
 
         mainMenuController = AttachUIWidget(mainMenuControllerPrefab);
-
-        mainMenuController.OnQuitBtnClickedEvent += MainMenuController_OnQuitBtnClickedEvent;
-    }
-
-    private void MainMenuController_OnQuitBtnClickedEvent(object sender, System.EventArgs e)
-    {
-        GameMode.QuitGame();
     }
 }

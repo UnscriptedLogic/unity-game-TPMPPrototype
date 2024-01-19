@@ -4,6 +4,7 @@ using UnityEngine;
 public class GI_CustomGameInstance : UGameInstance
 {
     private Project project;
+    [SerializeField] private List<Project> levels;
 
     public Project Project
     {
@@ -32,6 +33,8 @@ public class GI_CustomGameInstance : UGameInstance
 
         set { project = value; }
     }
+    public List<Project> Levels => levels;
+    public int LevelToLoad { get; private set; }
 
     public Bindable<PlayerData> playerData;
 
@@ -39,22 +42,14 @@ public class GI_CustomGameInstance : UGameInstance
     {
         base.Awake();
 
-        List<Project> projects = new List<Project>()
-        {
-            new Project("Random Level", "A test project", false,
-                new List<Requirement>()
-                {
-                    new DeployersMeetRateRequirement(),
-                },
-                new List<int>()
-                {
-
-                },
-                false,
-                ProjectExtensions.GenerateRandomProjectSeed()
+        playerData = new Bindable<PlayerData>(
+            new PlayerData(
+                new PlayerData.GameValues(), 
+                new List<Project>(), 
+                new List<string>()
                 )
-        };
-
-        playerData = new Bindable<PlayerData>(new PlayerData(new PlayerData.GameValues(), projects, new List<string>()));
+            );
     }
+
+    public void SetLevelToLoad(int index) => LevelToLoad = index;
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultTheme
   m_EditorClassIdentifier: 
   primaryPalette:
-    main: {r: 0.10188681, g: 0.10188681, b: 0.10188681, a: 1}
+    main: {r: 1, g: 1, b: 1, a: 1}
     light: {r: 1, g: 1, b: 1, a: 1}
     dark: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
-  primaryFont: {fileID: 11400000, guid: bf0ab0124ca898f4a814d0c62808d24c, type: 2}
+  primaryFont: {fileID: 11400000, guid: fe8fd66f50d3b664185a23c66b7e9f0a, type: 2}

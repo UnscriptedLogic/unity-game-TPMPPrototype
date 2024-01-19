@@ -44,3 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba614ef8dba7c334d9e4e0790f67294f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levels:
+  - thumbnail: {fileID: 21300000, guid: ebeeb5af5ddbd3940a6ae70fdb44eedb, type: 3}
+    name: Generic Purple Website
+    description: A generic and simpe purple website.
+  - thumbnail: {fileID: 21300000, guid: 3739bfea4b774c248821878640b0163d, type: 3}
+    name: YouPipe
+    description: A video streaming website where anyone can upload anything for the
+      internet to enjoy

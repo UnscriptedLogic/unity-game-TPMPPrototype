@@ -194,6 +194,8 @@ public abstract class O_Build : ULevelObject
     public const string START_CONSTRUCT_POINT = "StartConstructPoint";
     public const string END_CONSTRUCT_POINT = "EndConstructPoint";
 
+    protected int ticksLeft;
+
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
@@ -232,7 +234,13 @@ public abstract class O_Build : ULevelObject
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
     }
 
-    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e) { }
+    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e) 
+    {
+        if (ticksLeft > 0)
+        {
+            ticksLeft--;
+        }
+    }
 
     public virtual void OnBeginPreview() 
     {

@@ -10,14 +10,14 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
     [SerializeField] private UIC_ProjectCompletionHUD gameCompletedHUD;
     [SerializeField] private List<O_Build_Deployers> deployers;
-    [SerializeField] private WebPageSO webpageData;
+    [SerializeField] private WebPageSetSO allWebPagesSO;
     [SerializeField] private float nodeTickInterval = 0.1f;
     [SerializeField] private int resetEnergy = 3;
     [SerializeField] private float evaluateTime = 10f;
     [SerializeField] private Material globalConveyorMaterial;
 
+    private WebPageSO webpageData;
     private bool isSpeedingUpFactoryOverTime;
-
     private bool isProjectCompleted = false;
     private float lerp = 0;
     private float maxFactoryEvaluateSpeed = 8f;
@@ -52,8 +52,8 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     protected override IEnumerator Start()
     {
         customGameInstance = GameInstance.CastTo<GI_CustomGameInstance>();
-     
-        UnityEngine.Random.InitState(customGameInstance.Project.Seed);
+
+        webpageData = allWebPagesSO.WebPageSOs[customGameInstance.LevelToLoad];
 
         globalBeltSpeed = customGameInstance.playerData.Value.conveyorBeltSpeed.Value;
         nodeTickInterval = customGameInstance.playerData.Value.tickSpeed.Value;
@@ -65,6 +65,11 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         yield return base.Start();
 
         GetPlayerController().AttachUIWidget(gameLevelHUD);
+
+        for (int i = 0; i < deployers.Count; i++)
+        {
+            deployers[i].InitializeDeployers(i);
+        }
     }
 
     private void GM_LevelManager_OnSpeedUpTimeCompleted()

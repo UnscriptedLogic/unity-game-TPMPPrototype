@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b628dec6bf36652499dd3b657c8748b4, type: 3}
   m_Name: Utility
   m_EditorClassIdentifier: 
-  frameworkIcon: {fileID: 21300000, guid: fadcc2ea128d8c34f8f279d149fd2009, type: 3}
+  frameworkIcon: {fileID: 21300000, guid: 050c34eb2c3bd474dbeac92f771ea2a0, type: 3}
   frameworkName: Utility
   buildableDataSet:
   - iconSpr: {fileID: 21300000, guid: 6b6c04386a71ef449840047c02838076, type: 3}

@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnscriptedEngine;
 
 public class UIC_BuildHUD : UCanvasController, IBuildHUD
@@ -60,6 +61,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
             //Framework button
             UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
+            frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.FrameworkIcon;
             frameworkBtn.SetID(framework.FrameworkName);
             frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
             frameworkBtn.InitializeUIComponent(this);

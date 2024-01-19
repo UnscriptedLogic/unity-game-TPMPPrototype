@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnscriptedEngine;
 
 public class UIC_TutorialBuildHUD : UIC_BuildHUD
@@ -49,7 +50,8 @@ public class UIC_TutorialBuildHUD : UIC_BuildHUD
             SO_Builds framework = builds.Frameworks[i];
          
             //Framework button
-            UButtonComponent frameworkBtn = Instantiate(buildBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
+            UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
+            frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.FrameworkIcon;
             frameworkBtn.SetID(framework.FrameworkName);
             frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
             frameworkBtn.InitializeUIComponent(this);
