@@ -14,7 +14,7 @@ public class BuildBtn : UButtonComponent, IPointerEnterHandler, IPointerExitHand
     private float originalY;
     private float offsetY => originalY + 25f;
 
-    public void Initialize(UCanvasController context, SO_Builds.BuildableData data)
+    public void Initialize(UCanvasController context, BuildSO data)
     {
         InitializeUIComponent(context);
 

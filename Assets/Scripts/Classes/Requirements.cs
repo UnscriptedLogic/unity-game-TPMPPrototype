@@ -34,6 +34,35 @@ public class Requirement
     }
 }
 
+public class DeployersRecieveItem : Requirement
+{
+    public DeployersRecieveItem()
+    {
+        name = "Deployer Requirement";
+        gameDescription = "All deployers must be recieve the correct page.";
+        realWorldDescription = "";
+    }
+
+    public override bool EvaluateCondition(UGameModeBase gameMode)
+    {
+        IFactoryValidation validationInterface = gameMode as IFactoryValidation;
+
+        IDeployer[] deployers = validationInterface.GetDeployers();
+
+        for (int i = 0; i < deployers.Length; i++)
+        {
+            if (!deployers[i].HasReachedRequiredRate)
+            {
+                IsConditionMet.Value = false;
+                return false;
+            }
+        }
+
+        IsConditionMet.Value = true;
+        return true;
+    }
+}
+
 public class DeployersMeetRateRequirement : Requirement
 {
     public DeployersMeetRateRequirement()

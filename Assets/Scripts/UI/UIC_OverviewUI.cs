@@ -43,6 +43,11 @@ public class UIC_OverviewUI : UCanvasController
             uButtonComponent.SetID(i.ToString());
             uButtonComponent.InitializeUIComponent(this);
 
+            if (i > 0)
+            {
+                uButtonComponent.TMPButton.interactable = levels[i].IsCompleted || levels[i - 1].IsCompleted;
+            }
+
             UTextComponent uTextComponent = levelButton.GetComponentInChildren<UTextComponent>();
             uTextComponent.InitializeUIComponent(this);
             uTextComponent.TMP.text = $"Level {i + 1}";
@@ -53,7 +58,7 @@ public class UIC_OverviewUI : UCanvasController
 
     private void OnPlayPressed()
     {
-        GameMode.GameInstance.CastTo<GI_CustomGameInstance>().SetLevelToLoad(selectedLevelIndex);
+        GameMode.GameInstance.CastTo<GI_CustomGameInstance>().SetProjectToLoad(selectedLevelIndex);
         GameMode.LoadScene(1);
     }
 

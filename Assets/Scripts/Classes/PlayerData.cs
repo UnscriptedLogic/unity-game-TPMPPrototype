@@ -15,7 +15,6 @@ public class PlayerData
     }
 
     private List<Project> projects;
-    public Bindable<List<string>> upgradesObtained = new Bindable<List<string>>(new List<string>());
 
     public bool useMouseCursorToMove = true;
 
@@ -25,13 +24,12 @@ public class PlayerData
 
     public List<Project> Projects => projects;
 
-    public PlayerData(GameValues values, List<Project> projects, List<string> upgradesObtained)
+    public PlayerData(GameValues values, List<Project> projects)
     {
         credits.Value = values.credits;
         conveyorBeltSpeed.Value = values.beltSpeed;
         tickSpeed.Value = values.tickSpeed;
 
         this.projects = new List<Project>(projects);
-        this.upgradesObtained.Value = new List<string>(upgradesObtained);
     }
 }

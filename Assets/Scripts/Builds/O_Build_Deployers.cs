@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,21 +9,25 @@ public class O_Build_Deployers : O_Build, IDeployer
     [SerializeField] private UCanvasController canvasController;
     [SerializeField] private Transform websiteCanvasTransform;
     [SerializeField] private InputNode inputNode;
-    [SerializeField] private Vector2Int requiredRateRange = new Vector2Int(10, 24);
 
     [SerializeField] private CanvasRecievedItemGlint canvasGlint;
 
     private Bindable<int> requiredRate = new Bindable<int>(0);
     private WebPageSO.PageData currentPageData;
-    private float elapsedTime = 0f;
     private IUsesPageObjects pageObjectInterface;
+
+    private float elapsedTime = 0f;
+    private int totalItemsReceived = 0;
 
     public Bindable<int> acceptedPagesRate = new Bindable<int>(0);
 
     public bool HasReachedRequiredRate => acceptedPagesRate.Value >= requiredRate.Value;
+    public int AcceptedPageCount => totalItemsReceived;
 
-    protected override void OnLevelStarted()
+    protected override void Start()
     {
+        base.Start();
+
         pageObjectInterface = GameMode as IUsesPageObjects;
         if (pageObjectInterface == null)
         {
@@ -34,12 +39,12 @@ public class O_Build_Deployers : O_Build, IDeployer
         canvasController.BindUI(ref acceptedPagesRate, "rate", value => $"{value} pages/min");
         canvasController.BindUI(ref requiredRate, "required", value => $"Min. {value}");
 
-        requiredRate.Value = UnityEngine.Random.Range(requiredRateRange.x, requiredRateRange.y);
+        requiredRate.Value = currentPageData.RequiredMinPage;
     }
 
-    public void InitializeDeployers(int index)
+    public void InitializeDeployers(WebPageSO.PageData pageData)
     {
-        currentPageData = pageObjectInterface.WebpageSO.WebPageDataSet[index];
+        currentPageData = pageData;
         Instantiate(currentPageData.WebPage, websiteCanvasTransform);
     }
 
@@ -54,8 +59,7 @@ public class O_Build_Deployers : O_Build, IDeployer
             //Validate
             if (pageObjectInterface.WebpageSO.IsComponentRequirementsMet(page, currentPageData))
             {
-                acceptedPagesRate.Value++;
-
+                totalItemsReceived++;
                 canvasGlint.FlashSuccess();
             }
             else
@@ -73,10 +77,11 @@ public class O_Build_Deployers : O_Build, IDeployer
     {
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime >= 60f)
-        {
-            elapsedTime = 0f;
-            acceptedPagesRate.Value = 0;
-        }
+        CalculateRate();
+    }
+
+    private void CalculateRate()
+    {
+        acceptedPagesRate.Value = (int)(totalItemsReceived / (elapsedTime / 60.0f));
     }
 }

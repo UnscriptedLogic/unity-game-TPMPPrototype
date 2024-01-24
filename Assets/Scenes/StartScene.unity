@@ -5448,7 +5448,7 @@ MonoBehaviour:
     transform: {fileID: 565990048}
   middleOutputNode:
     transform: {fileID: 1783997807}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &147216033
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19369,7 +19369,7 @@ MonoBehaviour:
     transform: {fileID: 1162585002}
   middleOutputNode:
     transform: {fileID: 1537106039}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &516381918
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -29875,7 +29875,7 @@ MonoBehaviour:
     transform: {fileID: 1142279995}
   middleOutputNode:
     transform: {fileID: 369522216}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &755717161
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -33089,7 +33089,7 @@ MonoBehaviour:
     transform: {fileID: 102855087}
   middleOutputNode:
     transform: {fileID: 489116466}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &857604359
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -35139,7 +35139,7 @@ MonoBehaviour:
     transform: {fileID: 1314296019}
   middleOutputNode:
     transform: {fileID: 509239078}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &901062986
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -41042,7 +41042,7 @@ MonoBehaviour:
     transform: {fileID: 1962151409}
   middleOutputNode:
     transform: {fileID: 2123395158}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1052406452
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -45065,7 +45065,7 @@ MonoBehaviour:
     transform: {fileID: 1818500938}
   middleOutputNode:
     transform: {fileID: 1487030918}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1129044282
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -48507,7 +48507,7 @@ MonoBehaviour:
     transform: {fileID: 1901648377}
   middleOutputNode:
     transform: {fileID: 349609155}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1215919061
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -50605,7 +50605,7 @@ MonoBehaviour:
     transform: {fileID: 1703257074}
   middleOutputNode:
     transform: {fileID: 1315043746}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1257510185
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -53600,7 +53600,7 @@ MonoBehaviour:
     transform: {fileID: 1393877483}
   middleOutputNode:
     transform: {fileID: 967219457}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1342505530
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -62518,7 +62518,7 @@ MonoBehaviour:
     transform: {fileID: 737859789}
   middleOutputNode:
     transform: {fileID: 835386551}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1550317365
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -73496,7 +73496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1799395832}
   - component: {fileID: 1799395831}
-  - component: {fileID: 1799395830}
+  - component: {fileID: 1799395833}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -73504,26 +73504,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1799395830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799395829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1799395831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73554,6 +73534,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1799395833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799395829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &1800271356
 GameObject:
   m_ObjectHideFlags: 0
@@ -78756,7 +78766,7 @@ MonoBehaviour:
     transform: {fileID: 1493503875}
   middleOutputNode:
     transform: {fileID: 730913694}
-  dispenseOnEveryTick: 2
+  nodeConsumeTime: 4
 --- !u!61 &1913965119
 BoxCollider2D:
   m_ObjectHideFlags: 0

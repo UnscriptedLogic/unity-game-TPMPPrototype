@@ -166,7 +166,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Canvas
+  m_text: Page
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bf0ab0124ca898f4a814d0c62808d24c, type: 2}
   m_sharedMaterial: {fileID: -147566326166934183, guid: bf0ab0124ca898f4a814d0c62808d24c, type: 2}
@@ -460,7 +460,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: ad092b2923a42d3418fbc61afd5e1d17, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: ad092b2923a42d3418fbc61afd5e1d17, type: 3}
       propertyPath: m_SortingOrder
@@ -546,7 +546,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingOrder
@@ -628,7 +628,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayerID

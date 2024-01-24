@@ -9,23 +9,18 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     [Header("Game Mode")]
     [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
     [SerializeField] private UIC_ProjectCompletionHUD gameCompletedHUD;
-    [SerializeField] private List<O_Build_Deployers> deployers;
-    [SerializeField] private WebPageSetSO allWebPagesSO;
     [SerializeField] private float nodeTickInterval = 0.1f;
-    [SerializeField] private int resetEnergy = 3;
     [SerializeField] private float evaluateTime = 10f;
-    [SerializeField] private Material globalConveyorMaterial;
+    [SerializeField] private Transform deployerParent;
+    [SerializeField] private O_Build_Deployers deployerPrefab;
 
+    private List<O_Build_Deployers> deployers;
     private WebPageSO webpageData;
     private bool isSpeedingUpFactoryOverTime;
-    private bool isProjectCompleted = false;
     private float lerp = 0;
     private float maxFactoryEvaluateSpeed = 8f;
     private float lerpToMaxSpeedTime = 0.1f;
     private float _evaluateTime;
-    
-    public Bindable<int> energy = new Bindable<int>(3);
-    public Bindable<int> daysLeft = new Bindable<int>(3);
 
     private GI_CustomGameInstance customGameInstance;
 
@@ -34,7 +29,6 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     private event Action OnProjectSpeedingUpTime;
     private event Action OnSpeedUpTimeCompleted;
 
-    public event EventHandler OnTestFactoryClicked;
     public event EventHandler OnProjectCompleted;
     public event EventHandler OnProjectEvaluationCompleted;
     public event EventHandler OnClearAllObjects;
@@ -43,17 +37,31 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
 
     public WebPageSO WebpageSO => webpageData;
     public TickSystem.Ticker NodeTickSystem => ticker;
-    public int ResetEnergyAmount => resetEnergy;
-    public bool IsProjectCompleted => isProjectCompleted;
     public float GlobalBeltSpeed => globalBeltSpeed;
     public List<O_Build_Deployers> Deployers => deployers;
     public bool IsSpeedingUpFactoryOverTime => isSpeedingUpFactoryOverTime;
+
+    public bool IsProjectCompleted
+    {
+        get
+        {
+            return customGameInstance.Project.IsCompleted;
+        }
+
+        set
+        {
+            if (value)
+            {
+               customGameInstance.Project.Complete();
+            }
+        }
+    }
 
     protected override IEnumerator Start()
     {
         customGameInstance = GameInstance.CastTo<GI_CustomGameInstance>();
 
-        webpageData = allWebPagesSO.WebPageSOs[customGameInstance.LevelToLoad];
+        webpageData = customGameInstance.Project.WebPageSO;
 
         globalBeltSpeed = customGameInstance.playerData.Value.conveyorBeltSpeed.Value;
         nodeTickInterval = customGameInstance.playerData.Value.tickSpeed.Value;
@@ -62,35 +70,62 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         OnProjectSpeedingUpTime += GM_LevelManager_OnProjectSpeedingUpTime;
         OnSpeedUpTimeCompleted += GM_LevelManager_OnSpeedUpTimeCompleted;
 
+        customGameInstance.Project.SetRequirements(new List<Requirement>()
+        {
+            new DeployersRecieveItem(),
+            new DeployersMeetRateRequirement(),
+        });
+
         yield return base.Start();
 
         GetPlayerController().AttachUIWidget(gameLevelHUD);
 
-        for (int i = 0; i < deployers.Count; i++)
+        float currentOffset = 0;
+        float offset = 2.5f;
+        float side = 1f;
+        bool timeToFlip = false;
+        deployers = new List<O_Build_Deployers>();
+        for (int i = 0; i < webpageData.WebPageDataSet.Count; i++)
         {
-            deployers[i].InitializeDeployers(i);
+            O_Build_Deployers deployer = Instantiate(deployerPrefab, deployerParent);
+            deployers.Add(deployer);
+
+            if (timeToFlip)
+            {
+                currentOffset += offset;
+                timeToFlip = false;
+            }
+
+            if ((i % 2) == 0)
+            {
+                side = -1f;
+                timeToFlip = true;
+            }
+            else
+            {
+                side = 1f;
+            }
+
+            deployer.transform.position = new Vector3(side * currentOffset, 0, 0);
+
+            deployer.InitializeDeployers(webpageData.WebPageDataSet[i]);
         }
     }
 
     private void GM_LevelManager_OnSpeedUpTimeCompleted()
     {
-        if (isProjectCompleted)
+        if (IsProjectCompleted)
         {
             OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
             customGameInstance.Project.Complete();
 
             GetPlayerController().AttachUIWidget(gameCompletedHUD);
         }
-        else
-        {
-            daysLeft.Value--;
-            energy.Value = resetEnergy;
-        }
     }
 
     private void GM_LevelManager_OnProjectSpeedingUpTime()
     {
-        if (isProjectCompleted)
+        if (IsProjectCompleted)
         {
             customGameInstance.Project.EvaluateRequirements(this);
 
@@ -105,7 +140,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
 
     protected override void Update()
     {
-        globalConveyorMaterial.AnimateConveyorMaterial(globalBeltSpeed);
+        customGameInstance.GlobalConveyorMaterial.AnimateConveyorMaterial(globalBeltSpeed);
 
         if (isSpeedingUpFactoryOverTime)
         {
@@ -133,35 +168,12 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
     }
 
-    public void TestFactory()
-    {
-        if (energy.Value <= 0) return;
-
-        energy.Value--;
-
-        OnTestFactoryClicked?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void ClockIn()
-    {
-        if (IsSpeedingUpFactoryOverTime) return;
-
-        if (daysLeft.Value <= 0)
-        {
-            //No more days left! Finish the project!
-            return;
-        }
-
-        _evaluateTime = evaluateTime;
-        isSpeedingUpFactoryOverTime = true;
-    }
-
     public void FinishProject()
     {
         if (IsSpeedingUpFactoryOverTime) return;
 
         _evaluateTime = evaluateTime;
-        isProjectCompleted = true;
+        IsProjectCompleted = true;
         isSpeedingUpFactoryOverTime = true;
 
         OnProjectCompleted?.Invoke(this, EventArgs.Empty);

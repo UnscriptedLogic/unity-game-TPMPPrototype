@@ -16,14 +16,6 @@ public class UpgradeFactory : MonoBehaviour
         this.playerData = playerData;
     }
 
-    public void ObtainBootstrap()
-    {
-        playerData.upgradesObtained.Value = new List<string>(playerData.upgradesObtained.Value)
-        {
-            "bootstrap"
-        };
-    }
-
     public void DoubleBeltSpeed()
     {
         playerData.conveyorBeltSpeed.Value *= 2;

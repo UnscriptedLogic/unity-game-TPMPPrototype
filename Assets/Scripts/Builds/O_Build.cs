@@ -227,8 +227,6 @@ public abstract class O_Build : ULevelObject
         if (playerStateUser != null)
         {
             playerStateUser.CurrentPlayerState.OnValueChanged += OnPlayerStateChanged;
-
-            Debug.LogWarning("Player Controller does not use IPlayerState!");
         }
 
         OnBuildCreated?.Invoke(this, EventArgs.Empty);

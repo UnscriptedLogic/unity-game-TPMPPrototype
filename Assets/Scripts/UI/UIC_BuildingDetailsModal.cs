@@ -35,10 +35,6 @@ public class UIC_BuildingDetailsModal : UCanvasController
         showBtn.gameObject.SetActive(false);
 
         O_Build.OnObjectBuilt += O_Build_OnBuildCreated;
-
-#if UNITY_WEBGL
-        videoTransform.gameObject.SetActive(false);
-#endif
     }
 
     private void OnShow()
@@ -54,7 +50,7 @@ public class UIC_BuildingDetailsModal : UCanvasController
     public void InitializeModal(string id)
     {
         (int frameworkIndex, int buildIndex) = builds.GetBuildableFromID(id);
-        SO_Builds.BuildableData build = builds.Frameworks[frameworkIndex].DataSet[buildIndex];
+        BuildSO build = builds.Frameworks[frameworkIndex].DataSet[buildIndex];
 
         buildName.TMP.text = build.DisplayName;
         buildDesc.TMP.text = build.Description;

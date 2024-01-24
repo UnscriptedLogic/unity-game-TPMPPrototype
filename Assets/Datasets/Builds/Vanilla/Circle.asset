@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb30a193672e6b4ebc664823ff03758, type: 3}
+  m_Name: Circle
+  m_EditorClassIdentifier: 
+  iconSpr: {fileID: 21300000, guid: 3f18d3b1b35f8de41bde5cdcc32b9adf, type: 3}
+  id: circle
+  displayName: Circle Component
+  description: The basis of all circular components of a website. Stretch, shrink,
+    and color these components at will to get your desired design.
+  frameworkCategory: 0
+  buildMachineCategory: 0
+  build: {fileID: 2731108159020371978, guid: 9ce3dd07e85c099459da24e26f4e29e7, type: 3}
+  functionalityVideo: {fileID: 32900000, guid: 51ca716c73a00894098fb73e8179cbe6, type: 3}

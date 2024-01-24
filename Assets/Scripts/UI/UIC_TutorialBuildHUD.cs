@@ -45,45 +45,45 @@ public class UIC_TutorialBuildHUD : UIC_BuildHUD
 
     protected override void ShowFrameworkButtons()
     {
-        for (int i = 0; i < builds.Frameworks.Count; i++)
-        {
-            SO_Builds framework = builds.Frameworks[i];
+        //for (int i = 0; i < builds.Frameworks.Count; i++)
+        //{
+        //    FrameworkSO framework = builds.Frameworks[i];
          
-            //Framework button
-            UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
-            frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.FrameworkIcon;
-            frameworkBtn.SetID(framework.FrameworkName);
-            frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
-            frameworkBtn.InitializeUIComponent(this);
+        //    //Framework button
+        //    UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
+        //    frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.FrameworkIcon;
+        //    frameworkBtn.SetID(framework.FrameworkName);
+        //    frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
+        //    frameworkBtn.InitializeUIComponent(this);
 
-            Bind<UButtonComponent>(framework.FrameworkName, ShowFrameworkBuilds);
-        }
+        //    Bind<UButtonComponent>(framework.FrameworkName, ShowFrameworkBuilds);
+        //}
     }
 
     protected override void ShowFrameworkBuilds(string id)
     {        
-        buildFrameworkBtnsParent.gameObject.SetActive(!buildFrameworkBtnsParent.gameObject.activeInHierarchy);
+        //buildFrameworkBtnsParent.gameObject.SetActive(!buildFrameworkBtnsParent.gameObject.activeInHierarchy);
 
-        lastSelectedFrameworkID = id;
+        //lastSelectedFrameworkID = id;
 
-        //Clear the parent just in case
-        for (int i = buildFrameworkBtnsParent.childCount - 1; i >= 0; i--)
-        {
-            Destroy(buildFrameworkBtnsParent.GetChild(i).gameObject);
-        }
+        ////Clear the parent just in case
+        //for (int i = buildFrameworkBtnsParent.childCount - 1; i >= 0; i--)
+        //{
+        //    Destroy(buildFrameworkBtnsParent.GetChild(i).gameObject);
+        //}
 
-        buildFrameworkBtnsParent.gameObject.SetActive(true);
+        //buildFrameworkBtnsParent.gameObject.SetActive(true);
 
-        SO_Builds framework = GetFrameworkByID(id);
+        //FrameworkSO framework = GetFrameworkByID(id);
 
-        //Individual Framework ah
-        for (int i = 0; i < framework.DataSet.Count; i++)
-        {
-            if (!availableBuilds.Contains(framework.DataSet[i].ID)) continue;
+        ////Individual Framework ah
+        //for (int i = 0; i < framework.DataSet.Count; i++)
+        //{
+        //    if (!availableBuilds.Contains(framework.DataSet[i].ID)) continue;
 
-            BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
-            buildBtn.Initialize(this, framework.DataSet[i]);
-        }
+        //    BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
+        //    buildBtn.Initialize(this, framework.DataSet[i]);
+        //}
     }
 
     private IEnumerator AnimateNotification()

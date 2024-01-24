@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IDeployer
 {
     bool HasReachedRequiredRate { get; }
+    int AcceptedPageCount { get; }
 }

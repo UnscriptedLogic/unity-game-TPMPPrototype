@@ -45,10 +45,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
+  - thumbnail: {fileID: 21300000, guid: b1df75639ff714040a10c68ba5631f9a, type: 3}
+    name: The Basics
+    description: We'll start with the basics. Let's learn about the components that
+      make up a web page.
+    webpageSO: {fileID: 11400000, guid: 2b1e2eecf05ef954fbf28bbebe88f75c, type: 2}
+    projectFrameworks:
+    - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
+      builds:
+      - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+    - details: {fileID: 11400000, guid: 4b8207445202e2343949fa6231cc3bb4, type: 2}
+      builds:
+      - {fileID: 11400000, guid: 1cd4ead57387ce54198a2954f88af4be, type: 2}
   - thumbnail: {fileID: 21300000, guid: ebeeb5af5ddbd3940a6ae70fdb44eedb, type: 3}
     name: Generic Purple Website
     description: A generic and simpe purple website.
+    webpageSO: {fileID: 11400000, guid: 3186b63c56705844b899ee8d3660d279, type: 2}
+    projectFrameworks: []
   - thumbnail: {fileID: 21300000, guid: 3739bfea4b774c248821878640b0163d, type: 3}
     name: YouPipe
     description: A video streaming website where anyone can upload anything for the
       internet to enjoy
+    webpageSO: {fileID: 11400000, guid: afcc1f62acb1f934eb37fe5cf76fa2a7, type: 2}
+    projectFrameworks: []
+  globalConveyorBeltMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}

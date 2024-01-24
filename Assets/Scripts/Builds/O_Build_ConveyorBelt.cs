@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,13 +10,13 @@ public class O_Build_ConveyorBelt : O_Build
     [SerializeField] private GameObject ui_hud;
 
     [SerializeField] private Transform startPointerAnchor;
-    [SerializeField] private Transform endPointerAnchor;
 
     [SerializeField] private LineRenderer lineRenderer;
     
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
     private bool isInPreview;
+    private Vector3 firstPos;
 
     public override void OnBeginPreview()
     {
@@ -24,12 +25,10 @@ public class O_Build_ConveyorBelt : O_Build
         isBuildingStart = true;
 
         startPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;
-        endPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;
 
         hud = AttachUIWidget(ui_hud) as UIC_ConveyorBeltHUD;
         hud.transform.SetParent(null);
 
-        endPointerAnchor.gameObject.SetActive(false);
         isInPreview = true;
     }
 
@@ -39,7 +38,7 @@ public class O_Build_ConveyorBelt : O_Build
 
         if (levelBuildInterface.NodeTickSystem.HasTickedAfter(2))
         {
-            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.2f);
+            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.4f);
             for (int i = 0; i < collider2Ds.Length; i++)
             {
                 O_BuildItem buildItem = collider2Ds[i].GetComponent<O_BuildItem>();
@@ -48,6 +47,7 @@ public class O_Build_ConveyorBelt : O_Build
                     if (inventory.Contains(buildItem)) continue;
 
                     inventory.Add(buildItem);
+                    buildItem.transform.SetParent(transform);
                     break;
                 }
             }
@@ -72,9 +72,14 @@ public class O_Build_ConveyorBelt : O_Build
                 Vector3[] positions = new Vector3[lineRenderer.positionCount];
                 lineRenderer.GetPositions(positions);
 
+                //Which straight line the conveyor belt item is on
                 (int start, int next) = FindTraversedSegment(inventory[i].transform.position, positions);
 
-                float calculatedLerp = Extensions.InverseLerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), inventory[i].transform.position);
+                Vector3 startPosition = lineRenderer.GetPosition(start) + transform.position;
+                Vector3 nextPosition = lineRenderer.GetPosition(next) + transform.position;
+
+                //This is how I calculate how far up the line it's travelled
+                float calculatedLerp = Extensions.InverseLerp(startPosition, nextPosition, inventory[i].transform.position);
 
                 if (next == lineRenderer.positionCount - 1 && calculatedLerp >= 1f)
                 {
@@ -86,15 +91,23 @@ public class O_Build_ConveyorBelt : O_Build
                     start = next;
                     next++;
                     calculatedLerp = 0f;
+
+                    startPosition = lineRenderer.GetPosition(start) + transform.position;
+                    nextPosition = lineRenderer.GetPosition(next) + transform.position;
                 }
 
-                float distance = Vector3.Distance(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next));
+                float distance = (nextPosition - startPosition).magnitude;
 
-                Vector3 lerpPosition = Vector3.Lerp(lineRenderer.GetPosition(start), lineRenderer.GetPosition(next), calculatedLerp + ((levelBuildInterface.GlobalBeltSpeed * Time.fixedDeltaTime) / distance));
+                Vector3 lerpPosition = Vector3.Lerp(
+                    startPosition, 
+                    nextPosition, 
+                    calculatedLerp + ((levelBuildInterface.GlobalBeltSpeed * Time.fixedDeltaTime) / distance)
+                    );
+
                 if (float.IsNaN(lerpPosition.x) || float.IsNaN(lerpPosition.y))
                 {
                     //Probably out of bounds of the conveyor.
-
+                    Debug.Log("Out of the bounds");
                     inventory.RemoveAt(i);
                     continue;
                 }
@@ -168,7 +181,6 @@ public class O_Build_ConveyorBelt : O_Build
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, firstHalfEndPos + (dir * distance));
 
-                endPointerAnchor.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
                 BuildToMesh();
             }
             else
@@ -226,6 +238,7 @@ public class O_Build_ConveyorBelt : O_Build
             return true;
         }
 
+        //Old logic for avoiding the beeg screens
         //Vector3 difference = (inventory[index - 1].transform.position - inventory[index].transform.position);
 
         //bool isXFarEnough = Mathf.Abs(difference.x) > 2f;
@@ -233,15 +246,16 @@ public class O_Build_ConveyorBelt : O_Build
 
         //return isXFarEnough || isYFarEnough;
 
-        return Vector3.Distance(inventory[index - 1].transform.position, inventory[index].transform.position) >= 0.35;
+        float distance = (inventory[index - 1].transform.position - inventory[index].transform.position).magnitude;
+        return distance >= 0.35;
     }
 
     public (int, int) FindTraversedSegment(Vector3 currentPoint, Vector3[] positions)
     {
         for (int i = 0; i < positions.Length - 1; i++)
         {
-            Vector3 startPoint = positions[i];
-            Vector3 endPoint = positions[i + 1];
+            Vector3 startPoint = positions[i] + transform.position;
+            Vector3 endPoint = positions[i + 1] + transform.position;
 
             // Check if the current point is on the inferred line segment
             if (IsPointOnSegment(currentPoint, startPoint, endPoint))
@@ -253,6 +267,7 @@ public class O_Build_ConveyorBelt : O_Build
         return default; // Point is not on any inferred line segment
     }
 
+    //ChatGPT
     private bool IsPointOnSegment(Vector3 point, Vector3 start, Vector3 end)
     {
         float epsilon = 0.0001f; // A small value to account for floating-point errors
@@ -277,7 +292,7 @@ public class O_Build_ConveyorBelt : O_Build
 
     public override void OnUpdatePreview(Vector3 position, int rotationOffset)
     {
-        Vector3 correctedPosition = position + new Vector3(0.5f, 0.5f, 0f);
+        Vector3 correctedPosition = position + new Vector3(0.5f, 0.5f, 0f) - firstPos;
 
         if (isBuildingStart)
         {
@@ -299,7 +314,6 @@ public class O_Build_ConveyorBelt : O_Build
             }
 
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, correctedPosition);
-            endPointerAnchor.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
         }
     }
 
@@ -341,12 +355,12 @@ public class O_Build_ConveyorBelt : O_Build
 
             //Create a start and end point
 
+            firstPos = correctedPosition;
+
             lineRenderer.positionCount = 2;
 
-            lineRenderer.SetPosition(0, correctedPosition);
-            lineRenderer.SetPosition(1, correctedPosition);
-
-            endPointerAnchor.gameObject.SetActive(true);
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(1, correctedPosition - firstPos);
         }
         else
         {
@@ -356,13 +370,11 @@ public class O_Build_ConveyorBelt : O_Build
 
             O_Build_ConveyorBelt newConveyor = Instantiate(gameObject).GetComponent<O_Build_ConveyorBelt>();
             newConveyor.startPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
-            newConveyor.endPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
             newConveyor.isInPreview = false;
             newConveyor.FireBuiltEvent();
             newConveyor.BuildToMesh();
 
             lineRenderer.positionCount = 0;
-            endPointerAnchor.gameObject.SetActive(false);
 
             if (!keepBuilding)
             {
@@ -379,13 +391,11 @@ public class O_Build_ConveyorBelt : O_Build
     {
         O_Build_ConveyorBelt newConveyor = Instantiate(gameObject).GetComponent<O_Build_ConveyorBelt>();
         newConveyor.startPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
-        newConveyor.endPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
         newConveyor.isInPreview = false;
 
         //position alignment
         newConveyor.transform.position = points[0];
         newConveyor.startPointerAnchor.transform.position = points[0];
-        newConveyor.endPointerAnchor.transform.position = points[points.Length - 1];
 
         //Initialize Points
         newConveyor.lineRenderer.positionCount = points.Length;

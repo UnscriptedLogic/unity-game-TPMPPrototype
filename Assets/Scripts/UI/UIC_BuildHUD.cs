@@ -16,7 +16,6 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     [SerializeField] protected GameObject deletePage;
 
     [Header("Components")]
-    [SerializeField] protected BuildListSO builds;
     [SerializeField] protected GameObject buildBtnPrefab;
     [SerializeField] protected GameObject frameworkBtnPrefab;
     [SerializeField] protected Transform buildBtnsParent;
@@ -28,10 +27,13 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     public event EventHandler<bool> OnDeleteBuildToggled;
 
     protected IFactoryValidation factoryValidationInterface;
+    protected GI_CustomGameInstance customGameInstance;
 
     public override void OnWidgetAttached(ULevelObject context)
     {
         base.OnWidgetAttached(context);
+
+        customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         factoryValidationInterface = GameMode as IFactoryValidation;
         if (factoryValidationInterface == null)
@@ -55,18 +57,18 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
     protected virtual void ShowFrameworkButtons()
     {
-        for (int i = 0; i < builds.Frameworks.Count; i++)
+        for (int i = 0; i < customGameInstance.Project.Frameworks.Count; i++)
         {
-            SO_Builds framework = builds.Frameworks[i];
+            Framework framework = customGameInstance.Project.Frameworks[i];
 
             //Framework button
             UButtonComponent frameworkBtn = Instantiate(frameworkBtnPrefab, buildBtnsParent).GetComponent<UButtonComponent>();
-            frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.FrameworkIcon;
-            frameworkBtn.SetID(framework.FrameworkName);
-            frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.FrameworkName;
+            frameworkBtn.GetComponentsInChildren<Image>()[1].sprite = framework.Details.FrameworkIcon;
+            frameworkBtn.SetID(framework.Details.FrameworkName);
+            frameworkBtn.GetComponentInChildren<TextMeshProUGUI>().text = framework.Details.FrameworkName;
             frameworkBtn.InitializeUIComponent(this);
 
-            Bind<UButtonComponent>(framework.FrameworkName, ShowFrameworkBuilds);
+            Bind<UButtonComponent>(framework.Details.FrameworkName, ShowFrameworkBuilds);
         }
     }
 
@@ -90,26 +92,26 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
             Destroy(buildFrameworkBtnsParent.GetChild(i).gameObject);
         }
 
-        SO_Builds framework = GetFrameworkByID(id);
+        Framework framework = GetFrameworkByID(id);
 
         //Individual Framework
-        for (int i = 0; i < framework.DataSet.Count; i++)
+        for (int i = 0; i < framework.Builds.Count; i++)
         {
             BuildBtn buildBtn = Instantiate(buildBtnPrefab, buildFrameworkBtnsParent).GetComponent<BuildBtn>();
-            buildBtn.Initialize(this, framework.DataSet[i]);
+            buildBtn.Initialize(this, framework.Builds[i]);
         }
 
         lastFramework = id;
 
     }
 
-    protected SO_Builds GetFrameworkByID(string frameworkName)
+    protected Framework GetFrameworkByID(string frameworkName)
     {
-        for (int i = 0; i < builds.Frameworks.Count; i++)
+        for (int i = 0; i < customGameInstance.Project.Frameworks.Count; i++)
         {
-            if (builds.Frameworks[i].FrameworkName != frameworkName) continue;
+            if (customGameInstance.Project.Frameworks[i].Details.FrameworkName != frameworkName) continue;
 
-            return builds.Frameworks[i];
+            return customGameInstance.Project.Frameworks[i];
         }
 
         Debug.LogWarning($"Something hella sus went wrong here. Tried to get id of {frameworkName}");

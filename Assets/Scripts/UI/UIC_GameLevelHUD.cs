@@ -23,12 +23,7 @@ public class UIC_GameLevelHUD : UCanvasController
 
         Bind<UButtonComponent>("pause", OnPause);
 
-        Bind<UButtonComponent>("clockin", levelManager.ClockIn);
         Bind<UButtonComponent>("finishproject", levelManager.FinishProject);
-        Bind<UButtonComponent>("testfactory", levelManager.TestFactory);
-
-        BindUI(ref levelManager.daysLeft, "time", value => $"{value} days left to the deadline");
-        BindUI(ref levelManager.energy, "energy", value => $"Test Factory - {value}/{levelManager.ResetEnergyAmount}");
 
         levelManager.OnProjectCompleted += FactoryValidationInterface_OnProjectCompleted;
 
@@ -54,12 +49,7 @@ public class UIC_GameLevelHUD : UCanvasController
 
     private void FactoryValidationInterface_OnProjectCompleted(object sender, System.EventArgs e)
     {
-        GetUIComponent<UButtonComponent>("clockin").gameObject.SetActive(false);
         GetUIComponent<UButtonComponent>("finishproject").gameObject.SetActive(false);
-        GetUIComponent<UButtonComponent>("testfactory").gameObject.SetActive(false);
-
-        UnBindUI(ref levelManager.daysLeft, "time");
-        UnBindUI(ref levelManager.energy, "energy");
     }
 
     private void LoadRequirementsUI()

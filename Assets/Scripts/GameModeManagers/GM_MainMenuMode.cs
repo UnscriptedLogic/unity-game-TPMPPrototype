@@ -30,6 +30,12 @@ public class GM_MainMenuMode : UGameModeBase, IBuildSystem, IFactoryValidation, 
         nodeTickSystem = TickSystem.Create("Start Tick System", 0.4f);
         beltSpeed = GameInstance.CastTo<GI_CustomGameInstance>().playerData.Value.conveyorBeltSpeed;
 
+        //First time invoke to get rid of warning errors in unity console
+        OnTestFactoryClicked?.Invoke(this, EventArgs.Empty);
+        OnProjectCompleted?.Invoke(this, EventArgs.Empty);
+        OnClearAllObjects?.Invoke(this, EventArgs.Empty);
+        OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
+
         yield return base.Start();
     }
 

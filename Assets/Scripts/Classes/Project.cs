@@ -3,11 +3,24 @@ using UnityEngine;
 using UnscriptedEngine;
 
 [System.Serializable]
+public class Framework
+{
+    [SerializeField] private FrameworkDetailsSO details;
+    [SerializeField] private List<BuildSO> builds;
+
+    public FrameworkDetailsSO Details => details;
+    public List<BuildSO> Builds => builds;
+}
+
+[System.Serializable]
 public class Project
 {
     [SerializeField] private Sprite thumbnail;
     [SerializeField] private string name;
     [SerializeField][TextArea(3, 5)] private string description;
+    [SerializeField] private WebPageSO webpageSO;
+    [SerializeField] private List<Framework> projectFrameworks;
+
     private bool isCompleted;
 
     //This is the defining factor of the randomness in the project. 
@@ -17,7 +30,8 @@ public class Project
     //A project is defined as initialized when the player has opened it and viewed the pages
     private bool initialized;
 
-    private List<Requirement> requirements = new List<Requirement>();
+    private List<Requirement> requirements;
+
     private List<int> pageIndexes = new List<int>();
 
     public string Name => name;
@@ -28,6 +42,8 @@ public class Project
     public List<int> PageIndexes => pageIndexes;
     public bool IsInitialized => initialized;
     public int Seed => seed;
+    public WebPageSO WebPageSO => webpageSO;
+    public List<Framework> Frameworks => projectFrameworks;
 
     public Project(string name, string description, bool isCompleted, List<Requirement> requirements, List<int> pageIndexes, bool initialized, int seed)
     {
@@ -66,6 +82,11 @@ public class Project
     }
 
     public void Complete() => isCompleted = true;
+
+    public void SetRequirements(List<Requirement> requirements)
+    {
+        this.requirements = new List<Requirement>(requirements);
+    }
 }
 
 public static class ProjectExtensions

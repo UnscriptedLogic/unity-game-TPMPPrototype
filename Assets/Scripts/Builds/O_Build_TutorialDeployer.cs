@@ -1,5 +1,4 @@
 using DG.Tweening;
-using JetBrains.Annotations;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,13 +25,15 @@ public class O_Build_TutorialDeployer : O_Build, IDeployer
 
     private Bindable<int> requiredRate = new Bindable<int>(0);
     private WebPageSO.PageData currentPageData;
-    private float elapsedTime = 0f;
     private IUsesPageObjects pageObjectInterface;
     private GameObject webPage;
+    private float previousAcceptedTime = 0f;
+    private int totalItemsReceived;
 
     public Bindable<int> acceptedPagesRate = new Bindable<int>(0);
 
     public bool HasReachedRequiredRate => acceptedPagesRate.Value >= requiredRate.Value;
+    public int AcceptedPageCount => totalItemsReceived;
 
     public event EventHandler OnDeployerRecievedValidItem;
 
@@ -80,8 +81,8 @@ public class O_Build_TutorialDeployer : O_Build, IDeployer
             //Validate
             if (pageObjectInterface.WebpageSO.IsComponentRequirementsMet(page, currentPageData))
             {
-                acceptedPagesRate.Value++;
-
+                previousAcceptedTime = Time.time;
+                totalItemsReceived++;
                 canvasGlint.FlashSuccess();
 
                 OnDeployerRecievedValidItem?.Invoke(this, EventArgs.Empty);
@@ -98,13 +99,12 @@ public class O_Build_TutorialDeployer : O_Build, IDeployer
 
     private void Update()
     {
-        elapsedTime += Time.deltaTime;
+        CalculateRate();
+    }
 
-        if (elapsedTime >= 60f)
-        {
-            elapsedTime = 0f;
-            acceptedPagesRate.Value = 0;
-        }
+    private void CalculateRate()
+    {
+        acceptedPagesRate.Value = (int)(60.0f / Time.time - previousAcceptedTime);
     }
 
     public void StartUsingRate()

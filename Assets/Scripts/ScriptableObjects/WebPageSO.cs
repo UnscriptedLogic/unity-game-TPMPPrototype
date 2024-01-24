@@ -18,9 +18,11 @@ public class WebPageSO : ScriptableObject
     public class PageData
     {
         [SerializeField] private GameObject webpage;
+        [SerializeField] private int requiredMinPage;
         [SerializeField] private WebPageComponentData[] components;
 
         public GameObject WebPage => webpage;
+        public int RequiredMinPage => requiredMinPage;
         public WebPageComponentData[] RequiredComponents => components;
     }
 

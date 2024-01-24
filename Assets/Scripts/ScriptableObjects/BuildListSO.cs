@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Framework List", menuName = "ScriptableObjects/Create New Framework List")]
 public class BuildListSO : ScriptableObject
 {
-    [SerializeField] private List<SO_Builds> frameworks;
+    [SerializeField] private List<FrameworkSO> frameworks;
 
-    public List<SO_Builds> Frameworks => frameworks;
+    public List<FrameworkSO> Frameworks => frameworks;
 
     public (int, int) GetBuildableFromID(string id)
     {
