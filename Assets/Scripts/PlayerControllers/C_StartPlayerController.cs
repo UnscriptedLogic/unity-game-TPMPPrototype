@@ -7,10 +7,15 @@ public class C_StartPlayerController : UController
 
     private UIC_MainMenu mainMenuController;
 
+    private void Start()
+    {
+        mainMenuController = AttachUIWidget(mainMenuControllerPrefab);
+    }
+
     protected override void OnLevelStarted()
     {
         base.OnLevelStarted();
 
-        mainMenuController = AttachUIWidget(mainMenuControllerPrefab);
+        //Unveil a transition
     }
 }

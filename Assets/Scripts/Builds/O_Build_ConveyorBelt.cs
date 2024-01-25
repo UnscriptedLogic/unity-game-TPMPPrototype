@@ -107,7 +107,6 @@ public class O_Build_ConveyorBelt : O_Build
                 if (float.IsNaN(lerpPosition.x) || float.IsNaN(lerpPosition.y))
                 {
                     //Probably out of bounds of the conveyor.
-                    Debug.Log("Out of the bounds");
                     inventory.RemoveAt(i);
                     continue;
                 }

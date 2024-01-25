@@ -15,6 +15,9 @@ public class UIC_BuildingDetailsModal : UCanvasController
 
     [SerializeField] private Ease ease;
 
+    [SerializeField] private GameObject gnomeObject;
+    [SerializeField] private AudioSource gnomeAudioSource;
+
     private UTextComponent buildName;
     private UTextComponent buildDesc;
 
@@ -40,6 +43,13 @@ public class UIC_BuildingDetailsModal : UCanvasController
     private void OnShow()
     {
         modalParent.DOMoveX(activeTransform.position.x, 0.5f).SetEase(ease).OnComplete(() => showBtn.gameObject.SetActive(false));
+
+        gnomeObject.SetActive(false);
+        if (UnityEngine.Random.Range(0f, 100f) >= 69)
+        {
+            gnomeObject.SetActive(true);
+            gnomeAudioSource.Play();
+        }
     }
 
     private void OnHide()

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4742382014545891123}
   - component: {fileID: -8114258485270295886}
   - component: {fileID: 6518563332074393712}
+  - component: {fileID: 8900084308233663068}
   m_Layer: 0
   m_Name: BP_PlayerPawn
   m_TagString: Untagged
@@ -177,3 +178,11 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!81 &8900084308233663068
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103975493324920040}
+  m_Enabled: 1

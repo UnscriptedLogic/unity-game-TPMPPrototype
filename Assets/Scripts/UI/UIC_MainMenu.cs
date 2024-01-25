@@ -10,7 +10,6 @@ public class UIC_MainMenu : UCanvasController
     {
         base.OnWidgetAttached(context);
 
-        Bind<UButtonComponent>("tutorialBtn", OnTutorialClicked);
         Bind<UButtonComponent>("playBtn", OnPlayPressed);
         Bind<UButtonComponent>("quitBtn", OnQuitPressed);
     }
@@ -23,10 +22,5 @@ public class UIC_MainMenu : UCanvasController
     private void OnPlayPressed()
     {
         GameMode.GetPlayerController().AttachUIWidget(overviewWidgetPrefab);
-    }
-
-    private void OnTutorialClicked()
-    {
-        GameMode.LoadScene(2);
     }
 }
