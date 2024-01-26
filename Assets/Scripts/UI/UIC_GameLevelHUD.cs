@@ -30,7 +30,6 @@ public class UIC_GameLevelHUD : UCanvasController
         LoadRequirementsUI();
 
         OnObjectCreated += UIC_GameLevelHUD_OnObjectCreated;
-        OnObjectToBeDestroyed += UIC_GameLevelHUD_OnObjectToBeDestroyed;
     }
 
     private void UIC_GameLevelHUD_OnObjectCreated(object sender, System.EventArgs e)
@@ -38,13 +37,6 @@ public class UIC_GameLevelHUD : UCanvasController
         if (!(sender as UIC_ProjectCompletionHUD)) return;
 
         gameObject.SetActive(false);
-    }
-
-    private void UIC_GameLevelHUD_OnObjectToBeDestroyed(object sender, System.EventArgs e)
-    {
-        if (!(sender as UIC_ProjectCompletionHUD)) return;
-
-        gameObject.SetActive(true);
     }
 
     private void FactoryValidationInterface_OnProjectCompleted(object sender, System.EventArgs e)

@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnscriptedEngine;
-using static O_Build;
 
 public class O_Build_ColorModifier : O_Build_ModifierBase
 {

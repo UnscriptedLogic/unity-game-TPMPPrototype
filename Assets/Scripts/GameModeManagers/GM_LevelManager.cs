@@ -6,6 +6,13 @@ using UnscriptedEngine;
 
 public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, IUsesPageObjects
 {
+    [System.Serializable]
+    public class MiscActiveObjects
+    {
+        public int levelIndex;
+        public List<GameObject> objectsToActivate;
+    }
+
     [Header("Game Mode")]
     [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
     [SerializeField] private UIC_ProjectCompletionHUD gameCompletedHUD;
@@ -13,6 +20,9 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     [SerializeField] private float evaluateTime = 10f;
     [SerializeField] private Transform deployerParent;
     [SerializeField] private O_Build_Deployers deployerPrefab;
+
+    [Header("Misc")]
+    [SerializeField] private List<MiscActiveObjects> miscActiveObjects;
 
     private List<O_Build_Deployers> deployers;
     private WebPageSO webpageData;
@@ -75,6 +85,16 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
             new DeployersRecieveItem(),
             new DeployersMeetRateRequirement(),
         });
+
+        for (int i = 0; i < miscActiveObjects.Count; i++)
+        {
+            if (miscActiveObjects[i].levelIndex != customGameInstance.LevelToLoad) continue;
+
+            for (int j = 0; j < miscActiveObjects[i].objectsToActivate.Count; j++)
+            {
+                miscActiveObjects[i].objectsToActivate[j].SetActive(true);
+            }
+        }
 
         yield return base.Start();
 

@@ -16,12 +16,15 @@ public class UIC_OverviewUI : UCanvasController
 
     private UTextComponent title;
     private UTextComponent description;
+    private GI_CustomGameInstance customGameInstance;
 
     public override void OnWidgetAttached(ULevelObject context)
     {
         base.OnWidgetAttached(context);
 
-        levels = new List<Project>(GameMode.GameInstance.CastTo<GI_CustomGameInstance>().Levels);
+        customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
+
+        levels = new List<Project>(customGameInstance.Levels);
 
         InstantiateLessonBtns();
 
@@ -31,7 +34,7 @@ public class UIC_OverviewUI : UCanvasController
         Bind<UButtonComponent>("play", OnPlayPressed);
         Bind<UButtonComponent>("back", OnBackPressed);
 
-        OnLevelPressed("0");
+        OnLevelPressed(customGameInstance.LevelToLoad.ToString());
     }
 
     private void InstantiateLessonBtns()
@@ -58,7 +61,7 @@ public class UIC_OverviewUI : UCanvasController
 
     private void OnPlayPressed()
     {
-        GameMode.GameInstance.CastTo<GI_CustomGameInstance>().SetProjectToLoad(selectedLevelIndex);
+        customGameInstance.SetProjectToLoad(selectedLevelIndex);
         GameMode.LoadScene(1);
     }
 

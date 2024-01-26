@@ -308,7 +308,6 @@ MonoBehaviour:
   detailsModalPrefab: {fileID: 8016433729548443582, guid: 49b378e8228596646bd40dbcf0e0a2ff, type: 3}
   buildPage: {fileID: 8264704203560873604}
   deletePage: {fileID: 1411556176206801203}
-  builds: {fileID: 11400000, guid: 1a5d5ac5800e2bc40a4450af8da11dc4, type: 2}
   buildBtnPrefab: {fileID: 2174352807374571904, guid: 7e92fef23741e7e45a3ad9e7bba52cef, type: 3}
   frameworkBtnPrefab: {fileID: 2174352807374571904, guid: c4b0d8a289e680143a7b17cb6abf1a9c, type: 3}
   buildBtnsParent: {fileID: 6404191685170002700}
@@ -908,6 +907,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9009706479619194363}
   - component: {fileID: 7494844280062384719}
+  - component: {fileID: 5367708543724594212}
   m_Layer: 5
   m_Name: FrameworkBuildList
   m_TagString: Untagged
@@ -931,9 +931,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -192.996}
-  m_SizeDelta: {x: 1747.855, y: 404.798}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -197.69739}
+  m_SizeDelta: {x: 1658.979, y: 395.4}
+  m_Pivot: {x: 0.5, y: 0.4999997}
 --- !u!114 &7494844280062384719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,3 +958,11 @@ MonoBehaviour:
   m_Spacing: {x: 8, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!222 &5367708543724594212
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742377148739544644}
+  m_CullTransparentMesh: 1

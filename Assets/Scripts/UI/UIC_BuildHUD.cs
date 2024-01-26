@@ -9,7 +9,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     [Header("Canvases")]
     [SerializeField] private UIC_BuildingDetailsModal detailsModalPrefab;
 
-    private UIC_BuildingDetailsModal detailsModal;
+    protected UIC_BuildingDetailsModal detailsModal;
 
     [Header("Pages")]
     [SerializeField] protected GameObject buildPage;
@@ -21,7 +21,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
     [SerializeField] protected Transform buildBtnsParent;
     [SerializeField] protected Transform buildFrameworkBtnsParent;
 
-    private string lastFramework;
+    protected string lastFramework;
 
     public event EventHandler<string> OnRequestingToBuild;
     public event EventHandler<bool> OnDeleteBuildToggled;
@@ -50,9 +50,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
         deletePage.SetActive(false);
 
         factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
-
         OnObjectCreated += ULevelObject_OnObjectCreated;
-        OnObjectToBeDestroyed += HUD_CanvasController_OnObjectToBeDestroyed;
     }
 
     protected virtual void ShowFrameworkButtons()
@@ -105,7 +103,7 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
     }
 
-    protected Framework GetFrameworkByID(string frameworkName)
+    protected virtual Framework GetFrameworkByID(string frameworkName)
     {
         for (int i = 0; i < customGameInstance.Project.Frameworks.Count; i++)
         {
@@ -123,13 +121,6 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
         if (!(sender as UIC_ProjectCompletionHUD)) return;
 
         gameObject.SetActive(false);
-    }
-
-    protected void HUD_CanvasController_OnObjectToBeDestroyed(object sender, EventArgs e)
-    {
-        if (!(sender as UIC_ProjectCompletionHUD)) return;
-
-        gameObject.SetActive(true);
     }
 
     protected void LevelManager_OnProjectCompleted(object sender, EventArgs e)
@@ -174,11 +165,15 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
             Destroy(detailsModal.gameObject);
         }
 
-        factoryValidationInterface.OnProjectCompleted -= LevelManager_OnProjectCompleted;
-
-        OnObjectCreated -= ULevelObject_OnObjectCreated;
-        OnObjectToBeDestroyed -= HUD_CanvasController_OnObjectToBeDestroyed;
 
         base.OnWidgetDetached(context);
+    }
+
+    protected override void OnDestroy()
+    {
+        factoryValidationInterface.OnProjectCompleted -= LevelManager_OnProjectCompleted;
+        OnObjectCreated -= ULevelObject_OnObjectCreated;
+
+        base.OnDestroy();
     }
 }

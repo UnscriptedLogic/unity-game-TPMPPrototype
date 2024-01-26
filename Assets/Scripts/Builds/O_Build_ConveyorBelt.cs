@@ -118,26 +118,32 @@ public class O_Build_ConveyorBelt : O_Build
 
     public void SplitConveyorBelt(O_Build instigator)
     {
+        Debug.Log("Splitting belt");
+
         //Check where on the belt it is
         for (int i = 0; i < lineRenderer.positionCount - 1; i++)
         {
-            if (!IsPointOnSegment(instigator.transform.position, lineRenderer.GetPosition(i), lineRenderer.GetPosition(i + 1))) continue;
+            Vector3 startPosition = lineRenderer.GetPosition(i) + transform.position;
+            Vector3 nextPosition = lineRenderer.GetPosition(i + 1) + transform.position;
+
+            if (!IsPointOnSegment(instigator.transform.position, startPosition, nextPosition)) continue;
 
             Vector3[] positions = new Vector3[lineRenderer.positionCount];
             lineRenderer.GetPositions(positions);
 
-            Vector3[] firstHalf = new Vector3[i - 0];
+            Vector3[] firstHalf = new Vector3[i];
             Vector3[] secondHalf = new Vector3[lineRenderer.positionCount - i];
 
             O_Build_ConveyorBelt newBelt = null;
 
             Extensions.SplitArray(positions, i + 1, out firstHalf, out secondHalf);
 
+            Vector3 instigatorPos = instigator.transform.position;
             if (Vector3.Distance(secondHalf[secondHalf.Length - 1], instigator.transform.position) > 0.5f)
             {
                 //Extending the end to the edge of the node
-                Vector3 instigatorPos = instigator.transform.position;
-                Vector3 secondHalfStartPos = secondHalf[0];
+                Vector3 secondHalfStartPos = secondHalf[0] + transform.position;
+                Vector3 origin = Vector3.zero;
 
                 float offset = instigator.CellSize.x * 0.5f;
                 if (instigatorPos.x == secondHalfStartPos.x)
@@ -148,15 +154,18 @@ public class O_Build_ConveyorBelt : O_Build
                 float distance = Vector3.Distance(instigatorPos, secondHalfStartPos) - offset;
                 Vector3 dir = (instigatorPos - secondHalfStartPos).normalized;
 
+                origin = secondHalfStartPos + (dir * distance);
+
                 Vector3[] secondHalfPoints = new Vector3[secondHalf.Length + 1];
-                secondHalfPoints[0] = secondHalfStartPos + (dir * distance);
+                secondHalfPoints[0] = Vector3.zero;
+
                 for (int j = 1; j < secondHalfPoints.Length; j++)
                 {
-                    secondHalfPoints[j] = secondHalf[j - 1];
+                    secondHalfPoints[j] = secondHalf[j - 1] - (origin - transform.position);
                 }
 
                 //Create 2nd conveyor belt body
-                newBelt = CreateNewConveyorBelt(secondHalfPoints);
+                newBelt = CreateNewConveyorBelt(secondHalfPoints, origin);
             }
 
             if (Vector3.Distance(firstHalf[firstHalf.Length - 1], instigator.transform.position) > 1f)
@@ -165,7 +174,6 @@ public class O_Build_ConveyorBelt : O_Build
                 lineRenderer.SetPositions(firstHalf);
 
                 //Extending the end to the edge of the node
-                Vector3 instigatorPos = instigator.transform.position;
                 Vector3 firstHalfEndPos = firstHalf[firstHalf.Length - 1];
 
                 float offset = instigator.CellSize.x * 0.5f;
@@ -174,8 +182,8 @@ public class O_Build_ConveyorBelt : O_Build
                     offset = instigator.CellSize.y * 0.5f;
                 }
 
-                float distance = Vector3.Distance(instigatorPos, firstHalfEndPos) - offset;
-                Vector3 dir = (instigatorPos - firstHalfEndPos).normalized;
+                float distance = Vector3.Distance(instigatorPos, firstHalfEndPos + transform.position) - offset;
+                Vector3 dir = (instigatorPos - firstHalfEndPos - transform.position).normalized;
 
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, firstHalfEndPos + (dir * distance));
@@ -386,15 +394,15 @@ public class O_Build_ConveyorBelt : O_Build
     /// Creates a new conveyor belt along with its points
     /// </summary>
     /// <param name="points"></param>
-    private O_Build_ConveyorBelt CreateNewConveyorBelt(Vector3[] points)
+    private O_Build_ConveyorBelt CreateNewConveyorBelt(Vector3[] points, Vector3 origin)
     {
         O_Build_ConveyorBelt newConveyor = Instantiate(gameObject).GetComponent<O_Build_ConveyorBelt>();
         newConveyor.startPointerAnchor.GetComponent<BoxCollider2D>().enabled = true;
         newConveyor.isInPreview = false;
 
         //position alignment
-        newConveyor.transform.position = points[0];
-        newConveyor.startPointerAnchor.transform.position = points[0];
+        newConveyor.transform.position = origin;
+        newConveyor.startPointerAnchor.transform.position = origin;
 
         //Initialize Points
         newConveyor.lineRenderer.positionCount = points.Length;

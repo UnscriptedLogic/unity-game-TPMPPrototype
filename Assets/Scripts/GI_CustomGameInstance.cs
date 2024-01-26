@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GI_CustomGameInstance : UGameInstance
 {
+    [SerializeField] private List<Framework> allFrameworks;
+    
     [SerializeField] private List<Project> levels;
     [SerializeField] private Material globalConveyorBeltMaterial;
 
@@ -10,6 +12,7 @@ public class GI_CustomGameInstance : UGameInstance
 
     public List<Project> Levels => levels;
     public Material GlobalConveyorMaterial => globalConveyorBeltMaterial;
+    public List<Framework> AllFrameworks => allFrameworks;
 
     public Project Project
     {
@@ -19,7 +22,10 @@ public class GI_CustomGameInstance : UGameInstance
         }
     }
 
+    public int LevelToLoad => levelToLoad;
+
     public Bindable<PlayerData> playerData;
+    public bool doPreviewNextLevel;
 
     protected override void Awake()
     {

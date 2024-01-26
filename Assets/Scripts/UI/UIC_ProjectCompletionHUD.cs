@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnscriptedEngine;
 
@@ -24,11 +25,18 @@ public class UIC_ProjectCompletionHUD : UCanvasController
         customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         Bind<UButtonComponent>("mainmenu", OnMainMenuPressed);
-        Bind<UButtonComponent>("dismiss", OnDismissPressed);
+        Bind<UButtonComponent>("nextlevel", OnNextLevelPressed);
 
         playerController = context.CastTo<C_PlayerController>();
 
         StartCoroutine(DisplayRequirements());
+    }
+
+    private void OnNextLevelPressed()
+    {
+        customGameInstance.SetProjectToLoad(customGameInstance.LevelToLoad + 1);
+        customGameInstance.doPreviewNextLevel = true;
+        playerController.ReturnToMainMenu();
     }
 
     private IEnumerator DisplayRequirements()
@@ -59,10 +67,6 @@ public class UIC_ProjectCompletionHUD : UCanvasController
     private void OnMainMenuPressed()
     {
         playerController.ReturnToMainMenu();
-    }
-
-    private void OnDismissPressed()
-    {
-        DettachUIWidget(gameObject);
+        customGameInstance.doPreviewNextLevel = false;
     }
 }

@@ -196,6 +196,7 @@ public abstract class O_Build : ULevelObject
 
     protected int ticksLeft;
 
+    [SerializeField] protected bool indestructible;
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
@@ -328,6 +329,8 @@ public abstract class O_Build : ULevelObject
 
     public virtual void DeleteSelf()
     {
+        if (indestructible) return;
+
         Destroy(gameObject);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   webPageData:
   - webpage: {fileID: 7366424205272422799, guid: a3d9b47558a19104b81de109e387046e, type: 3}
-    requiredMinPage: 10
+    requiredMinPage: 1
     components:
     - componentID: canvas
       modificationIds: []

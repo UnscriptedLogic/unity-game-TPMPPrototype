@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnscriptedEngine;
 
@@ -9,11 +10,15 @@ public class O_Build_Deployers : O_Build, IDeployer
     [SerializeField] private UCanvasController canvasController;
     [SerializeField] private Transform websiteCanvasTransform;
     [SerializeField] private InputNode inputNode;
-
     [SerializeField] private CanvasRecievedItemGlint canvasGlint;
 
+    [Header("Misc")]
+    [SerializeField] private GameObject onDeletedObject;
+    [SerializeField] private TextMeshProUGUI onDeletedTMP;
+    [SerializeField] private List<string> onDeletedTextList;
+
     private Bindable<int> requiredRate = new Bindable<int>(0);
-    private WebPageSO.PageData currentPageData;
+    protected WebPageSO.PageData currentPageData;
     private IUsesPageObjects pageObjectInterface;
 
     private float elapsedTime = 0f;
@@ -42,7 +47,7 @@ public class O_Build_Deployers : O_Build, IDeployer
         requiredRate.Value = currentPageData.RequiredMinPage;
     }
 
-    public void InitializeDeployers(WebPageSO.PageData pageData)
+    public virtual void InitializeDeployers(WebPageSO.PageData pageData)
     {
         currentPageData = pageData;
         Instantiate(currentPageData.WebPage, websiteCanvasTransform);
@@ -70,8 +75,32 @@ public class O_Build_Deployers : O_Build, IDeployer
         }
     }
 
-    //Object cannot be deleted
-    public override void DeleteSelf() { }
+    public override void DeleteSelf()
+    {
+        if (indestructible) return;
+
+        StartCoroutine(OnDeletedCoroutine());
+
+    }
+
+    private IEnumerator OnDeletedCoroutine()
+    {
+        indestructible = true;
+
+        int randomMessageIndex = UnityEngine.Random.Range(0, onDeletedTextList.Count - 1);
+        if (UnityEngine.Random.Range(0, 100) <= 10f) randomMessageIndex = onDeletedTextList.Count - 1;
+        onDeletedTMP.text = onDeletedTextList[randomMessageIndex];
+
+        canvasController.gameObject.SetActive(false);
+        onDeletedObject.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        canvasController.gameObject.SetActive(true);
+        onDeletedObject.SetActive(false);
+
+        indestructible = false;
+    }
 
     private void Update()
     {

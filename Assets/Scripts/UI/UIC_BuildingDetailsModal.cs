@@ -45,7 +45,8 @@ public class UIC_BuildingDetailsModal : UCanvasController
         modalParent.DOMoveX(activeTransform.position.x, 0.5f).SetEase(ease).OnComplete(() => showBtn.gameObject.SetActive(false));
 
         gnomeObject.SetActive(false);
-        if (UnityEngine.Random.Range(0f, 100f) >= 69)
+
+        if (UnityEngine.Random.Range(0f, 100f) <= 2.3f)
         {
             gnomeObject.SetActive(true);
             gnomeAudioSource.Play();
