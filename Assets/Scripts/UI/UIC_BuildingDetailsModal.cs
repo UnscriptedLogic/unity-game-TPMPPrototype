@@ -4,6 +4,8 @@ using UnscriptedEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 
 public class UIC_BuildingDetailsModal : UCanvasController
 {
@@ -18,8 +20,10 @@ public class UIC_BuildingDetailsModal : UCanvasController
     [SerializeField] private Ease ease;
 
     [SerializeField] private GameObject memeObject;
+    [SerializeField] private TextMeshProUGUI memeTMP;
     [SerializeField] private Image memeImg;
-    [SerializeField] private List<Sprite> memeSprites;
+    [SerializeField] private List<string> memeTexts;
+    [SerializeField] private List<Sprite> memeImages;
 
     private UTextComponent buildName;
     private UTextComponent buildDesc;
@@ -52,6 +56,18 @@ public class UIC_BuildingDetailsModal : UCanvasController
         if (UnityEngine.Random.Range(0f, 100f) <= 2.3f)
         {
             memeObject.SetActive(true);
+            memeTMP.gameObject.SetActive(false);
+            memeImg.gameObject.SetActive(false);
+            if (UnityEngine.Random.Range(0f, 100f) <= 50f)
+            {
+                memeTMP.text = memeTexts.GetRandomElement();
+                memeTMP.gameObject.SetActive(true);
+            }
+            else
+            {
+                memeImg.sprite = memeImages.GetRandomElement();
+                memeImg.gameObject.SetActive(true);
+            }
         }
     }
 
