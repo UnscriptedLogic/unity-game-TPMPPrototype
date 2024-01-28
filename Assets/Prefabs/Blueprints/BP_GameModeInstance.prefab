@@ -77,6 +77,7 @@ MonoBehaviour:
     - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
       builds:
       - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+      - {fileID: 11400000, guid: 3dde0c42dda5530479944d9c62a38ef6, type: 2}
     - details: {fileID: 11400000, guid: 4b8207445202e2343949fa6231cc3bb4, type: 2}
       builds:
       - {fileID: 11400000, guid: 1cd4ead57387ce54198a2954f88af4be, type: 2}
@@ -93,6 +94,20 @@ MonoBehaviour:
     - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
       builds:
       - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+      - {fileID: 11400000, guid: 3dde0c42dda5530479944d9c62a38ef6, type: 2}
+    - details: {fileID: 11400000, guid: 4b8207445202e2343949fa6231cc3bb4, type: 2}
+      builds:
+      - {fileID: 11400000, guid: 1cd4ead57387ce54198a2954f88af4be, type: 2}
+      - {fileID: 11400000, guid: b61b5153400a8c048a29e4a1fe0160e2, type: 2}
+  - thumbnail: {fileID: 21300000, guid: b1df75639ff714040a10c68ba5631f9a, type: 3}
+    name: 'Color Node: Practice'
+    description: Let's practice more with the color node.
+    webpageSO: {fileID: 11400000, guid: 2c0e1d0e715f264449d6fe03d245621c, type: 2}
+    projectFrameworks:
+    - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
+      builds:
+      - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+      - {fileID: 11400000, guid: 3dde0c42dda5530479944d9c62a38ef6, type: 2}
     - details: {fileID: 11400000, guid: 4b8207445202e2343949fa6231cc3bb4, type: 2}
       builds:
       - {fileID: 11400000, guid: 1cd4ead57387ce54198a2954f88af4be, type: 2}
@@ -106,11 +121,12 @@ MonoBehaviour:
 
       Objective: Overlay the square component onto
       the web page correclty and feed it to the deployer'
-    webpageSO: {fileID: 11400000, guid: 2b1e2eecf05ef954fbf28bbebe88f75c, type: 2}
+    webpageSO: {fileID: 11400000, guid: ce2ad626f353855499a102c62f0e24e9, type: 2}
     projectFrameworks:
     - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
       builds:
       - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+      - {fileID: 11400000, guid: 3dde0c42dda5530479944d9c62a38ef6, type: 2}
     - details: {fileID: 11400000, guid: 4b8207445202e2343949fa6231cc3bb4, type: 2}
       builds:
       - {fileID: 11400000, guid: 1cd4ead57387ce54198a2954f88af4be, type: 2}

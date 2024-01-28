@@ -25,7 +25,7 @@ public class GI_CustomGameInstance : UGameInstance
     public int LevelToLoad => levelToLoad;
 
     public Bindable<PlayerData> playerData;
-    public bool doPreviewNextLevel;
+    [HideInInspector] public bool doPreviewNextLevel;
 
     protected override void Awake()
     {

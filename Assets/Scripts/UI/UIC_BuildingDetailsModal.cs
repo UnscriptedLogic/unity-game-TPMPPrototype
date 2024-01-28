@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnscriptedEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UIC_BuildingDetailsModal : UCanvasController
 {
@@ -15,8 +17,9 @@ public class UIC_BuildingDetailsModal : UCanvasController
 
     [SerializeField] private Ease ease;
 
-    [SerializeField] private GameObject gnomeObject;
-    [SerializeField] private AudioSource gnomeAudioSource;
+    [SerializeField] private GameObject memeObject;
+    [SerializeField] private Image memeImg;
+    [SerializeField] private List<Sprite> memeSprites;
 
     private UTextComponent buildName;
     private UTextComponent buildDesc;
@@ -44,12 +47,11 @@ public class UIC_BuildingDetailsModal : UCanvasController
     {
         modalParent.DOMoveX(activeTransform.position.x, 0.5f).SetEase(ease).OnComplete(() => showBtn.gameObject.SetActive(false));
 
-        gnomeObject.SetActive(false);
+        memeObject.SetActive(false);
 
         if (UnityEngine.Random.Range(0f, 100f) <= 2.3f)
         {
-            gnomeObject.SetActive(true);
-            gnomeAudioSource.Play();
+            memeObject.SetActive(true);
         }
     }
 

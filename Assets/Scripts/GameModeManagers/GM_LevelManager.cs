@@ -14,36 +14,36 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     }
 
     [Header("Game Mode")]
-    [SerializeField] private UIC_GameLevelHUD gameLevelHUD;
-    [SerializeField] private UIC_ProjectCompletionHUD gameCompletedHUD;
-    [SerializeField] private float nodeTickInterval = 0.1f;
-    [SerializeField] private float evaluateTime = 10f;
-    [SerializeField] private Transform deployerParent;
-    [SerializeField] private O_Build_Deployers deployerPrefab;
+    [SerializeField] protected UIC_GameLevelHUD gameLevelHUD;
+    [SerializeField] protected UIC_ProjectCompletionHUD gameCompletedHUD;
+    [SerializeField] protected float nodeTickInterval = 0.1f;
+    [SerializeField] protected float evaluateTime = 10f;
+    [SerializeField] protected Transform deployerParent;
+    [SerializeField] protected O_Build_Deployers deployerPrefab;
 
     [Header("Misc")]
-    [SerializeField] private List<MiscActiveObjects> miscActiveObjects;
+    [SerializeField] protected List<MiscActiveObjects> miscActiveObjects;
 
-    private List<O_Build_Deployers> deployers;
-    private WebPageSO webpageData;
-    private bool isSpeedingUpFactoryOverTime;
-    private float lerp = 0;
-    private float maxFactoryEvaluateSpeed = 8f;
-    private float lerpToMaxSpeedTime = 0.1f;
-    private float _evaluateTime;
+    protected List<O_Build_Deployers> deployers;
+    protected WebPageSO webpageData;
+    protected bool isSpeedingUpFactoryOverTime;
+    protected float lerp = 0;
+    protected float maxFactoryEvaluateSpeed = 8f;
+    protected float lerpToMaxSpeedTime = 0.1f;
+    protected float _evaluateTime;
 
-    private GI_CustomGameInstance customGameInstance;
+    protected GI_CustomGameInstance customGameInstance;
 
-    private float globalBeltSpeed;
+    protected float globalBeltSpeed;
 
-    private event Action OnProjectSpeedingUpTime;
-    private event Action OnSpeedUpTimeCompleted;
+    protected TickSystem.Ticker ticker;
+    
+    protected event Action OnProjectSpeedingUpTime;
+    protected event Action OnSpeedUpTimeCompleted;
 
     public event EventHandler OnProjectCompleted;
     public event EventHandler OnProjectEvaluationCompleted;
     public event EventHandler OnClearAllObjects;
-
-    private TickSystem.Ticker ticker;
 
     public WebPageSO WebpageSO => webpageData;
     public TickSystem.Ticker NodeTickSystem => ticker;
@@ -132,7 +132,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
     }
 
-    private void GM_LevelManager_OnSpeedUpTimeCompleted()
+    protected virtual void GM_LevelManager_OnSpeedUpTimeCompleted()
     {
         if (IsProjectCompleted)
         {
@@ -143,7 +143,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
     }
 
-    private void GM_LevelManager_OnProjectSpeedingUpTime()
+    protected virtual void GM_LevelManager_OnProjectSpeedingUpTime()
     {
         if (IsProjectCompleted)
         {
@@ -168,7 +168,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
     }
 
-    private void SpeedUpFactoryOverTime()
+    protected virtual void SpeedUpFactoryOverTime()
     {
         if (_evaluateTime > 0f)
         {
@@ -188,7 +188,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
     }
 
-    public void FinishProject()
+    public virtual void FinishProject()
     {
         if (IsSpeedingUpFactoryOverTime) return;
 
@@ -207,12 +207,12 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         base.OnDisable();
     }
 
-    public void FireClearObjectsEvent()
+    public virtual void FireClearObjectsEvent()
     {
         OnClearAllObjects?.Invoke(this, EventArgs.Empty);
     }
 
-    public IDeployer[] GetDeployers()
+    public virtual IDeployer[] GetDeployers()
     {
         IDeployer[] deployers = new IDeployer[this.deployers.Count];
         for (int i = 0; i < deployers.Length; i++)
