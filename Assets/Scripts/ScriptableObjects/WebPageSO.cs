@@ -39,17 +39,9 @@ public class WebPageSO : ScriptableObject
         for (int i = 0; i < page.AttachedComponents.Count; i++)
         {
             bool isComponentValid = false;
-            for (int j = 0; j < data.RequiredComponents.Length; j++)
+            if (page.AttachedComponents[i].id == data.RequiredComponents[i].ComponentID)
             {
-                if (page.AttachedComponents[i].id == data.RequiredComponents[j].ComponentID)
-                {
-                    isComponentValid = AreAllModificationsTheSame(data.RequiredComponents[j].ModificationIDs, page.AttachedComponents[i].ModificationsID);
-
-                    if (isComponentValid)
-                    {
-                        break;
-                    }
-                }
+                isComponentValid = AreAllModificationsTheSame(data.RequiredComponents[i].ModificationIDs, page.AttachedComponents[i].ModificationsID);
             }
 
             if (!isComponentValid)
@@ -63,6 +55,8 @@ public class WebPageSO : ScriptableObject
 
     private bool AreAllModificationsTheSame(string[] requiredMods, string componentModID)
     {
+        if (requiredMods.Length > 0 && string.IsNullOrEmpty(componentModID)) return false;
+
         for (int i = 0; i < requiredMods.Length; i++)
         {
             if (!componentModID.Contains(requiredMods[i]))

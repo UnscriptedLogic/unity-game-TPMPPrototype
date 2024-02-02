@@ -24,7 +24,7 @@ public class O_Build_ManualDispenser : O_Build_GenericDispenser
 
         if (buildSystemInterface.NodeTickSystem.HasTickedAfter(screenPrefabs[index].DelayTick))
         {
-            BuildBehaviours.DispenseItemFromInventory(outputNode, Instantiate(screenPrefabs[index].ScreenPrefab, outputNode.Transform.position, Quaternion.identity));
+            BuildBehaviours.CreateBuildItem(Instantiate(screenPrefabs[index].ScreenPrefab, outputNode.Transform.position, Quaternion.identity), outputNode);
             index++;
         }
     }

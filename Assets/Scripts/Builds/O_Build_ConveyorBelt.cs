@@ -32,13 +32,28 @@ public class O_Build_ConveyorBelt : O_Build
         isInPreview = true;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (isInPreview) return;
 
-        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(2))
+        for (int i = 0; i < inventory.Count; i++)
         {
-            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.4f);
+            if (inventory[i] == null)
+            {
+                inventory.RemoveAt(i);
+                continue;
+            }
+
+            if (!inventory[i].gameObject.activeInHierarchy)
+            {
+                inventory.RemoveAt(i);
+                continue;
+            }
+        }
+
+        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(1))
+        {
+            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(startPointerAnchor.position, 0.2f);
             for (int i = 0; i < collider2Ds.Length; i++)
             {
                 O_BuildItem buildItem = collider2Ds[i].GetComponent<O_BuildItem>();
@@ -46,12 +61,19 @@ public class O_Build_ConveyorBelt : O_Build
                 {
                     if (inventory.Contains(buildItem)) continue;
 
+                    buildItem.transform.position = startPointerAnchor.position;
+
                     inventory.Add(buildItem);
                     buildItem.transform.SetParent(transform);
                     break;
                 }
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isInPreview) return;
 
         for (int i = 0; i < inventory.Count; i++)
         {
@@ -118,7 +140,9 @@ public class O_Build_ConveyorBelt : O_Build
 
     public void SplitConveyorBelt(O_Build instigator)
     {
-        Debug.Log("Splitting belt");
+        ClearConveyorBelt();
+
+        Debug.Log(inventory.Count);
 
         //Check where on the belt it is
         for (int i = 0; i < lineRenderer.positionCount - 1; i++)
@@ -195,47 +219,19 @@ public class O_Build_ConveyorBelt : O_Build
                 Destroy(gameObject);
             }
 
-            RearrangeConveyorItems(newBelt);
-
             return;
         }
     }
 
-    private void RearrangeConveyorItems(O_Build_ConveyorBelt secondHalf)
+    private void ClearConveyorBelt()
     {
-        for (int i = 0; i < inventory.Count; i++)
+        for (int i = inventory.Count - 1; i >= 0; i--)
         {
-            if (!IsItemWithinBeltBoundaries(inventory[i]))
-            {
-                if (secondHalf == null)
-                {
-                    Destroy(inventory[i]);
-                    return;
-                }
-
-                if (secondHalf.IsItemWithinBeltBoundaries(inventory[i]))
-                {
-                    secondHalf.inventory.Add(inventory[i]);
-                }
-                else
-                {
-                    Destroy(inventory[i].gameObject);
-                }
-            }
-        }
-    }
-
-    private bool IsItemWithinBeltBoundaries(O_BuildItem buildItem)
-    {
-        for (int i = 0; i < lineRenderer.positionCount - 1; i++)
-        {
-            if (IsPointOnSegment(buildItem.transform.position, lineRenderer.GetPosition(i), lineRenderer.GetPosition(i + 1)))
-            {
-                return true;
-            }
+            inventory[i].DestroySelf();
+            inventory[i].transform.SetParent(null);
         }
 
-        return false;
+        inventory.Clear();
     }
 
     private bool DoesItemHaveSpaceToMove(int index)

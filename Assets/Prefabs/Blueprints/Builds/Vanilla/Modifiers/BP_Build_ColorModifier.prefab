@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 3902369903067556534}
   m_Layer: 0
   m_Name: Input
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 7729816403169453780}
   m_Layer: 0
   m_Name: Output
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -600,14 +600,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56493d878dd6e3e419cfb6e23365e44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   inputNode:
     transform: {fileID: 2137963905617298994}
+    maxCap: 1
   outputNode:
     transform: {fileID: 1021018345672012577}
-  processTickDelay: 6
-  creationIteration: 2
+  processTickDelay: 8
+  creationIteration: 1
   uiInterface: {fileID: 2478061826322866179}
   image: {fileID: 1135460460482637736}
   colors:
@@ -627,6 +629,7 @@ MonoBehaviour:
     color: {r: 0.33725488, g: 1, b: 0.40167618, a: 1}
   - id: purple
     color: {r: 0.48235294, g: 0.42352942, b: 1, a: 1}
+  index: 0
 --- !u!61 &5252231188018548288
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -931,7 +934,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayerID
@@ -1009,7 +1012,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID
@@ -1087,7 +1090,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingOrder

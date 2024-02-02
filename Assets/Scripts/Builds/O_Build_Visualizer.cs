@@ -20,6 +20,8 @@ public class O_Build_Visualizer : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (inPreview) return;
+
         if (buildComponent != null)
         {
             if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
@@ -28,16 +30,20 @@ public class O_Build_Visualizer : O_Build_ModifierBase
 
                 if (_creationIteration < creationIteration) return;
 
+                if (!outputNode.IsConnected) return;
+
                 OnComponentToDispense(buildComponent);
 
-                BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-                buildComponent = null;
-
-                _creationIteration = 0;
+                if (BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode))
+                {
+                    _creationIteration = 0;
+                }
             }
 
             return;
         }
+
+        if (!inputNode.isInventoryEmpty) return;
 
         if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
         {

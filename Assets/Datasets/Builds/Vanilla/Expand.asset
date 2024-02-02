@@ -18,6 +18,6 @@ MonoBehaviour:
   description: Expands the component by the selected dimension by a selected percentage.
     The expand effect is not affected by the component's bounds.
   frameworkCategory: 0
-  buildMachineCategory: 3
+  buildMachineCategory: 0
   build: {fileID: 3835251865746333402, guid: 4d015105e8ca0a540b04bd4f78f3f07a, type: 3}
   functionalityVideo: {fileID: 32900000, guid: 9bf5bca6a5c598140b31de234b3bf5b9, type: 3}

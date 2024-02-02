@@ -22,6 +22,11 @@ public class O_Build_Constructor : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (inPreview) return;
+
+        if (!outputNode.IsConnected) return;
+        if (!outputNode.IsSpawnAreaEmpty) return;
+
         if (leftBuildComponent == null)
         {
             if (leftInputNode.TryGetBuildComponent(out O_BuildComponent buildComponent))

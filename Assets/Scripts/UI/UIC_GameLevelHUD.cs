@@ -62,6 +62,7 @@ public class UIC_GameLevelHUD : UCanvasController
     protected override void OnDestroy()
     {
         levelManager.OnProjectCompleted -= FactoryValidationInterface_OnProjectCompleted;
+        OnObjectCreated -= UIC_GameLevelHUD_OnObjectCreated;
 
         base.OnDestroy();
     }

@@ -289,6 +289,8 @@ public class P_PlayerPawn : URTSCamera
         O_Build build = collision.GetComponent<O_Build>();
         if (build != null)
         {
+            if (!build.IsMovable) return;
+
             if (selectionDict.ContainsKey(build)) return;
 
             GameObject selectionObject = Instantiate(selectionObjectPrefab, build.transform.position, Quaternion.identity, build.transform);

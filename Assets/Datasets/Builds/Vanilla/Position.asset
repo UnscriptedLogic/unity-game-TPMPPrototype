@@ -19,6 +19,6 @@ MonoBehaviour:
     by the size of the component so as to prevent components from bleeding out of
     the bounds.
   frameworkCategory: 0
-  buildMachineCategory: 3
+  buildMachineCategory: 0
   build: {fileID: 2360944043468057583, guid: 57ffdb26f13436e4eb56a272051e2cde, type: 3}
   functionalityVideo: {fileID: 32900000, guid: 2a63c0789d80cb8448623e7d64fede06, type: 3}

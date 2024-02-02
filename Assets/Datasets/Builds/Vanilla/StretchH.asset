@@ -18,6 +18,6 @@ MonoBehaviour:
   description: Stretches the component to the entire height of the bounds regardless
     of position.
   frameworkCategory: 0
-  buildMachineCategory: 3
+  buildMachineCategory: 0
   build: {fileID: 6127758460252443562, guid: 07407892967d62445a947ec24888e543, type: 3}
   functionalityVideo: {fileID: 32900000, guid: 9876031b2d539ad47baf67777f2fce87, type: 3}

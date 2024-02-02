@@ -25,13 +25,18 @@ public class O_BuildItem : ULevelObject
 
     private void PageObjectInterface_OnClearAllObjects(object sender, System.EventArgs e)
     {
-        pageObjectInterface.OnClearAllObjects -= PageObjectInterface_OnClearAllObjects;
-
         Destroy(gameObject);
     }
 
-    private void OnDisable()
+    protected override void OnDestroy()
     {
         pageObjectInterface.OnClearAllObjects -= PageObjectInterface_OnClearAllObjects;
+
+        base.OnDestroy();
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 }

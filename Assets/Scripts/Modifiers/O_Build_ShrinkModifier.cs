@@ -12,6 +12,9 @@ public class O_Build_ShrinkModifier : O_Build_ModifierBase
 
     private Bindable<int> shrinkIndex;
 
+    [SerializeField] private Side overrideSideEnum;
+    [SerializeField] private int overrideShrinkIndex;
+
     protected override void Start()
     {
         base.Start();
@@ -29,8 +32,8 @@ public class O_Build_ShrinkModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("togglesideforward", OnToggleSide);
         uiInterface.Bind<UButtonComponent>("togglesideback", OnToggleSide);
 
-        shrinkIndex.Value = 0;
-        side.Value = Side.Width;
+        shrinkIndex.Value = overrideShrinkIndex;
+        side.Value = overrideSideEnum;
 
         uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
     }

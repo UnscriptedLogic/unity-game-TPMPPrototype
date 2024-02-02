@@ -6965,7 +6965,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 1940898410}
   buildItemPrefab: {fileID: 5191673410740653060, guid: 85c9728070a25c04c9d30f6b6a65858f, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!1 &680873296
 GameObject:
   m_ObjectHideFlags: 0
@@ -8458,7 +8458,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 541062690}
   buildItemPrefab: {fileID: 5191673410740653060, guid: 85c9728070a25c04c9d30f6b6a65858f, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!1 &791936334
 GameObject:
   m_ObjectHideFlags: 0
@@ -8953,7 +8953,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 1614903170}
   buildItemPrefab: {fileID: 5191673410740653060, guid: 85c9728070a25c04c9d30f6b6a65858f, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!1 &807329857
 GameObject:
   m_ObjectHideFlags: 0
@@ -18678,7 +18678,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 2061319686}
   buildItemPrefab: {fileID: 308295150809787338, guid: 0a5b013fe0ee5c34e9478709ee9f7aab, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!1 &1557403295
 GameObject:
   m_ObjectHideFlags: 0
@@ -21448,7 +21448,7 @@ MonoBehaviour:
   outputNode:
     transform: {fileID: 882793214}
   buildItemPrefab: {fileID: 5191673410740653060, guid: 85c9728070a25c04c9d30f6b6a65858f, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!1 &1809578515
 GameObject:
   m_ObjectHideFlags: 0

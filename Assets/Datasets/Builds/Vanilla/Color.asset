@@ -18,6 +18,6 @@ MonoBehaviour:
   description: Colors the component to the selected color. This is modifier node
     accepts canvases
   frameworkCategory: 0
-  buildMachineCategory: 3
+  buildMachineCategory: 0
   build: {fileID: 5227923228343801633, guid: 0392911f30610f64483697875b237aed, type: 3}
   functionalityVideo: {fileID: 32900000, guid: 9c17f31af49b3c8418fb71848b45361a, type: 3}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1600351627209783275}
   m_Layer: 0
   m_Name: Output
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.059040934}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -77,7 +77,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.2}
+  m_Size: {x: 0.5399271, y: 0.10533947}
   m_EdgeRadius: 0
 --- !u!1 &6566337462646100952
 GameObject:
@@ -88,10 +88,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3423867106925893040}
-  - component: {fileID: 3106783744444242010}
+  - component: {fileID: 8986267708371016903}
   m_Layer: 0
   m_Name: InputLeft
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,8 +112,8 @@ Transform:
   - {fileID: 4060158938290486693}
   m_Father: {fileID: 6263076697714565322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!58 &3106783744444242010
-CircleCollider2D:
+--- !u!61 &8986267708371016903
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -146,8 +146,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
+  m_Offset: {x: 0, y: 0.060644306}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.5323847, y: 0.097163156}
+  m_EdgeRadius: 0
 --- !u!1 &8068585469557631807
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,14 +208,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bfb1e50ccd3d1c4f9a3f45573956542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
+  movable: 1
   cellSize: {x: 1.8, y: 0.9}
   offset: {x: 0, y: 0}
   outputNode:
     transform: {fileID: 1987255258783197760}
   leftInputNode:
     transform: {fileID: 3423867106925893040}
+    maxCap: 1
+    Inventory: []
   rightInputNode:
     transform: {fileID: 6268509374701159994}
+    maxCap: 1
+    Inventory: []
   dispenseOnEveryTick: 4
 --- !u!61 &3160081326649317323
 BoxCollider2D:
@@ -262,10 +278,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6268509374701159994}
-  - component: {fileID: 8751560561503098527}
+  - component: {fileID: 936700305664989481}
   m_Layer: 0
   m_Name: InputRight
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -286,8 +302,8 @@ Transform:
   - {fileID: 3055718996333638240}
   m_Father: {fileID: 6263076697714565322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
---- !u!58 &8751560561503098527
-CircleCollider2D:
+--- !u!61 &936700305664989481
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -320,8 +336,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
+  m_Offset: {x: 0, y: 0.058266044}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.5481404, y: 0.10787487}
+  m_EdgeRadius: 0
 --- !u!1001 &374138953384860908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -332,7 +358,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayerID
@@ -410,7 +436,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID
@@ -488,7 +514,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID
@@ -566,7 +592,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 620bde2500507dc498951e0edc150714, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 620bde2500507dc498951e0edc150714, type: 3}
       propertyPath: m_SortingOrder
@@ -652,7 +678,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7295470c4d9a8d34ab57cc536e6bf137, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7295470c4d9a8d34ab57cc536e6bf137, type: 3}
       propertyPath: m_SortingOrder

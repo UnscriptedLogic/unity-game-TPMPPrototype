@@ -18,6 +18,6 @@ MonoBehaviour:
   description: Shrinks the component by the selected dimension by a selected percentage.
     The shrink effect is not affected by the component's bounds.
   frameworkCategory: 0
-  buildMachineCategory: 3
+  buildMachineCategory: 0
   build: {fileID: 3835251865746333402, guid: d4bcc27fa85437e44a3e94c8ea8b3b60, type: 3}
   functionalityVideo: {fileID: 32900000, guid: a7c5b6e737524b246af0caf50bccc022, type: 3}

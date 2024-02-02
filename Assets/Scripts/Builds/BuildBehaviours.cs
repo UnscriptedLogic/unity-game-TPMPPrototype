@@ -72,40 +72,32 @@ public static class BuildBehaviours
         }
     }
 
-    public static void ConsumeItem(O_Build build, O_BuildItem item, ref List<O_BuildItem> buildItems)
+    public static void ConsumeItem(O_Build build, O_BuildItem item, InputNode inputNode)
     {
-        ConsumeItem(build, item);
+        item.gameObject.SetActive(false);
+        item.transform.position = build.transform.position;
+        item.transform.SetParent(build.transform);
 
-        buildItems.Add(item);
+        inputNode.Inventory.Add(item);
     }
 
     public static void ConsumeItem(O_Build build, O_BuildItem item)
     {
         item.gameObject.SetActive(false);
         item.transform.position = build.transform.position;
+        item.transform.SetParent(build.transform);
+
+        build.Inventory.Add(item);
     }
 
-    public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> inventory)
+    public static bool TryDispenseItemFromInventory(OutputNode outputNode, InputNode inputNode)
     {
-        if (!outputNode.IsConnected) return;
-
-        O_BuildItem item = inventory[0];
-        item.gameObject.SetActive(true);
+        O_BuildItem item = inputNode.Inventory[0];
         item.transform.position = outputNode.Transform.position;
-
-        outputNode.GetBuildInfront().GiveItem(inventory[0]);
-
-        inventory.RemoveAt(0);
-    }
-
-    public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
-    {
-        if (!outputNode.IsConnected) return;
-
         item.gameObject.SetActive(true);
-        item.transform.position = outputNode.Transform.position;
 
-        outputNode.GetBuildInfront().GiveItem(item);
+        inputNode.Inventory.Remove(item);
+        return true;
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
@@ -115,7 +107,5 @@ public static class BuildBehaviours
         O_BuildItem item = buildItem;
         item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
-
-        outputNode.GetBuildInfront().GiveItem(item);
     }
 }

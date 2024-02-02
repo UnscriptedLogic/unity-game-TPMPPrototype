@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnscriptedEngine;
 
@@ -62,7 +63,17 @@ public class UIC_OverviewUI : UCanvasController
     private void OnPlayPressed()
     {
         customGameInstance.SetProjectToLoad(selectedLevelIndex);
-        GameMode.LoadScene(1);
+
+        string levelName = $"Level{selectedLevelIndex + 1}";
+        if (SceneUtility.GetBuildIndexByScenePath($"Scenes/{levelName}") != -1)
+        {
+            SceneManager.LoadScene(levelName);
+        }
+        else
+        {
+            //Fallback to a generic level if no level specific scene is found
+            GameMode.LoadScene(1);
+        }
     }
 
     private void OnLevelPressed(string id)

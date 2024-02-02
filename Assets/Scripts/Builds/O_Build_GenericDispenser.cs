@@ -15,8 +15,6 @@ public class O_Build_GenericDispenser : O_Build
     {
         base.Start();
 
-        outputNode.Initialize();
-
         validationInterface = GameMode as IFactoryValidation;
         if (validationInterface == null)
         {
@@ -34,11 +32,14 @@ public class O_Build_GenericDispenser : O_Build
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (inPreview) return;
+
+        if (!outputNode.IsConnected) return;
         if (!outputNode.IsSpawnAreaEmpty) return;
 
         if (buildSystemInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
         {
-            outputNode.DispsenseItem(Instantiate(buildItemPrefab));
+            BuildBehaviours.CreateBuildItem(Instantiate(buildItemPrefab), outputNode);
         }
     }
 

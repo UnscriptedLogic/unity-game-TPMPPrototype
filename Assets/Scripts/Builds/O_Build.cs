@@ -1,31 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnscriptedEngine;
 
 public abstract class O_Build : ULevelObject
 {
     [System.Serializable]
-    public struct InputNode
+    public class InputNode
     {
         [SerializeField] private Transform transform;
+        [Min(1)]
+        [SerializeField] private int maxCap = 1;
 
         private bool isConnected;
-        private Collider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
+        
+        public List<O_BuildItem> Inventory;
 
         public Transform Transform => transform;
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
-        public bool IsConnected
-        {
-            get { return isConnected; }
-        }
-
-        public void Initialize()
-        {
-            collider = transform.GetComponent<Collider2D>();
-        }
+        public bool IsConnected => isConnected;
+        public bool HasSpace => Inventory.Count < maxCap;
+        public bool isInventoryEmpty => Inventory.Count == 0;
 
         public void CheckConnection()
         {
@@ -45,8 +41,6 @@ public abstract class O_Build : ULevelObject
                 this.conveyorBelt = conveyorBelt;
                 break;
             }
-
-            collider.enabled = !isConnected;
         }
 
         public bool TryGetBuildItem(out O_BuildItem buildItem)
@@ -87,28 +81,11 @@ public abstract class O_Build : ULevelObject
     {
         [SerializeField] private Transform transform;
 
-        private bool isConnected;
-        private BoxCollider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
 
         public Transform Transform => transform;
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
         public bool IsConnected => HasConveyorBelt() || IsBuildingInfront;
-
-        public O_Build GetBuildInfront()
-        {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                O_Build build = colliders[i].GetComponentInParent<O_Build>();
-                if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
-                {
-                    return build;
-                }
-            }
-
-            return null;
-        }
 
         public bool IsSpawnAreaEmpty
         {
@@ -127,9 +104,21 @@ public abstract class O_Build : ULevelObject
             }
         }
 
-        public void Initialize()
+        public bool IsBuildingInfront
         {
-            collider = transform.GetComponent<BoxCollider2D>();
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].CompareTag(END_CONSTRUCT_POINT))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         public bool HasConveyorBelt()
@@ -164,30 +153,19 @@ public abstract class O_Build : ULevelObject
             return false;
         }
 
-        public bool IsBuildingInfront
+        public O_Build GetBuildInfront()
         {
-            get
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            for (int i = 0; i < colliders.Length; i++)
             {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-                for (int i = 0; i < colliders.Length; i++)
+                O_Build build = colliders[i].GetComponentInParent<O_Build>();
+                if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
                 {
-                    O_Build build = colliders[i].GetComponentInParent<O_Build>();
-                    if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
-                    {
-                        return true;
-                    }
+                    return build;
                 }
-
-                return false;
             }
-        }
 
-        public void DispsenseItem<T>(T gameObject) where T : O_BuildItem
-        {
-            if (IsBuildingInfront || HasConveyorBelt())
-            {
-                gameObject.transform.position = transform.position;
-            }
+            return null;
         }
     }
 
@@ -195,8 +173,10 @@ public abstract class O_Build : ULevelObject
     public const string END_CONSTRUCT_POINT = "EndConstructPoint";
 
     protected int ticksLeft;
+    protected bool inPreview;
 
     [SerializeField] protected bool indestructible;
+    [SerializeField] protected bool movable = true;
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
@@ -213,6 +193,9 @@ public abstract class O_Build : ULevelObject
     public static event EventHandler OnPreviewingBuild;
 
     public Vector2 CellSize => cellSize;
+    public List<O_BuildItem> Inventory => inventory;
+    public bool Indestructible => indestructible;
+    public bool IsMovable => movable;
 
     protected virtual void Start()
     {
@@ -243,6 +226,8 @@ public abstract class O_Build : ULevelObject
 
     public virtual void OnBeginPreview() 
     {
+        inPreview = true;
+
         OnPreviewingBuild?.Invoke(this, EventArgs.Empty);
     }
     
@@ -254,6 +239,8 @@ public abstract class O_Build : ULevelObject
 
     public virtual void OnEndPreview() 
     {
+        inPreview = false;
+
         Destroy(gameObject);
     }
 
@@ -320,11 +307,6 @@ public abstract class O_Build : ULevelObject
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
 
         base.OnDestroy();
-    }
-
-    public virtual void GiveItem(O_BuildItem item)
-    {
-        inventory.Add(item);
     }
 
     public virtual void DeleteSelf()

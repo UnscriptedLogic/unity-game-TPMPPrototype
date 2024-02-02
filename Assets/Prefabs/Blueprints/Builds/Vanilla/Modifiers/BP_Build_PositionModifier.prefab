@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 3902369903067556534}
   m_Layer: 0
   m_Name: Input
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 7729816403169453780}
   m_Layer: 0
   m_Name: Output
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -559,10 +559,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d132a5c7995d2794c86acbf391291582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   inputNode:
     transform: {fileID: 2137963905617298994}
+    maxCap: 1
   outputNode:
     transform: {fileID: 1021018345672012577}
   processTickDelay: 2
@@ -1087,7 +1089,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: cb222ee5b31e4614eabeb568b916e975, type: 3}
       propertyPath: m_SortingOrder
@@ -1169,7 +1171,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingOrder
@@ -1251,7 +1253,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: accc568f1e24f024e86b9dc0a9680c01, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: accc568f1e24f024e86b9dc0a9680c01, type: 3}
       propertyPath: m_SortingOrder
@@ -1337,7 +1339,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingOrder

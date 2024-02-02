@@ -928,10 +928,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e73b00ec0fcc40141a49239905280e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   inputNode:
     transform: {fileID: 6981271036269950098}
+    maxCap: 1
   outputNode:
     transform: {fileID: 2704465916096578097}
   processTickDelay: 2
@@ -1002,7 +1004,7 @@ GameObject:
   - component: {fileID: 7984544702260738394}
   m_Layer: 0
   m_Name: Input
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1058,7 +1060,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.054089054}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1068,7 +1070,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.2}
+  m_Size: {x: 0.54724896, y: 0.09182188}
   m_EdgeRadius: 0
 --- !u!1 &6082050673369862370
 GameObject:
@@ -1522,7 +1524,7 @@ GameObject:
   - component: {fileID: 7754483591184711382}
   m_Layer: 0
   m_Name: Output
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1578,7 +1580,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.054351553}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1588,7 +1590,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.2}
+  m_Size: {x: 0.5434195, y: 0.09129688}
   m_EdgeRadius: 0
 --- !u!1 &7867174182753016535
 GameObject:

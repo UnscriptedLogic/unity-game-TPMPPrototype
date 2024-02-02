@@ -11,14 +11,6 @@ public class O_Build_GenericBuilder : O_Build
     [SerializeField] private int dispenseOnEveryTick = 1;
     [SerializeField] private List<BuildBehaviours.InventorySlot> requiredBuildItems = new List<BuildBehaviours.InventorySlot>();
 
-    protected override void Start()
-    {
-        base.Start();
-
-        inputNode.Initialize();
-        outputNode.Initialize();
-    }
-
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
         if (levelBuildInterface.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick))
@@ -31,7 +23,6 @@ public class O_Build_GenericBuilder : O_Build
 
             GameObject buildItemObject = Instantiate(buildItemPrefab);
             O_BuildItem buildItem = buildItemObject.GetComponent<O_BuildItem>();
-            //buildItem.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
         }
     }
 
@@ -70,7 +61,7 @@ public class O_Build_GenericBuilder : O_Build
                 if (item.ID != requiredBuildItems[i].id) continue;
                 if (requiredBuildItems[i].IsInventoryFull) continue;
 
-                BuildBehaviours.ConsumeItem(this, item, ref requiredBuildItems[i].items);
+                BuildBehaviours.ConsumeItem(this, item, inputNode);
                 break;
             }
         }

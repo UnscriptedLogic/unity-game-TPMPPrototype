@@ -8,7 +8,8 @@ public class GI_CustomGameInstance : UGameInstance
     [SerializeField] private List<Project> levels;
     [SerializeField] private Material globalConveyorBeltMaterial;
 
-    private int levelToLoad;
+    [Tooltip("Override this number to test a specific level in the TestScene")]
+    [SerializeField] private int levelToLoad;
 
     public List<Project> Levels => levels;
     public Material GlobalConveyorMaterial => globalConveyorBeltMaterial;

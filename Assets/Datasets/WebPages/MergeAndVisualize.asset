@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524bda4fa24a00a478a1d2e44773bfde, type: 3}
-  m_Name: MergerNode
+  m_Name: MergeAndVisualize
   m_EditorClassIdentifier: 
   webPageData:
-  - webpage: {fileID: 7366424205272422799, guid: b513efd9d870b154cb8b561812deb19a, type: 3}
+  - webpage: {fileID: 7366424205272422799, guid: 1e0297205d400ae45acf1b8f1a0de615, type: 3}
     requiredMinPage: 1
     components:
     - componentID: canvas
       modificationIds:
       - color-black
+    - componentID: square
+      modificationIds:
+      - color-purple
+      - stretchvertical

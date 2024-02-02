@@ -49,12 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657aec313d6687b4391e978270f5ccb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   outputNode:
     transform: {fileID: 587103065592170618}
   buildItemPrefab: {fileID: 308295150809787338, guid: 0a5b013fe0ee5c34e9478709ee9f7aab, type: 3}
-  dispenseOnEveryTick: 10
+  dispenseOnEveryTick: 2
 --- !u!61 &663575030023748880
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -351,7 +352,7 @@ GameObject:
   - component: {fileID: 3349362458217007683}
   m_Layer: 0
   m_Name: ExitPoint
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

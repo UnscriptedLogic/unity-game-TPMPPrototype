@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2905129378869282939}
   m_Layer: 0
   m_Name: Output
-  m_TagString: EndConstructPoint
+  m_TagString: StartConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,16 +209,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609edc58b13e1ec4aa191e50404fb0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   outputNode:
     transform: {fileID: 6554613702452613851}
   leftInputNode:
     transform: {fileID: 5831076509465772744}
+    maxCap: 1
   rightInputNode:
     transform: {fileID: 4547917937455448499}
+    maxCap: 1
   bottomInputNode:
     transform: {fileID: 1380480864135363552}
+    maxCap: 1
   dispenseOnEveryTick: 2
   maxStorage: 1
 --- !u!61 &3424563780598897708
@@ -435,7 +439,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 0987d8b82fcfdb94fa14b0aaadfec517, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 0987d8b82fcfdb94fa14b0aaadfec517, type: 3}
       propertyPath: m_SortingOrder
@@ -517,7 +521,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 1b5b646e057fc3742b80af8d8f8d2df6, type: 3}
       propertyPath: m_SortingLayerID
@@ -595,7 +599,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID
@@ -673,7 +677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID
@@ -751,7 +755,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: a580492b803ee0f41a21e7b3fca06495, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: a580492b803ee0f41a21e7b3fca06495, type: 3}
       propertyPath: m_SortingOrder
@@ -837,7 +841,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7871556540511652807, guid: 7ecbffab801f2c440a54bb0e8e98b802, type: 3}
       propertyPath: m_SortingLayerID

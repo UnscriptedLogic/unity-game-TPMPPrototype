@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,24 +19,24 @@ public class O_Build_Splitter : O_Build
 
     private OutputDirection outputDirection = OutputDirection.RIGHT;
 
-    private List<O_BuildItem> buildItems = new List<O_BuildItem>();
-
     private bool isAwaitingValidSpawn;
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
+        if (inPreview) return;
+
         base.NodeTickSystem_OnTick(sender, e);
 
-        if (buildItems.Count < 1)
+        if (inputNode.isInventoryEmpty)
         {
             if (inputNode.TryGetBuildItem(out O_BuildItem buildItem))
             {
-                BuildBehaviours.ConsumeItem(this, buildItem, ref buildItems);
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
                 ticksLeft = nodeConsumeTime;
             } 
         }
 
-        if (buildItems.Count == 0) return;
+        if (inputNode.isInventoryEmpty) return;
         if (ticksLeft > 0) return;
 
         OutputNode outputNode = GetNextOutput();
@@ -47,9 +45,7 @@ public class O_Build_Splitter : O_Build
 
         if (outputNode.IsSpawnAreaEmpty)
         {
-            BuildBehaviours.CreateBuildItem(buildItems[0], outputNode);
-            outputNode.DispsenseItem(buildItems[0]);
-            buildItems.RemoveAt(0);
+            BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
 
             isAwaitingValidSpawn = false;
         }
@@ -68,7 +64,7 @@ public class O_Build_Splitter : O_Build
         {
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
-                if (!middleOutputNode.HasConveyorBelt() || !middleOutputNode.IsBuildingInfront)
+                if (!middleOutputNode.IsConnected)
                 {
                     GetNextOutput(--depth);
                     break;
@@ -79,9 +75,12 @@ public class O_Build_Splitter : O_Build
                 break;
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
-                if (!rightOutputNode.HasConveyorBelt() || !rightOutputNode.IsBuildingInfront)
-                {
 
+                Debug.Log(rightOutputNode.IsConnected);
+                Debug.Log(rightOutputNode.IsBuildingInfront);
+
+                if (!rightOutputNode.IsConnected)
+                {
                     GetNextOutput(--depth);
                     break;
                 }
@@ -91,7 +90,7 @@ public class O_Build_Splitter : O_Build
                 break;
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
-                if (!leftOutputNode.HasConveyorBelt() || !leftOutputNode.IsBuildingInfront)
+                if (!leftOutputNode.IsConnected)
                 {
                     GetNextOutput(--depth);
                     break;

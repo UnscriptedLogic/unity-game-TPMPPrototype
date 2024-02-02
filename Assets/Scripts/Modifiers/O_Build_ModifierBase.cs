@@ -1,8 +1,4 @@
-using NUnit.Framework;
-using System;
-using UnityEditor.Build.Content;
 using UnityEngine;
-using UnscriptedEngine;
 
 public class O_Build_ModifierBase : O_Build
 {
@@ -17,50 +13,73 @@ public class O_Build_ModifierBase : O_Build
     [SerializeField] protected int processTickDelay = 8;
     [SerializeField] protected int creationIteration;
 
-    protected O_BuildComponent buildComponent;
-
     protected int _creationIteration;
 
-    protected override void Start()
+    protected O_BuildComponent buildComponent
     {
-        base.Start();
+        get
+        {
+            if (inputNode.isInventoryEmpty)
+            {
+                return null;
+            }
 
-        inputNode.Initialize();
-        outputNode.Initialize();
-    }
+            return inputNode.Inventory[0] as O_BuildComponent;
+        }
+
+        set
+        {
+            inputNode.Inventory.Add(value);
+        }
+    } 
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+        if (inPreview) return;
+
+        for (int i = inputNode.Inventory.Count - 1; i >= 0; i--)
         {
-            if (buildItem as O_BuildPage) return;
-
-            buildComponent = buildItem;
-
-            BuildBehaviours.ConsumeItem(this, buildComponent);
-
-            OnComponentRecieved(buildItem);
-
-            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            if (inputNode.Inventory[i] == null)
             {
-                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+                inputNode.Inventory.RemoveAt(i);
             }
         }
 
-        if (buildComponent == null) return;
-
-        if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (inputNode.isInventoryEmpty)
         {
-            _creationIteration++;
+            if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+            {
+                if (buildItem as O_BuildPage) return;
 
-            if (_creationIteration < creationIteration) return;
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
 
-            OnComponentToDispense(buildComponent);
+                OnComponentRecieved(buildItem);
 
-            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-            buildComponent = null;
+                for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+                {
+                    ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+                }
+            }
+        }
 
-            _creationIteration = 0;
+        if (!inputNode.isInventoryEmpty)
+        {
+            if (!outputNode.IsConnected) return;
+
+            if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+            {
+                _creationIteration++;
+
+                if (_creationIteration < creationIteration) return;
+
+                if (!outputNode.IsSpawnAreaEmpty) return;
+
+                OnComponentToDispense(inputNode.Inventory[0] as O_BuildComponent);
+
+                BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
+
+                _creationIteration = 0;
+            }
         }
     }
 

@@ -63,7 +63,19 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (buildComponent != null)
+        if (inPreview) return;
+
+        if (inputNode.isInventoryEmpty)
+        {
+            if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+            {
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
+
+                OnComponentRecieved(buildItem);
+            }
+        }
+
+        if (!inputNode.isInventoryEmpty)
         {
             if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
             {
@@ -71,40 +83,25 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
                 if (_creationIteration < creationIteration) return;
 
-                BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-                buildComponent = null;
+                if (!outputNode.IsConnected) return;
+
+                O_BuildComponent buildComp = inputNode.Inventory[0] as O_BuildComponent;
+                if (buildComp == null)
+                {
+                    inputNode.Inventory.RemoveAt(0);
+                    return;
+                }
+
+                for (int i = 0; i < buildComp.AttachedComponents.Count; i++)
+                {
+                    ForEveryAttachedComponent(buildComp.AttachedComponents[i]);
+                }
+
+                OnComponentToDispense(inputNode.Inventory[0] as O_BuildComponent);
+
+                BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
 
                 _creationIteration = 0;
-            }
-
-            return;
-        }
-
-        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
-        {
-            buildComponent = buildItem;
-
-            BuildBehaviours.ConsumeItem(this, buildComponent);
-
-            OnComponentRecieved(buildItem);
-
-            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
-            {
-                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
-            }
-        }
-
-        if (inputNode.TryGetBuildComponent(out O_BuildPage buildpage))
-        {
-            buildComponent = buildItem;
-
-            BuildBehaviours.ConsumeItem(this, buildComponent);
-
-            OnComponentRecieved(buildItem);
-
-            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
-            {
-                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
             }
         }
     }
@@ -112,5 +109,10 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
     protected override void ForEveryAttachedComponent(O_BuildComponentItem itemComponent)
     {
         itemComponent.SetColor(colors[index].id, colors[index].color);
+    }
+
+    private void OnValidate()
+    {
+        UpdateVisual();
     }
 }

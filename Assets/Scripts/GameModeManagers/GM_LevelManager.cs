@@ -20,9 +20,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     [SerializeField] protected float evaluateTime = 10f;
     [SerializeField] protected Transform deployerParent;
     [SerializeField] protected O_Build_Deployers deployerPrefab;
-
-    [Header("Misc")]
-    [SerializeField] protected List<MiscActiveObjects> miscActiveObjects;
+    [SerializeField] private UIC_DetailsModal detailsModal;
 
     protected List<O_Build_Deployers> deployers;
     protected WebPageSO webpageData;
@@ -86,20 +84,22 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
             new DeployersMeetRateRequirement(),
         });
 
-        for (int i = 0; i < miscActiveObjects.Count; i++)
-        {
-            if (miscActiveObjects[i].levelIndex != customGameInstance.LevelToLoad) continue;
+        yield return base.Start();
 
-            for (int j = 0; j < miscActiveObjects[i].objectsToActivate.Count; j++)
-            {
-                miscActiveObjects[i].objectsToActivate[j].SetActive(true);
-            }
+        if (detailsModal != null)
+        {
+            _playerController.AttachUIWidget(detailsModal);
+            yield return new WaitForSeconds(0.5f);
         }
 
-        yield return base.Start();
 
         GetPlayerController().AttachUIWidget(gameLevelHUD);
 
+        CreateDeployers();
+    }
+
+    protected void CreateDeployers()
+    {
         float currentOffset = 0;
         float offset = 2.5f;
         float side = 1f;

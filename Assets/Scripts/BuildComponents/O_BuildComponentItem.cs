@@ -10,7 +10,7 @@ public class O_BuildComponentItem : ULevelObject
 {
     public enum ComponentPosition
     {
-        Left, Right, Top, Bottom, Center, CenterWidth, CenterHeight
+        Left, Right, Top, Bottom, Center
     }
 
     public string id;
@@ -96,25 +96,6 @@ public class O_BuildComponentItem : ULevelObject
                 AppendModification("position-center");
                 break;
 
-            case ComponentPosition.CenterWidth:
-                float cw_width = uiComponent.rect.width;
-                float cw_posX = (1920 - cw_width) * 0.5f;
-
-                uiComponent.offsetMin = new Vector2(cw_posX, uiComponent.offsetMin.y);
-                uiComponent.offsetMax = new Vector2(-cw_posX, uiComponent.offsetMax.y);
-
-                AppendModification("position-centerwidth");
-                break;
-            case ComponentPosition.CenterHeight:
-                float ch_height = uiComponent.rect.height;
-
-                float ch_posY = (1080 - ch_height) * 0.5f;
-
-                uiComponent.offsetMin = new Vector2(uiComponent.offsetMin.x, ch_posY);
-                uiComponent.offsetMax = new Vector2(uiComponent.offsetMax.x, -ch_posY);
-
-                AppendModification("position-centerheight");
-                break;
             default:
                 break;
         }
