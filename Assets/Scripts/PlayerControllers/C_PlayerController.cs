@@ -25,6 +25,7 @@ public class C_PlayerController : UController, IPlayerState
     private int objectRotation;
     private Vector2 mousePosition;
     private Vector2 wasdVector;
+    private bool hasScrolled;
 
     private bool isPaused;
     private GI_CustomGameInstance gameInstance;
@@ -380,6 +381,9 @@ public class C_PlayerController : UController, IPlayerState
         defaultActionMap.FindAction("KeepBuilding").performed += OnShiftPressed;
         defaultActionMap.FindAction("KeepBuilding").canceled += OnShiftReleased;
 
+        defaultActionMap.FindAction("MouseScroll").performed += OnScrollPerformed;
+        defaultActionMap.FindAction("MouseScroll").canceled += OnScrollCancelled;
+
         //shortcuts
         defaultActionMap.FindAction("ConveyorShortcut").performed += InstantConveyorBuild;
         defaultActionMap.FindAction("JoinerShortcut").performed += InstantJoinerBuild;
@@ -388,6 +392,59 @@ public class C_PlayerController : UController, IPlayerState
 
         defaultActionMap.FindAction("DeleteModeShortcut").performed += DeleteModeShortcutPressed;
         defaultActionMap.FindAction("Del").performed += DelKeyPressed;
+    }
+
+    private void OnScrollCancelled(InputAction.CallbackContext context)
+    {
+        hasScrolled = false;
+    }
+
+    private void OnScrollPerformed(InputAction.CallbackContext obj)
+    {
+        float scrollDetectionThreshold = 1f;
+        float value = obj.ReadValue<float>();
+
+        if (Mathf.Abs(value) < scrollDetectionThreshold)
+        {
+            return;
+        }
+
+        if (hasScrolled) return;
+        hasScrolled = true;
+
+        switch (CurrentPlayerState.Value)
+        {
+            case PlayerState.Building:
+                if (Mathf.Sign(value) > 0)
+                {
+                    objectRotation += 90;
+                }
+                else
+                {
+                    objectRotation -= 90;
+                }
+
+                if (objectRotation > 360)
+                {
+                    objectRotation = 0;
+                }
+
+                if (objectRotation < 0)
+                {
+                    objectRotation = 360;
+                }
+                break;
+            case PlayerState.Deleting:
+                break;
+            case PlayerState.Selecting:
+                playerPawn.RotateSelection();
+
+                break;
+            case PlayerState.None:
+                break;
+            default:
+                break;
+        }
     }
 
     private void UnsubscribeKeybindEvents()

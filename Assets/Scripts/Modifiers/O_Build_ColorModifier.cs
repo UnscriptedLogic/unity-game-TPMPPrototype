@@ -84,6 +84,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
                 if (_creationIteration < creationIteration) return;
 
                 if (!outputNode.IsConnected) return;
+                if (!outputNode.IsSpawnAreaEmpty) return;
 
                 O_BuildComponent buildComp = inputNode.Inventory[0] as O_BuildComponent;
                 if (buildComp == null)

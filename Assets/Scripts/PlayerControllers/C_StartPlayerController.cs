@@ -27,4 +27,14 @@ public class C_StartPlayerController : UController
 
         //Unveil a transition
     }
+
+    public void OnPlayPressed()
+    {
+        AttachUIWidget(overviewUIControllerPrefab);
+    }
+
+    public void OnQuitPressed()
+    {
+        GameMode.QuitGame();
+    }
 }

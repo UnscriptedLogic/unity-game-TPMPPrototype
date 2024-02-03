@@ -92,6 +92,9 @@ public static class BuildBehaviours
 
     public static bool TryDispenseItemFromInventory(OutputNode outputNode, InputNode inputNode)
     {
+        inputNode.ClearNulls();
+        if (inputNode.isInventoryEmpty) return false;
+
         O_BuildItem item = inputNode.Inventory[0];
         item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);

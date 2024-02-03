@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694b21696ca06e24698ca402bfca1a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indestructible: 0
+  movable: 1
   cellSize: {x: 0.1, y: 0.1}
   offset: {x: 0, y: 0}
   ui_hud: {fileID: 404465211289132731, guid: 03588ecc3a3fa0143a6abcd9b640416b, type: 3}

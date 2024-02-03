@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
+using static O_Build;
 
 public abstract class O_Build : ULevelObject
 {
@@ -73,6 +74,17 @@ public abstract class O_Build : ULevelObject
 
             buildItem = null;
             return false;
+        }
+
+        public void ClearNulls()
+        {
+            for (int i = Inventory.Count - 1; i >= 0; i--)
+            {
+                if (Inventory[i] == null)
+                {
+                    Inventory.RemoveAt(i);
+                }
+            }
         }
     }
 

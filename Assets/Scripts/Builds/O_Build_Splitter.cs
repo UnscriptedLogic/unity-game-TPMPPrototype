@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class O_Build_Splitter : O_Build
@@ -75,9 +74,6 @@ public class O_Build_Splitter : O_Build
                 break;
             case OutputDirection.MIDDLE:
                 outputDirection = OutputDirection.RIGHT;
-
-                Debug.Log(rightOutputNode.IsConnected);
-                Debug.Log(rightOutputNode.IsBuildingInfront);
 
                 if (!rightOutputNode.IsConnected)
                 {
