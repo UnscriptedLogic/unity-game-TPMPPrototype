@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class O_Build_ConveyorBelt : O_Build
 {
@@ -12,17 +11,21 @@ public class O_Build_ConveyorBelt : O_Build
     [SerializeField] private Transform startPointerAnchor;
 
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject previewImage;
     
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
     private bool isInPreview;
     private Vector3 firstPos;
+    private Collider2D startConstructCollider;
 
     public override void OnBeginPreview()
     {
         base.OnBeginPreview();
 
         isBuildingStart = true;
+
+        previewImage.SetActive(true);
 
         startPointerAnchor.GetComponent<BoxCollider2D>().enabled = false;
 
@@ -141,8 +144,6 @@ public class O_Build_ConveyorBelt : O_Build
     public void SplitConveyorBelt(O_Build instigator)
     {
         ClearConveyorBelt();
-
-        Debug.Log(inventory.Count);
 
         //Check where on the belt it is
         for (int i = 0; i < lineRenderer.positionCount - 1; i++)
@@ -330,11 +331,16 @@ public class O_Build_ConveyorBelt : O_Build
         Destroy(gameObject);
     }
 
+    private Vector3 GetCorrectedPos(Vector3 position)
+    {
+        return position + new Vector3(0.5f, 0.5f, 0f);
+    }
+
     public override bool CanBeBuilt()
     {
-        //Start point
+        Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(GetCorrectedPos(lineRenderer.GetPosition(0)), Vector2.one * 0.2f, 0f);
 
-        //End point
+
 
         return true;
     }
@@ -343,6 +349,50 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (!isBuildingStart)
         {
+            Debug.DrawLine(GetCorrectedPos(position), transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2));
+            if (Vector2.Distance(GetCorrectedPos(position), GetCorrectedPos(transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2))) <= 1.5f)
+            {
+                return;
+            }
+
+            bool isPointValid = true;
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(GetCorrectedPos(position), Vector2.one * 0.2f, 0f);
+            for (int i = 0; i < collider2Ds.Length; i++)
+            {
+                if (collider2Ds[i].CompareTag(START_CONSTRUCT_POINT) || collider2Ds[i].CompareTag(END_CONSTRUCT_POINT))
+                {
+                    isPointValid = false;
+                    break;
+                }
+
+                if (collider2Ds[i].GetComponent<O_Build>() == null) continue;
+
+                isPointValid = false;
+            }
+
+            RaycastHit2D[] hit2Ds = Physics2D.LinecastAll(GetCorrectedPos(position), transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2));
+            for (int i = 0; i < hit2Ds.Length; i++)
+            {
+                O_Build build = hit2Ds[i].collider.GetComponent<O_Build>();
+                if (build != null)
+                {
+                    if (build is O_Build_ConveyorBelt)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        isPointValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!isPointValid)
+            {
+                return;
+            }
+
             //Add a point
             lineRenderer.positionCount++;
         }
@@ -354,6 +404,29 @@ public class O_Build_ConveyorBelt : O_Build
 
         if (isBuildingStart)
         {
+            bool isInitialPointValid = true;
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(correctedPosition, Vector2.one * 0.2f, 0f);
+            for (int i = 0; i < collider2Ds.Length; i++)
+            {
+                if (collider2Ds[i].CompareTag(START_CONSTRUCT_POINT))
+                {
+                    startConstructCollider = collider2Ds[i];
+                    isInitialPointValid = true;
+                    break;
+                }
+
+                if (collider2Ds[i].GetComponent<O_Build>() == null) continue;
+
+                isInitialPointValid = false;
+            }
+
+            Debug.Log(isInitialPointValid);
+
+            if (!isInitialPointValid)
+            {
+                return;
+            }
+
             isBuildingStart = false;
 
             //Create a start and end point
@@ -364,10 +437,54 @@ public class O_Build_ConveyorBelt : O_Build
 
             lineRenderer.SetPosition(0, Vector3.zero);
             lineRenderer.SetPosition(1, correctedPosition - firstPos);
+
+            previewImage.SetActive(false);
         }
         else
         {
             //Finish building
+
+            bool isInitialPointValid = true;
+
+            RaycastHit2D[] hit2Ds = Physics2D.LinecastAll(GetCorrectedPos(position), transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2));
+            for (int i = 0; i < hit2Ds.Length; i++)
+            {
+                if (hit2Ds[i].collider == startConstructCollider)
+                {
+                    break;
+                }
+
+                O_Build build = hit2Ds[i].collider.GetComponent<O_Build>();
+                if (build != null)
+                {
+                    if (build is O_Build_ConveyorBelt)
+                    {
+                        continue;
+                    }
+
+                    isInitialPointValid = false;
+                    break;
+                }
+            }
+
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(correctedPosition, Vector2.one * 0.2f, 0f);
+            for (int i = 0; i < collider2Ds.Length; i++)
+            {
+                if (collider2Ds[i].CompareTag(END_CONSTRUCT_POINT))
+                {
+                    isInitialPointValid = true;
+                    break;
+                }
+
+                if (collider2Ds[i].GetComponent<O_Build>() == null) continue;
+
+                isInitialPointValid = false;
+            }
+
+            if (!isInitialPointValid)
+            {
+                return;
+            }
 
             isBuildingStart = true;
 

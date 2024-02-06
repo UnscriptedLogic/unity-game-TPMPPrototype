@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 5075648236952250512}
   m_Layer: 0
   m_Name: InputLeft
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indestructible: 0
+  movable: 1
   cellSize: {x: 0.9, y: 0.9}
   offset: {x: 0, y: 0}
   outputNode:
@@ -217,12 +218,15 @@ MonoBehaviour:
   leftInputNode:
     transform: {fileID: 5831076509465772744}
     maxCap: 1
+    Inventory: []
   rightInputNode:
     transform: {fileID: 4547917937455448499}
     maxCap: 1
+    Inventory: []
   bottomInputNode:
     transform: {fileID: 1380480864135363552}
     maxCap: 1
+    Inventory: []
   dispenseOnEveryTick: 2
   maxStorage: 1
 --- !u!61 &3424563780598897708
@@ -283,7 +287,7 @@ GameObject:
   - component: {fileID: 8056980304175264638}
   m_Layer: 0
   m_Name: InputBottom
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -362,7 +366,7 @@ GameObject:
   - component: {fileID: 2682940055203182912}
   m_Layer: 0
   m_Name: InputRight
-  m_TagString: StartConstructPoint
+  m_TagString: EndConstructPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

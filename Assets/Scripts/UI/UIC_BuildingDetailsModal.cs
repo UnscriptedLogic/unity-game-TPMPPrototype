@@ -50,25 +50,6 @@ public class UIC_BuildingDetailsModal : UCanvasController
     private void OnShow()
     {
         modalParent.DOMoveX(activeTransform.position.x, 0.5f).SetEase(ease).OnComplete(() => showBtn.gameObject.SetActive(false));
-
-        memeObject.SetActive(false);
-
-        if (UnityEngine.Random.Range(0f, 100f) <= 2.3f)
-        {
-            memeObject.SetActive(true);
-            memeTMP.gameObject.SetActive(false);
-            memeImg.gameObject.SetActive(false);
-            if (UnityEngine.Random.Range(0f, 100f) <= 50f)
-            {
-                memeTMP.text = memeTexts.GetRandomElement();
-                memeTMP.gameObject.SetActive(true);
-            }
-            else
-            {
-                memeImg.sprite = memeImages.GetRandomElement();
-                memeImg.gameObject.SetActive(true);
-            }
-        }
     }
 
     private void OnHide()
