@@ -44,5 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540e1a2997fd27d4c86d5c8b2b771e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuControllerPrefab: {fileID: 1301308449650825952, guid: b5ea4640043b8e14e850f16a15b78989, type: 3}
-  overviewUIControllerPrefab: {fileID: 829860579658770616, guid: b438b47b13a56814cb188a1afc5e2ba1, type: 3}
+  overviewUIPrefab: {fileID: 829860579658770616, guid: b438b47b13a56814cb188a1afc5e2ba1, type: 3}

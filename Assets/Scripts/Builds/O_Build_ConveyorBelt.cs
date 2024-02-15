@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class O_Build_ConveyorBelt : O_Build
 {
@@ -18,6 +17,8 @@ public class O_Build_ConveyorBelt : O_Build
     private bool isInPreview;
     private Vector3 firstPos;
     private Collider2D startConstructCollider;
+
+    public LineRenderer LineRenderer => lineRenderer;
 
     public override void OnBeginPreview()
     {
@@ -349,11 +350,7 @@ public class O_Build_ConveyorBelt : O_Build
     {
         if (!isBuildingStart)
         {
-            Debug.DrawLine(GetCorrectedPos(position), transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2));
-            if (Vector2.Distance(GetCorrectedPos(position), GetCorrectedPos(transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2))) <= 1.5f)
-            {
-                return;
-            }
+            string failReason = "";
 
             bool isPointValid = true;
             Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(GetCorrectedPos(position), Vector2.one * 0.2f, 0f);
@@ -362,6 +359,7 @@ public class O_Build_ConveyorBelt : O_Build
                 if (collider2Ds[i].CompareTag(START_CONSTRUCT_POINT) || collider2Ds[i].CompareTag(END_CONSTRUCT_POINT))
                 {
                     isPointValid = false;
+                    failReason = "Too close to critical points";
                     break;
                 }
 
@@ -373,6 +371,12 @@ public class O_Build_ConveyorBelt : O_Build
             RaycastHit2D[] hit2Ds = Physics2D.LinecastAll(GetCorrectedPos(position), transform.position + lineRenderer.GetPosition(lineRenderer.positionCount - 2));
             for (int i = 0; i < hit2Ds.Length; i++)
             {
+                if (hit2Ds[i].collider == startConstructCollider)
+                {
+                    isPointValid = true;
+                    break;
+                }
+
                 O_Build build = hit2Ds[i].collider.GetComponent<O_Build>();
                 if (build != null)
                 {
@@ -380,16 +384,35 @@ public class O_Build_ConveyorBelt : O_Build
                     {
                         continue;
                     }
-                    else
-                    {
-                        isPointValid = false;
-                        break;
-                    }
+
+                    isPointValid = false;
+                    failReason = "Is obstructed";
+                    break;
                 }
+            }
+
+            for (int i = 0; i < lineRenderer.positionCount - 1; i++)
+            {
+                if (i == 0) continue;
+
+                if (IsPointOnSegment(lineRenderer.GetPosition(lineRenderer.positionCount - 1), lineRenderer.GetPosition(i - 1), lineRenderer.GetPosition(i)))
+                {
+                    isPointValid = false;
+                    failReason = "Trying to build into itself";
+                    break;
+                }
+            }
+
+            float distance = (lineRenderer.GetPosition(lineRenderer.positionCount - 1) - lineRenderer.GetPosition(lineRenderer.positionCount - 2)).magnitude;
+            if (distance <= 0.5f)
+            {
+                isPointValid = false;
+                failReason = "Points are too close";
             }
 
             if (!isPointValid)
             {
+                Debug.Log(failReason);
                 return;
             }
 
@@ -419,8 +442,6 @@ public class O_Build_ConveyorBelt : O_Build
 
                 isInitialPointValid = false;
             }
-
-            Debug.Log(isInitialPointValid);
 
             if (!isInitialPointValid)
             {

@@ -3,34 +3,37 @@ using UnscriptedEngine;
 
 public class C_StartPlayerController : UController
 {
-    [SerializeField] private UIC_MainMenu mainMenuControllerPrefab;
-    [SerializeField] private UIC_OverviewUI overviewUIControllerPrefab;
-
-    private UIC_MainMenu mainMenuController;
+    [SerializeField] private UIC_OverviewUI overviewUIPrefab;
+    
+    private GM_MainMenuMode mainMenuMode;
+    private UIC_OverviewUI overviewUI;
     private GI_CustomGameInstance customGameInstance;
 
     private void Start()
     {
-        customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
+        mainMenuMode = GameMode.CastTo<GM_MainMenuMode>();
 
-        mainMenuController = AttachUIWidget(mainMenuControllerPrefab);
+        customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         if (customGameInstance.doPreviewNextLevel)
         {
-            AttachUIWidget(overviewUIControllerPrefab);
+            overviewUI = AttachUIWidget(overviewUIPrefab);
+            overviewUI.OnBackPressedEvent += OverviewUI_OnBackPressedEvent;
         }
-    }
-
-    protected override void OnLevelStarted()
-    {
-        base.OnLevelStarted();
-
-        //Unveil a transition
     }
 
     public void OnPlayPressed()
     {
-        AttachUIWidget(overviewUIControllerPrefab);
+        mainMenuMode.OnPlayPressed();
+
+        overviewUI = AttachUIWidget(overviewUIPrefab);
+        overviewUI.OnBackPressedEvent += OverviewUI_OnBackPressedEvent;
+    }
+
+    private void OverviewUI_OnBackPressedEvent(object sender, System.EventArgs e)
+    {
+        mainMenuMode.OnBackPressed();
+        overviewUI.OnBackPressedEvent += OverviewUI_OnBackPressedEvent;
     }
 
     public void OnQuitPressed()

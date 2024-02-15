@@ -758,6 +758,7 @@ MonoBehaviour:
   deployerParent: {fileID: 1256802013}
   deployerPrefab: {fileID: 1684265522392915754, guid: 6dd98afd969d4fd40885dcc2434b3651, type: 3}
   detailsModal: {fileID: 8910967544427671396, guid: 71fac15e9ab7c1b4e9e9c67dd0e4e09d, type: 3}
+  endDetailsModal: {fileID: 8910967544427671396, guid: 06ca244cb6cd5874f802667a78c313b9, type: 3}
 --- !u!1 &1326660383
 GameObject:
   m_ObjectHideFlags: 0

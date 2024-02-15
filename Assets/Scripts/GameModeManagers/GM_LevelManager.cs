@@ -21,6 +21,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
     [SerializeField] protected Transform deployerParent;
     [SerializeField] protected O_Build_Deployers deployerPrefab;
     [SerializeField] private UIC_DetailsModal detailsModal;
+    [SerializeField] private UIC_DetailsModal endDetailsModal;
 
     protected List<O_Build_Deployers> deployers;
     protected WebPageSO webpageData;
@@ -138,6 +139,11 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         {
             OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
             customGameInstance.Project.Complete();
+
+            if (endDetailsModal != null)
+            {
+                GetPlayerController().AttachUIWidget(endDetailsModal);
+            }
 
             GetPlayerController().AttachUIWidget(gameCompletedHUD);
         }

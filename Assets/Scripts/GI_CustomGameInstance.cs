@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GI_CustomGameInstance : UGameInstance
 {
+    private const string UNLOCKEDLVLS_ID = "unlockedLevels";
+
     [SerializeField] private List<Framework> allFrameworks;
     
     [SerializeField] private List<Project> levels;
@@ -32,6 +34,12 @@ public class GI_CustomGameInstance : UGameInstance
     {
         base.Awake();
 
+        int unlockedLevels = PlayerPrefs.GetInt(UNLOCKEDLVLS_ID, 0);
+        for (int i = 0; i < unlockedLevels; i++)
+        {
+            levels[i].Complete();
+        }
+
         playerData = new Bindable<PlayerData>(
             new PlayerData(
                 new PlayerData.GameValues(), 
@@ -43,5 +51,23 @@ public class GI_CustomGameInstance : UGameInstance
     public void SetProjectToLoad(int index)
     {
         levelToLoad = index;
+    }
+
+    private void OnDestroy()
+    {
+        int maxCompleted = 0;
+        for (int i = 0; i < levels.Count; i++)
+        {
+            if (levels[i].IsCompleted)
+            {
+                maxCompleted++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        PlayerPrefs.SetInt(UNLOCKEDLVLS_ID, maxCompleted);
     }
 }
