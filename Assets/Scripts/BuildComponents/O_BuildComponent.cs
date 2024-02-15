@@ -11,6 +11,8 @@ public class O_BuildComponent : O_BuildItem
 
     public List<O_BuildComponentItem> AttachedComponents => attachedComponents;
 
+    public Transform CanvasRoot => canvasRoot;
+
     public void AttachComponent(O_BuildComponentItem buildComponent)
     {
         AttachedComponents.Add(buildComponent);
@@ -21,13 +23,13 @@ public class O_BuildComponent : O_BuildItem
 
     public bool HasComponent(O_BuildComponentItem componentItem)
     {
-        for (int i = 0; i < attachedComponents.Count; i++)
-        {
-            if (attachedComponents[i].id == componentItem.id && attachedComponents[i].ModificationsID == componentItem.ModificationsID)
-            {
-                return true;
-            }
-        }
+        //for (int i = 0; i < attachedComponents.Count; i++)
+        //{
+        //    if (attachedComponents[i].id == componentItem.id && attachedComponents[i].ModificationsID == componentItem.ModificationsID)
+        //    {
+        //        return true;
+        //    }
+        //}
 
         return false;
     }

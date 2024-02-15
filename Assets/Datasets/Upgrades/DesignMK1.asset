@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555dd5d4463396940aab1590a164b3e0, type: 3}
+  m_Name: DesignMK1
+  m_EditorClassIdentifier: 
+  upgradeID: designmk1
+  upgradeIcon: {fileID: 21300000, guid: fadcc2ea128d8c34f8f279d149fd2009, type: 3}
+  upgradeLabel: Design Mk 1
+  rewards:
+  - rewardIcon: {fileID: -5257311919273512868, guid: c7a98706e56a0234d9d5557023840f49, type: 3}
+    rewardLabel: Bootstrap
+  description: 'Design upgrades exposes you to new front end technologies, improving
+    the overall experience on how you design your websites.
+
+
+    Unlocks a new set:
+    Bootstrap.
+
+
+    Bootstrap is a ui library that makes websites look good and
+    work well without needing to start from scratch. It''s like a shortcut to a polished
+    and functional website design.'
+  cost: 100

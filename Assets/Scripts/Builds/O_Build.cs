@@ -1,29 +1,28 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
+using static O_Build;
 
 public abstract class O_Build : ULevelObject
 {
     [System.Serializable]
-    public struct InputNode
+    public class InputNode
     {
         [SerializeField] private Transform transform;
+        [Min(1)]
+        [SerializeField] private int maxCap = 1;
 
         private bool isConnected;
-        private Collider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
+        
+        public List<O_BuildItem> Inventory;
 
         public Transform Transform => transform;
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
-        public bool IsConnected
-        {
-            get { return isConnected; }
-        }
-
-        public void Initialize()
-        {
-            collider = transform.GetComponent<Collider2D>();
-        }
+        public bool IsConnected => isConnected;
+        public bool HasSpace => Inventory.Count < maxCap;
+        public bool isInventoryEmpty => Inventory.Count == 0;
 
         public void CheckConnection()
         {
@@ -43,27 +42,15 @@ public abstract class O_Build : ULevelObject
                 this.conveyorBelt = conveyorBelt;
                 break;
             }
-
-            collider.enabled = !isConnected;
         }
 
         public bool TryGetBuildItem(out O_BuildItem buildItem)
         {
-            if (!isConnected)
-            {
-                buildItem = null;
-                return false;
-            }
-
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
                 O_BuildItem item = colliders[i].GetComponent<O_BuildItem>();
                 if (item == null) continue;
-                
-                O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
-                if (itemConveyorBelt == null) continue;
-                if (itemConveyorBelt != conveyorBelt) continue;
 
                 buildItem = item;
                 return true;
@@ -75,21 +62,11 @@ public abstract class O_Build : ULevelObject
 
         public bool TryGetBuildComponent<T>(out T buildItem) where T : O_BuildItem
         {
-            if (!isConnected)
-            {
-                buildItem = default;
-                return false;
-            }
-
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
                 T item = colliders[i].GetComponent<T>();
                 if (item == null) continue;
-
-                O_Build_ConveyorBelt itemConveyorBelt = item.SplineAnimator.Container.GetComponent<O_Build_ConveyorBelt>();
-                if (itemConveyorBelt == null) continue;
-                if (itemConveyorBelt != conveyorBelt) continue;
 
                 buildItem = item;
                 return true;
@@ -98,6 +75,17 @@ public abstract class O_Build : ULevelObject
             buildItem = null;
             return false;
         }
+
+        public void ClearNulls()
+        {
+            for (int i = Inventory.Count - 1; i >= 0; i--)
+            {
+                if (Inventory[i] == null)
+                {
+                    Inventory.RemoveAt(i);
+                }
+            }
+        }
     }
 
     [System.Serializable]
@@ -105,75 +93,154 @@ public abstract class O_Build : ULevelObject
     {
         [SerializeField] private Transform transform;
 
-        private bool isConnected;
-        private BoxCollider2D collider;
         private O_Build_ConveyorBelt conveyorBelt;
 
         public Transform Transform => transform;
         public O_Build_ConveyorBelt ConveyorBelt => conveyorBelt;
-        public bool IsConnected
+        public bool IsConnected => HasConveyorBelt() || IsBuildingInfront;
+
+        public bool IsSpawnAreaEmpty
         {
-            get { return isConnected; }
-            set { isConnected = value; }
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].GetComponent<O_BuildItem>() != null)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         }
 
-        public void Initialize()
+        public bool IsBuildingInfront
         {
-            collider = transform.GetComponent<BoxCollider2D>();
+            get
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].CompareTag(END_CONSTRUCT_POINT))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
-        public void CheckConnection()
+        public bool HasConveyorBelt()
         {
-            isConnected = false;
-            
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.25f);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (!colliders[i].CompareTag(START_CONSTRUCT_POINT)) continue;
-
-                O_Build_ConveyorBelt conveyorBelt = colliders[i].GetComponentInParent<O_Build_ConveyorBelt>();
-                if (!colliders[i].GetComponentInParent<O_Build_ConveyorBelt>()) continue;
-
-                IsConnected = true;
-                this.conveyorBelt = conveyorBelt;
-                break;
+                conveyorBelt = colliders[i].GetComponent<O_Build_ConveyorBelt>();
+                if (conveyorBelt != null)
+                {
+                    return true;
+                }
             }
 
-            collider.enabled = !isConnected;
+            conveyorBelt = null;
+            return false;
+        }
+
+        public bool HasConveyorBelt(out O_Build_ConveyorBelt conveyorBelt)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                conveyorBelt = colliders[i].GetComponent<O_Build_ConveyorBelt>();
+                if (conveyorBelt != null)
+                {
+                    return true;
+                }
+            }
+
+            conveyorBelt = null;
+            return false;
+        }
+
+        public O_Build GetBuildInfront()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                O_Build build = colliders[i].GetComponentInParent<O_Build>();
+                if (build != null && build.transform != transform.GetComponentInParent<O_Build>().transform)
+                {
+                    return build;
+                }
+            }
+
+            return null;
         }
     }
 
     public const string START_CONSTRUCT_POINT = "StartConstructPoint";
     public const string END_CONSTRUCT_POINT = "EndConstructPoint";
 
+    protected int ticksLeft;
+    protected bool inPreview;
+
+    [SerializeField] protected bool indestructible;
+    [SerializeField] protected bool movable = true;
     [SerializeField] protected Vector2 cellSize = new Vector2(0.9f, 0.9f);
     [SerializeField] protected Vector2 offset;
 
-    protected GM_LevelManager levelManager;
+    protected List<O_BuildItem> inventory;
+
+    protected IBuildSystem levelBuildInterface;
+    protected IPlayerState playerStateUser;
+
     protected C_PlayerController.PlayerState playerState;
 
     public static event EventHandler OnBuildCreated;
     public static event EventHandler OnBuildDestroyed;
+    public static event EventHandler OnObjectBuilt;
+    public static event EventHandler OnPreviewingBuild;
+
+    public Vector2 CellSize => cellSize;
+    public List<O_BuildItem> Inventory => inventory;
+    public bool Indestructible => indestructible;
+    public bool IsMovable => movable;
 
     protected virtual void Start()
     {
-        levelManager = GameMode as GM_LevelManager;
+        inventory = new List<O_BuildItem>();
 
-        levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged += OnPlayerStateChanged;
+        levelBuildInterface = GameMode as IBuildSystem;
+        if (levelBuildInterface != null)
+        {
+            levelBuildInterface.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
+        }
+
+        playerStateUser = GameMode.GetPlayerController() as IPlayerState;
+        if (playerStateUser != null)
+        {
+            playerStateUser.CurrentPlayerState.OnValueChanged += OnPlayerStateChanged;
+        }
 
         OnBuildCreated?.Invoke(this, EventArgs.Empty);
-
-        levelManager.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
     }
 
-    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
+    protected virtual void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e) 
     {
-
+        if (ticksLeft > 0)
+        {
+            ticksLeft--;
+        }
     }
 
     public virtual void OnBeginPreview() 
-    { 
-    
+    {
+        inPreview = true;
+
+        OnPreviewingBuild?.Invoke(this, EventArgs.Empty);
     }
     
     public virtual void OnUpdatePreview(Vector3 position, int rotationOffset) 
@@ -183,24 +250,32 @@ public abstract class O_Build : ULevelObject
     }
 
     public virtual void OnEndPreview() 
-    {  
-    
+    {
+        inPreview = false;
+
+        Destroy(gameObject);
     }
 
     public virtual bool CanBeBuilt()
     {
-        if (!IsOverlapping())
-        {
-            return false;
-        }
-
-        return true;
+        return IsAreaEmpty();
     }
 
-    public virtual void Build(Vector3 position, int rotationOffset)
+    public virtual void Build(Vector3 position, int rotationOffset, bool keepBuilding)
     {
         O_Build build = Instantiate(gameObject).GetComponent<O_Build>();
         build.OnBuilt();
+        build.FireBuiltEvent();
+
+        if (!keepBuilding)
+        {
+            OnEndPreview();
+        }
+    }
+
+    public void FireBuiltEvent()
+    {
+        OnObjectBuilt?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual void OnBuilt()
@@ -218,7 +293,7 @@ public abstract class O_Build : ULevelObject
         this.playerState = playerState;
     }
 
-    public bool IsOverlapping()
+    public virtual bool IsAreaEmpty()
     {
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, cellSize, 0);
         for (int i = 0; i < colliders.Length; i++)
@@ -234,11 +309,11 @@ public abstract class O_Build : ULevelObject
 
     protected override void OnDestroy()
     {
-        levelManager.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
+        levelBuildInterface.NodeTickSystem.OnTick -= NodeTickSystem_OnTick;
 
-        if (levelManager.GetPlayerController().CastTo<C_PlayerController>() != null)
+        if (playerStateUser != null)
         {
-            levelManager.GetPlayerController().CastTo<C_PlayerController>().playerState.OnValueChanged -= OnPlayerStateChanged;
+            playerStateUser.CurrentPlayerState.OnValueChanged -= OnPlayerStateChanged;
         }
 
         OnBuildDestroyed?.Invoke(this, EventArgs.Empty);
@@ -248,6 +323,8 @@ public abstract class O_Build : ULevelObject
 
     public virtual void DeleteSelf()
     {
+        if (indestructible) return;
+
         Destroy(gameObject);
     }
 }

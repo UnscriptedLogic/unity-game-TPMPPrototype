@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb30a193672e6b4ebc664823ff03758, type: 3}
+  m_Name: Position
+  m_EditorClassIdentifier: 
+  iconSpr: {fileID: 21300000, guid: dc97cc83c7913db4483fb61ed2fe35f1, type: 3}
+  id: modifier_position
+  displayName: Position
+  description: Positions a component relative to the bounds. The position is affected
+    by the size of the component so as to prevent components from bleeding out of
+    the bounds.
+  frameworkCategory: 0
+  buildMachineCategory: 0
+  build: {fileID: 2360944043468057583, guid: 57ffdb26f13436e4eb56a272051e2cde, type: 3}
+  functionalityVideo: {fileID: 32900000, guid: 2a63c0789d80cb8448623e7d64fede06, type: 3}

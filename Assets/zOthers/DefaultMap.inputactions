@@ -51,6 +51,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "RotatePressed",
+                    "type": "Button",
+                    "id": "b53bdc74-ff54-48c6-9cc3-3003818fe080",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ConveyorShortcut",
                     "type": "Button",
                     "id": "84d11791-35c0-4c2e-a336-f84313f15eaa",
@@ -60,9 +69,63 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotatePressed",
+                    "name": "JoinerShortcut",
                     "type": "Button",
-                    "id": "b53bdc74-ff54-48c6-9cc3-3003818fe080",
+                    "id": "8143d356-8657-44b5-8c88-9c09e7ab1ec7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SplitterShortcut",
+                    "type": "Button",
+                    "id": "19495e5d-ba97-4f88-9327-54104d6acc9a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ConstructorShortcut",
+                    "type": "Button",
+                    "id": "02c38c10-cf77-48f7-8150-4565a276b94e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteModeShortcut",
+                    "type": "Button",
+                    "id": "fb13e7cb-0e86-4fe8-88ed-57404e047d00",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "KeepBuilding",
+                    "type": "Button",
+                    "id": "2d34c81a-62db-4eeb-848a-7013cfec52ef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraMovement",
+                    "type": "Value",
+                    "id": "dab92f00-91e7-4af6-8ded-07870b8cc0b2",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Del",
+                    "type": "Button",
+                    "id": "b6267570-bad8-4eb0-8b60-ac72868dee38",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -139,7 +202,7 @@
                 {
                     "name": "",
                     "id": "a70189e4-a46c-4332-a506-b3f9cb1cf4dd",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -148,70 +211,136 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "QnE",
-                    "id": "8953ecdc-0e3a-4497-9347-e7dbdf1f7b1a",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "65c72997-5e07-441f-8da1-29c88d621e97",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RotatePressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "66884eb8-f44d-4942-bf7d-5e4ff17b7015",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JoinerShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a59d032-e99a-4aa7-9324-ef53d4b187ae",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SplitterShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd4c08ee-15ae-44c0-abf2-f6ce5615c19c",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ConstructorShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3353dda6-d86e-4a04-8aad-0fa369dff901",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteModeShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e9867fd8-afdc-4f0e-b6a2-ec7d57315a1f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeepBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "f3dbe39c-d0d3-4368-bf70-61d4bb92a85d",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "ba451a08-ac4b-4f59-8649-e8fb4aea4697",
-                    "path": "<Keyboard>/e",
+                    "name": "up",
+                    "id": "0c22f493-3b7c-4175-b045-d50ac243952d",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
+                    "action": "CameraMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
-                    "id": "88c84214-ec5a-462e-aa27-59b074ae7dc1",
-                    "path": "<Keyboard>/q",
+                    "name": "down",
+                    "id": "5240008b-bf87-4980-9584-291cbc5cf316",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
+                    "action": "CameraMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "MouseScroll",
-                    "id": "d0c47dc1-dd8d-464f-b114-8364c39765aa",
-                    "path": "1DAxis",
+                    "name": "left",
+                    "id": "2371fa5d-96ad-4c1b-ba42-2df7e299f8a0",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotatePressed",
-                    "isComposite": true,
+                    "action": "CameraMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "6feb2da8-7738-4916-ac28-a81bb65107bd",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c2341814-b768-4c5d-85a6-072fc0fdaf16",
+                    "path": "<Keyboard>/delete",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Del",
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "95bc3bf2-de93-4e1a-b445-46cb79afacf5",
-                    "path": "<Mouse>/scroll/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotatePressed",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "1496d0d3-0ae2-4871-938e-7a966f77d2c0",
-                    "path": "<Mouse>/scroll/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotatePressed",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }

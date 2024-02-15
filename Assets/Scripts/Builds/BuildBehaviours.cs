@@ -72,42 +72,43 @@ public static class BuildBehaviours
         }
     }
 
-    public static void ConsumeItem(O_Build build, O_BuildItem item, ref List<O_BuildItem> buildItems)
+    public static void ConsumeItem(O_Build build, O_BuildItem item, InputNode inputNode)
     {
-        ConsumeItem(build, item);
+        item.gameObject.SetActive(false);
+        item.transform.position = build.transform.position;
+        item.transform.SetParent(build.transform);
 
-        buildItems.Add(item);
+        inputNode.Inventory.Add(item);
     }
 
     public static void ConsumeItem(O_Build build, O_BuildItem item)
     {
         item.gameObject.SetActive(false);
-
-        item.SplineAnimator.Pause();
-        item.SplineAnimator.ElapsedTime = 0;
-
         item.transform.position = build.transform.position;
+        item.transform.SetParent(build.transform);
+
+        build.Inventory.Add(item);
     }
 
-    public static void DispenseItemFromInventory(OutputNode outputNode, ref List<O_BuildItem> buildItems)
+    public static bool TryDispenseItemFromInventory(OutputNode outputNode, InputNode inputNode)
     {
-        O_BuildItem item = buildItems[0];
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        inputNode.ClearNulls();
+        if (inputNode.isInventoryEmpty) return false;
+
+        O_BuildItem item = inputNode.Inventory[0];
+        item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
 
-        buildItems.RemoveAt(0);
-    }
-
-    public static void DispenseItemFromInventory(OutputNode outputNode, O_BuildItem item)
-    {
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
-        item.gameObject.SetActive(true);
+        inputNode.Inventory.Remove(item);
+        return true;
     }
 
     public static void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
     {
+        if (!outputNode.IsConnected) return;
+
         O_BuildItem item = buildItem;
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
+        item.transform.position = outputNode.Transform.position;
         item.gameObject.SetActive(true);
     }
 }

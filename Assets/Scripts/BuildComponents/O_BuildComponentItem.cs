@@ -10,7 +10,7 @@ public class O_BuildComponentItem : ULevelObject
 {
     public enum ComponentPosition
     {
-        Left, Right, Top, Bottom, Center, CenterWidth, CenterHeight
+        Left, Right, Top, Bottom, Center
     }
 
     public string id;
@@ -22,7 +22,7 @@ public class O_BuildComponentItem : ULevelObject
 
     private void AppendModification(string modificationName)
     {
-        if (modificationsID != "")
+        if (string.IsNullOrEmpty(modificationsID))
         {
             modificationsID += "_";
         }
@@ -54,12 +54,16 @@ public class O_BuildComponentItem : ULevelObject
                 float left = uiComponent.offsetMin.x;
                 uiComponent.offsetMin = new Vector2(0, uiComponent.offsetMin.y);
                 uiComponent.offsetMax = new Vector2(uiComponent.offsetMax.x - left, uiComponent.offsetMax.y);
+
+                AppendModification("position-left");
                 break;
 
             case ComponentPosition.Right:
                 float right = uiComponent.offsetMax.x;
                 uiComponent.offsetMin = new Vector2(uiComponent.offsetMin.x - right, uiComponent.offsetMin.y);
                 uiComponent.offsetMax = new Vector2(0, uiComponent.offsetMax.y);
+
+                AppendModification("position-right");
                 break;
 
             case ComponentPosition.Top:
@@ -67,12 +71,16 @@ public class O_BuildComponentItem : ULevelObject
                 float topOffset = uiComponent.offsetMax.y;
                 uiComponent.offsetMin = new Vector2(uiComponent.offsetMin.x, uiComponent.offsetMin.y - topOffset);
                 uiComponent.offsetMax = new Vector2(uiComponent.offsetMax.x, 0);
+
+                AppendModification("position-top");
                 break;
 
             case ComponentPosition.Bottom:
                 float bottom = uiComponent.offsetMin.y;
                 uiComponent.offsetMin = new Vector2(uiComponent.offsetMin.x, 0);
                 uiComponent.offsetMax = new Vector2(uiComponent.offsetMax.x, uiComponent.offsetMax.y - bottom);
+
+                AppendModification("position-bottom");
                 break;
 
             case ComponentPosition.Center:
@@ -85,24 +93,9 @@ public class O_BuildComponentItem : ULevelObject
                 uiComponent.offsetMin = new Vector2(posX, posY);
                 uiComponent.offsetMax = new Vector2(-posX, -posY);
 
+                AppendModification("position-center");
                 break;
-            case ComponentPosition.CenterWidth:
-                float cw_width = uiComponent.rect.width;
-                float cw_posX = (1920 - cw_width) * 0.5f;
 
-                uiComponent.offsetMin = new Vector2(cw_posX, uiComponent.offsetMin.y);
-                uiComponent.offsetMax = new Vector2(-cw_posX, uiComponent.offsetMax.y);
-
-                break;
-            case ComponentPosition.CenterHeight:
-                float ch_height = uiComponent.rect.height;
-
-                float ch_posY = (1080 - ch_height) * 0.5f;
-
-                uiComponent.offsetMin = new Vector2(uiComponent.offsetMin.x, ch_posY);
-                uiComponent.offsetMax = new Vector2(uiComponent.offsetMax.x, -ch_posY);
-
-                break;
             default:
                 break;
         }
@@ -124,23 +117,40 @@ public class O_BuildComponentItem : ULevelObject
         {
             case O_Build_ModifierBase.Side.Width:
 
-                //float newWidth = uiComponent.rect.width * (shrinkPercentage / 100);
+                float percentageShrinkWidth = (uiComponent.rect.width / 100) * shrinkPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width - percentageShrinkWidth);
 
-                //uiComponent.offsetMin = new Vector2(newWidth * 0.5f, uiComponent.offsetMin.y);
-                //uiComponent.offsetMax = new Vector2(-(uiComponent.offsetMax.x + (newWidth * 0.5f)), uiComponent.offsetMax.y);
-
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width * (shrinkPercentage / 100));
-
-                //uiComponent.sizeDelta = new Vector2(, uiComponent.sizeDelta.y);
-
-                AppendModification($"shrinkwidth_{shrinkPercentage}");
+                AppendModification($"shrinkwidth-{shrinkPercentage}");
                 break;
 
             case O_Build_ModifierBase.Side.Height:
+                float percentageShrinkHeight = (uiComponent.rect.height / 100) * shrinkPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height - percentageShrinkHeight);
 
-                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height * (shrinkPercentage / 100));
+                AppendModification($"shrinkheight-{shrinkPercentage}");
+                break;
 
-                AppendModification($"shrinkheight_{shrinkPercentage}");
+            default:
+                break;
+        }
+    }
+
+    public void Expand(O_Build_ModifierBase.Side side, float expandPercentage)
+    {
+        switch (side)
+        {
+            case O_Build_ModifierBase.Side.Width:
+                float percentageExpandWidth = (uiComponent.rect.width / 100) * expandPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, uiComponent.rect.width + percentageExpandWidth);
+
+                AppendModification($"expandwidth-{expandPercentage}");
+                break;
+
+            case O_Build_ModifierBase.Side.Height:
+                float percentageExpandHeight = (uiComponent.rect.height / 100) * expandPercentage;
+                uiComponent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, uiComponent.rect.height + percentageExpandHeight);
+
+                AppendModification($"expandheight-{expandPercentage}");
                 break;
 
             default:

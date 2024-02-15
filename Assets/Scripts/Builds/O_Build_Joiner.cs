@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
+using static O_Build;
 
 public class O_Build_Joiner : O_Build
 {
@@ -13,95 +14,49 @@ public class O_Build_Joiner : O_Build
     [SerializeField] private int dispenseOnEveryTick = 4;
     [SerializeField] private int maxStorage = 100;
 
-    private List<O_BuildItem> buildItems = new List<O_BuildItem>();
+    private List<InputNode> inputNodes = new List<InputNode>();
 
     protected override void Start()
     {
         base.Start();
 
-        outputNode.Initialize();
-        leftInputNode.Initialize();
-        rightInputNode.Initialize();
-        bottomInputNode.Initialize();
-
-        OnBuildCreated += CheckConnections;
-        OnBuildDestroyed += CheckConnections;
+        inputNodes.Add(leftInputNode);
+        inputNodes.Add(rightInputNode);
+        inputNodes.Add(bottomInputNode);
     }
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (buildItems.Count == 0) return;
+        if (inPreview) return;
+
+        base.NodeTickSystem_OnTick(sender, e);
+
+        if (ticksLeft > 0) return;
+
         if (!outputNode.IsConnected) return;
+        if (!outputNode.IsSpawnAreaEmpty) return;
 
-        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+        for (int i = 0; i < inputNodes.Count; i++)
+        {
+            if (inputNodes[i].isInventoryEmpty) continue;
 
-        CreateBuildItem(buildItems[0], outputNode);
-
-        buildItems.RemoveAt(0);
-    }
-
-    private void CreateBuildItem(O_BuildItem buildItem, OutputNode outputNode)
-    {
-        O_BuildItem item = buildItem;
-        item.SetSpline(outputNode.ConveyorBelt.ConveyorSplineContainer);
-        item.gameObject.SetActive(true);
-    }
-
-    private void CheckConnections(object sender, System.EventArgs e)
-    {
-        outputNode.CheckConnection();
-        leftInputNode.CheckConnection();
-        rightInputNode.CheckConnection();
-        bottomInputNode.CheckConnection();
+            BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNodes[i]);
+            ticksLeft = dispenseOnEveryTick;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (buildItems.Count >= maxStorage) return;
+        if (inPreview) return;
 
-        if (leftInputNode.IsConnected)
+        for (int i = 0; i < inputNodes.Count; i++)
         {
-            if (leftInputNode.TryGetBuildItem(out O_BuildItem item))
+            if (!inputNodes[i].HasSpace) continue;
+
+            if (inputNodes[i].TryGetBuildItem(out O_BuildItem leftItem))
             {
-                ConsumeItem(item);
+                BuildBehaviours.ConsumeItem(this, leftItem, inputNodes[i]);
             }
         }
-
-        if (rightInputNode.IsConnected)
-        {
-            if (rightInputNode.TryGetBuildItem(out O_BuildItem item))
-            {
-                ConsumeItem(item);
-            }
-        }
-
-        if (bottomInputNode.IsConnected)
-        {
-            if (bottomInputNode.TryGetBuildItem(out O_BuildItem item))
-            {
-                ConsumeItem(item);
-            }
-        }
-
-    }
-
-    private void ConsumeItem(O_BuildItem item)
-    {
-        item.gameObject.SetActive(false);
-
-        item.SplineAnimator.Pause();
-        item.SplineAnimator.ElapsedTime = 0;
-
-        item.transform.position = transform.position;
-
-        buildItems.Add(item);
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildCreated -= CheckConnections;
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 }

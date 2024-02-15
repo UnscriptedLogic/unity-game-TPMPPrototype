@@ -9,7 +9,25 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: 3c598e99af11a0e4bbb18e163c5abd50
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/FallbackGameScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 4cfcda01972455d4bb2892ba001f3c70
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: b2b4f873b31d58d49b9fb1a63cc0385f
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 4b41c005375ad934a97afb39d22dd093
+  - enabled: 1
+    path: Assets/Scenes/Level4.unity
+    guid: b1a77993acd3b5245b23abce7692d831
+  - enabled: 1
+    path: Assets/Scenes/Level5.unity
+    guid: 928a1b3507bde694a8e13403e6c93260
+  - enabled: 1
+    path: Assets/Scenes/Level6.unity
+    guid: b63dc06a99d47194083098f510949de9
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

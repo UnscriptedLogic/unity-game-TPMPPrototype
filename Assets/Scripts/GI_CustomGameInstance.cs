@@ -1,14 +1,73 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnscriptedEngine;
-using static UnscriptedEngine.ULevelObject;
 
 public class GI_CustomGameInstance : UGameInstance
 {
-    public Bindable<int> credits = new Bindable<int>(0);
+    private const string UNLOCKEDLVLS_ID = "unlockedLevels";
 
-    public Bindable<float> conveyorBeltSpeed = new Bindable<float>(0.5f);
+    [SerializeField] private List<Framework> allFrameworks;
+    
+    [SerializeField] private List<Project> levels;
+    [SerializeField] private Material globalConveyorBeltMaterial;
 
-    public Bindable<float> tickSpeed = new Bindable<float>(0.4f);
+    [Tooltip("Override this number to test a specific level in the TestScene")]
+    [SerializeField] private int levelToLoad;
+
+    public List<Project> Levels => levels;
+    public Material GlobalConveyorMaterial => globalConveyorBeltMaterial;
+    public List<Framework> AllFrameworks => allFrameworks;
+
+    public Project Project
+    {
+        get
+        {
+            return levels[levelToLoad];
+        }
+    }
+
+    public int LevelToLoad => levelToLoad;
+
+    public Bindable<PlayerData> playerData;
+    [HideInInspector] public bool doPreviewNextLevel;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        int unlockedLevels = PlayerPrefs.GetInt(UNLOCKEDLVLS_ID, 0);
+        for (int i = 0; i < unlockedLevels; i++)
+        {
+            levels[i].Complete();
+        }
+
+        playerData = new Bindable<PlayerData>(
+            new PlayerData(
+                new PlayerData.GameValues(), 
+                new List<Project>()
+                )
+            );
+    }
+
+    public void SetProjectToLoad(int index)
+    {
+        levelToLoad = index;
+    }
+
+    private void OnDestroy()
+    {
+        int maxCompleted = 0;
+        for (int i = 0; i < levels.Count; i++)
+        {
+            if (levels[i].IsCompleted)
+            {
+                maxCompleted++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        PlayerPrefs.SetInt(UNLOCKEDLVLS_ID, maxCompleted);
+    }
 }

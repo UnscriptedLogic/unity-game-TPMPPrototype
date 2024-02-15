@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnscriptedEngine;
-using static O_Build;
 
 public class O_Build_ColorModifier : O_Build_ModifierBase
 {
@@ -20,7 +17,8 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     [SerializeField] private List<ColorSet> colors = new List<ColorSet>();
 
-    private int index;
+    [Header("Debug only")]
+    [SerializeField] private int index;
 
     protected override void Start()
     {
@@ -31,7 +29,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = levelManager.GetPlayerPawn().CastTo<P_PlayerPawn>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
     }
 
     private void OnToggleBack()
@@ -65,41 +63,57 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
+        if (inPreview) return;
 
-        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+        if (inputNode.isInventoryEmpty)
         {
-            buildComponent = buildItem;
-
-            BuildBehaviours.ConsumeItem(this, buildComponent);
-
-            OnComponentRecieved(buildItem);
-
-            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
             {
-                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
+
+                OnComponentRecieved(buildItem);
             }
         }
 
-        if (!outputNode.IsConnected) return;
-
-        if (buildComponent == null) return;
-
-        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (!inputNode.isInventoryEmpty)
         {
-            _creationIteration++;
+            if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+            {
+                _creationIteration++;
 
-            if (_creationIteration < creationIteration) return;
+                if (_creationIteration < creationIteration) return;
 
-            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-            buildComponent = null;
+                if (!outputNode.IsConnected) return;
+                if (!outputNode.IsSpawnAreaEmpty) return;
 
-            _creationIteration = 0;
+                O_BuildComponent buildComp = inputNode.Inventory[0] as O_BuildComponent;
+                if (buildComp == null)
+                {
+                    inputNode.Inventory.RemoveAt(0);
+                    return;
+                }
+
+                for (int i = 0; i < buildComp.AttachedComponents.Count; i++)
+                {
+                    ForEveryAttachedComponent(buildComp.AttachedComponents[i]);
+                }
+
+                OnComponentToDispense(inputNode.Inventory[0] as O_BuildComponent);
+
+                BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
+
+                _creationIteration = 0;
+            }
         }
     }
 
     protected override void ForEveryAttachedComponent(O_BuildComponentItem itemComponent)
     {
         itemComponent.SetColor(colors[index].id, colors[index].color);
+    }
+
+    private void OnValidate()
+    {
+        UpdateVisual();
     }
 }

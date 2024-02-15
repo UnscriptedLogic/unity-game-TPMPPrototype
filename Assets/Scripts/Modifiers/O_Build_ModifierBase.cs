@@ -1,7 +1,4 @@
-using NUnit.Framework;
-using System;
 using UnityEngine;
-using UnscriptedEngine;
 
 public class O_Build_ModifierBase : O_Build
 {
@@ -16,78 +13,98 @@ public class O_Build_ModifierBase : O_Build
     [SerializeField] protected int processTickDelay = 8;
     [SerializeField] protected int creationIteration;
 
-    protected O_BuildComponent buildComponent;
-
     protected int _creationIteration;
 
-    protected override void Start()
+    protected O_BuildComponent buildComponent
     {
-        base.Start();
+        get
+        {
+            if (inputNode.isInventoryEmpty)
+            {
+                return null;
+            }
 
-        inputNode.Initialize();
-        outputNode.Initialize();
-    
-        OnBuildDestroyed += CheckConnections;
-    }
+            return inputNode.Inventory[0] as O_BuildComponent;
+        }
+
+        set
+        {
+            inputNode.Inventory.Add(value);
+        }
+    } 
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
+        if (inPreview) return;
 
-        if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+        for (int i = inputNode.Inventory.Count - 1; i >= 0; i--)
         {
-            if (buildItem as O_BuildPage) return;
-
-            buildComponent = buildItem;
-
-            BuildBehaviours.ConsumeItem(this, buildComponent);
-
-            OnComponentRecieved(buildItem);
-
-            for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+            if (inputNode.Inventory[i] == null)
             {
-                ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+                inputNode.Inventory.RemoveAt(i);
             }
         }
 
-        if (!outputNode.IsConnected) return;
-
-        if (buildComponent == null) return;
-
-        if (levelManager.NodeTickSystem.HasTickedAfter(processTickDelay))
+        if (inputNode.isInventoryEmpty)
         {
-            _creationIteration++;
+            if (inputNode.TryGetBuildComponent(out O_BuildComponent buildItem))
+            {
+                if (buildItem as O_BuildPage) return;
 
-            if (_creationIteration < creationIteration) return;
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
 
-            BuildBehaviours.DispenseItemFromInventory(outputNode, buildComponent);
-            buildComponent = null;
+                OnComponentRecieved(buildItem);
 
-            _creationIteration = 0;
+                for (int i = 0; i < buildItem.AttachedComponents.Count; i++)
+                {
+                    ForEveryAttachedComponent(buildItem.AttachedComponents[i]);
+                }
+            }
         }
+
+        if (!inputNode.isInventoryEmpty)
+        {
+            if (!outputNode.IsConnected) return;
+
+            if (levelBuildInterface.NodeTickSystem.HasTickedAfter(processTickDelay))
+            {
+                _creationIteration++;
+
+                if (_creationIteration < creationIteration) return;
+
+                if (!outputNode.IsSpawnAreaEmpty) return;
+
+                OnComponentToDispense(inputNode.Inventory[0] as O_BuildComponent);
+
+                BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
+
+                _creationIteration = 0;
+            }
+        }
+    }
+
+    public override bool IsAreaEmpty()
+    {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, cellSize, 0);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            O_Build build = colliders[i].GetComponent<O_Build>();
+            if (build == null) continue;
+            if (colliders[i].gameObject == gameObject) continue;
+
+            O_Build_ConveyorBelt conveyorBelt = build as O_Build_ConveyorBelt;
+            if (conveyorBelt != null)
+            {
+                conveyorBelt.SplitConveyorBelt(this);
+            }
+
+            return conveyorBelt != null;
+        }
+
+        return true;
     }
 
     protected virtual void OnComponentRecieved(O_BuildComponent component) { }
     protected virtual void ForEveryAttachedComponent(O_BuildComponentItem itemComponent) { }
-
-    protected void CheckConnections(object sender, EventArgs e)
-    {
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnPlayerStateChanged(C_PlayerController.PlayerState playerState)
-    {
-        base.OnPlayerStateChanged(playerState);
-
-        inputNode.CheckConnection();
-        outputNode.CheckConnection();
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
-    }
+    protected virtual void OnComponentToDispense(O_BuildComponent component) { }
 }

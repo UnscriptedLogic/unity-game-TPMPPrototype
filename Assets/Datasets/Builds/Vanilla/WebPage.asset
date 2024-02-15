@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb30a193672e6b4ebc664823ff03758, type: 3}
+  m_Name: WebPage
+  m_EditorClassIdentifier: 
+  iconSpr: {fileID: 21300000, guid: e3eedd5860c40fb479c5dc0df9ed7d72, type: 3}
+  id: webpage
+  displayName: Web Page
+  description: The base of all web pages. These are the backgrounds where components
+    are layered on top of to produce websites. Web Pages are not normally accepted
+    in modification nodes.
+  frameworkCategory: 0
+  buildMachineCategory: 0
+  build: {fileID: 2731108159020371978, guid: 344f066e5f7c7be4cadbb31b000abb2e, type: 3}
+  functionalityVideo: {fileID: 32900000, guid: 6a615c55d2acd674d954e7feee81dea8, type: 3}

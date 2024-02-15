@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 524bda4fa24a00a478a1d2e44773bfde, type: 3}
+  m_Name: PositionNodeLevel
+  m_EditorClassIdentifier: 
+  webPageData:
+  - webpage: {fileID: 7366424205272422799, guid: 29f1dfa6ee5372c4c88a61d155c666ea, type: 3}
+    requiredMinPage: 1
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+    - componentID: square
+      modificationIds:
+      - color-green
+      - stretchhorizontal
+      - position-bottom
+  - webpage: {fileID: 7366424205272422799, guid: f6c1b4d77cb6f094998c67a33f688001, type: 3}
+    requiredMinPage: 1
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+    - componentID: square
+      modificationIds:
+      - color-green
+      - stretchhorizontal
+      - position-bottom
+    - componentID: square
+      modificationIds:
+      - color-red
+      - stretchvertical
+  - webpage: {fileID: 7366424205272422799, guid: b24a4cdfe3fe4784baf04746a5cb6303, type: 3}
+    requiredMinPage: 1
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+    - componentID: square
+      modificationIds:
+      - color-red
+      - stretchvertical

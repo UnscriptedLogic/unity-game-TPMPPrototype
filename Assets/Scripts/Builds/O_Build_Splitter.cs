@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class O_Build_Splitter : O_Build
@@ -17,54 +14,40 @@ public class O_Build_Splitter : O_Build
     [SerializeField] private OutputNode rightOutputNode;
     [SerializeField] private OutputNode middleOutputNode;
 
-    [SerializeField] private int dispenseOnEveryTick = 2;
+    [SerializeField] private int nodeConsumeTime = 4;
 
-    private OutputDirection outputDirection;
+    private OutputDirection outputDirection = OutputDirection.RIGHT;
 
-    private List<O_BuildItem> buildItems = new List<O_BuildItem>();
-
-    protected override void Start()
-    {
-        base.Start();
-
-        inputNode.Initialize();
-        leftOutputNode.Initialize();
-        rightOutputNode.Initialize();
-        middleOutputNode.Initialize();
-
-        OnBuildCreated += CheckConnections;
-        OnBuildDestroyed += CheckConnections;
-    }
-
-    private void CheckConnections(object sender, System.EventArgs e)
-    {
-        inputNode.CheckConnection();
-        leftOutputNode.CheckConnection();
-        rightOutputNode.CheckConnection();
-        middleOutputNode.CheckConnection();
-    }
+    private bool isAwaitingValidSpawn;
 
     protected override void NodeTickSystem_OnTick(object sender, TickSystem.OnTickEventArgs e)
     {
-        if (!inputNode.IsConnected) return;
+        if (inPreview) return;
 
-        if (buildItems.Count < 1)
+        base.NodeTickSystem_OnTick(sender, e);
+
+        if (inputNode.isInventoryEmpty)
         {
             if (inputNode.TryGetBuildItem(out O_BuildItem buildItem))
             {
-                BuildBehaviours.ConsumeItem(this, buildItem, ref buildItems);
+                BuildBehaviours.ConsumeItem(this, buildItem, inputNode);
+                ticksLeft = nodeConsumeTime;
             } 
         }
 
-        if (buildItems.Count == 0) return;
+        if (inputNode.isInventoryEmpty) return;
+        if (ticksLeft > 0) return;
 
-        if (!levelManager.NodeTickSystem.HasTickedAfter(dispenseOnEveryTick)) return;
+        OutputNode outputNode = GetNextOutput();
 
-        if (!leftOutputNode.IsConnected && !rightOutputNode.IsConnected && !middleOutputNode.IsConnected) return;
+        if (isAwaitingValidSpawn) return;
 
-        BuildBehaviours.CreateBuildItem(buildItems[0], GetNextOutput());
-        buildItems.RemoveAt(0);
+        if (outputNode.IsSpawnAreaEmpty)
+        {
+            BuildBehaviours.TryDispenseItemFromInventory(outputNode, inputNode);
 
+            isAwaitingValidSpawn = false;
+        }
     }
 
     private OutputNode GetNextOutput(int depth = 3)
@@ -72,6 +55,7 @@ public class O_Build_Splitter : O_Build
         if (depth == -1)
         {
             Debug.Log("Could not find a potential output node");
+            isAwaitingValidSpawn = true;
             return default;
         }
 
@@ -79,11 +63,13 @@ public class O_Build_Splitter : O_Build
         {
             case OutputDirection.LEFT:
                 outputDirection = OutputDirection.MIDDLE;
-
                 if (!middleOutputNode.IsConnected)
                 {
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             case OutputDirection.MIDDLE:
@@ -91,17 +77,22 @@ public class O_Build_Splitter : O_Build
 
                 if (!rightOutputNode.IsConnected)
                 {
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             case OutputDirection.RIGHT:
                 outputDirection = OutputDirection.LEFT;
-
                 if (!leftOutputNode.IsConnected)
                 {
-                    GetNextOutput(depth--);
+                    GetNextOutput(--depth);
+                    break;
                 }
+
+                isAwaitingValidSpawn = false;
 
                 break;
             default:
@@ -128,13 +119,5 @@ public class O_Build_Splitter : O_Build
         }
 
         return outputDirectionNode;
-    }
-
-    protected override void OnDestroy()
-    {
-        OnBuildCreated -= CheckConnections;
-        OnBuildDestroyed -= CheckConnections;
-
-        base.OnDestroy();
     }
 }

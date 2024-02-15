@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 524bda4fa24a00a478a1d2e44773bfde, type: 3}
+  m_Name: TutorialPages
+  m_EditorClassIdentifier: 
+  webPageData:
+  - webpage: {fileID: 7366424205272422799, guid: a3d9b47558a19104b81de109e387046e, type: 3}
+    components:
+    - componentID: canvas
+      modificationIds: []
+  - webpage: {fileID: 7366424205272422799, guid: b513efd9d870b154cb8b561812deb19a, type: 3}
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+  - webpage: {fileID: 7366424205272422799, guid: 1e0297205d400ae45acf1b8f1a0de615, type: 3}
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+    - componentID: square
+      modificationIds:
+      - color-darkgrey
+  - webpage: {fileID: 7366424205272422799, guid: 54f370eb1f2739044b752aeb01d78a14, type: 3}
+    components:
+    - componentID: canvas
+      modificationIds:
+      - color-black
+    - componentID: square
+      modificationIds:
+      - color-darkgrey
+    - componentID: square
+      modificationIds:
+      - color-red
+      - shrinkheight-50
+      - stretchhorizontal
+      - position-top
