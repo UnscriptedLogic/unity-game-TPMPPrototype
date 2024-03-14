@@ -281,20 +281,33 @@ public class C_PlayerController : UController, IPlayerState
 
     private void OnEscapeKeyPressed(InputAction.CallbackContext context)
     {
-        if (CurrentPlayerState.Value == PlayerState.Selecting)
+        switch (CurrentPlayerState.Value)
         {
-            if (playerPawn.CanAllSelectedBeBuilt())
-            {
-                playerPawn.ClearSelection();
-            }
-            else
-            {
-                //Don't switch if there are still selected items
-                return;
-            }
-        }
+            case PlayerState.Building:
+                playerPawn.EndBuildPreview();
+                CurrentPlayerState.Value = PlayerState.None;
+                break;
+            case PlayerState.Deleting:
+                break;
+            case PlayerState.Selecting:
+                if (playerPawn.CanAllSelectedBeBuilt())
+                {
+                    playerPawn.ClearSelection();
+                }
+                else
+                {
+                    //Don't switch if there are still selected items
+                    break;
+                }
 
-        CurrentPlayerState.Value = PlayerState.None;
+                CurrentPlayerState.Value = PlayerState.None;
+
+                break;
+            case PlayerState.None:
+                break;
+            default:
+                break;
+        }
     }
 
     private void DeleteModeShortcutPressed(InputAction.CallbackContext context)

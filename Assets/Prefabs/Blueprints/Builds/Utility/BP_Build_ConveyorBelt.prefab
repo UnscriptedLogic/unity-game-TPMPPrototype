@@ -55,6 +55,7 @@ MonoBehaviour:
   startPointerAnchor: {fileID: 4726337682717393111}
   lineRenderer: {fileID: 989381297064996040}
   previewImage: {fileID: 6530687214132118899}
+  buildErrorColor: {r: 1, g: 0.31671154, b: 0.31671154, a: 1}
 --- !u!120 &989381297064996040
 LineRenderer:
   serializedVersion: 2
