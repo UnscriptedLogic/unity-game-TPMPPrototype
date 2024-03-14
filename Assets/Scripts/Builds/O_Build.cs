@@ -1,8 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnscriptedEngine;
-using static O_Build;
 
 public abstract class O_Build : ULevelObject
 {
@@ -280,7 +280,8 @@ public abstract class O_Build : ULevelObject
 
     public virtual void OnBuilt()
     {
-
+        transform.localScale *= 0.75f;
+        transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
     }
 
     public virtual void AlternateBuild(Vector3 position, int rotationOffset)

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -11,7 +12,10 @@ public class O_Build_ConveyorBelt : O_Build
 
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private GameObject previewImage;
-    
+
+    [Header("Color")]
+    [SerializeField] private Color buildErrorColor;
+
     private UIC_ConveyorBeltHUD hud;
     private bool isBuildingStart;
     private bool isInPreview;
@@ -412,13 +416,39 @@ public class O_Build_ConveyorBelt : O_Build
 
             if (!isPointValid)
             {
-                Debug.Log(failReason);
+                StopAllCoroutines();
+                StartCoroutine(FlashBuildError());
                 return;
             }
 
             //Add a point
             lineRenderer.positionCount++;
         }
+    }
+
+    private IEnumerator FlashBuildError()
+    {
+        Color defaultColor = lineRenderer.startColor;
+
+        lineRenderer.startColor = buildErrorColor;
+        lineRenderer.endColor = buildErrorColor;
+
+        yield return new WaitForSeconds(0.1f);
+
+        lineRenderer.startColor = defaultColor;
+        lineRenderer.endColor = defaultColor;
+
+        yield return new WaitForSeconds(0.1f);
+
+        lineRenderer.startColor = buildErrorColor;
+        lineRenderer.endColor = buildErrorColor;
+
+        yield return new WaitForSeconds(0.1f);
+
+        lineRenderer.startColor = defaultColor;
+        lineRenderer.endColor = defaultColor;
+
+
     }
 
     public override void Build(Vector3 position, int rotationOffset, bool keepBuilding)
