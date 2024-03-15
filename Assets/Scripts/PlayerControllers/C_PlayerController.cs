@@ -339,14 +339,8 @@ public class C_PlayerController : UController, IPlayerState
 
         mousePosition = GetDefaultMousePosition();
 
-        if (gameInstance.playerData.Value.useMouseCursorToMove)
-        {
-            playerPawn.MovePlayerCamera(mousePosition);
-        }
-        else
-        {
-            playerPawn.MovePlayerCameraWASD(wasdVector);
-        }
+        playerPawn.MovePlayerCameraWASD(wasdVector);
+        playerPawn.MovePlayerCamera(mousePosition);
 
         switch (CurrentPlayerState.Value)
         {

@@ -475,6 +475,7 @@ public class O_Build_ConveyorBelt : O_Build
 
             if (!isInitialPointValid)
             {
+                StartCoroutine(FlashBuildError());
                 return;
             }
 
@@ -534,6 +535,7 @@ public class O_Build_ConveyorBelt : O_Build
 
             if (!isInitialPointValid)
             {
+                StartCoroutine(FlashBuildError());
                 return;
             }
 
