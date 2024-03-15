@@ -219,7 +219,7 @@ public abstract class O_Build : ULevelObject
             levelBuildInterface.NodeTickSystem.OnTick += NodeTickSystem_OnTick;
         }
 
-        playerStateUser = GameMode.GetPlayerController() as IPlayerState;
+        playerStateUser = GameMode.GetPlayerController<C_PlayerController>();
         if (playerStateUser != null)
         {
             playerStateUser.CurrentPlayerState.OnValueChanged += OnPlayerStateChanged;

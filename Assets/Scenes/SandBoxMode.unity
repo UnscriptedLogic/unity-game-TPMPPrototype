@@ -149,9 +149,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputContext: {fileID: -944628639613478452, guid: e00ab73552d415844af253e1ee768291, type: 3}
-  playerController: {fileID: 1370719615675873249, guid: bd7dac614ead3c94dbfeb0f9d8043882, type: 3}
+  playerController: {fileID: 1370719615675873249, guid: 5098eb0410178ba4ebf0992211a5d13c, type: 3}
   playerPawn: {fileID: 7976657303456889764, guid: 1e7bb38b959d52841b8dff7ede1a3ce8, type: 3}
   gameInstance: {fileID: -2735835447384315871, guid: 79bdda7c0516bde4990fd6c746d46ec7, type: 3}
+  frameworks:
+  - details: {fileID: 11400000, guid: 882b033de85a4c143ba1afc059476b54, type: 2}
+    builds:
+    - {fileID: 11400000, guid: d8d8a2fee5281924aa0e9543582ed2b2, type: 2}
+    - {fileID: 11400000, guid: a5a8afb966fd3374ebdb8a50714b366f, type: 2}
+    - {fileID: 11400000, guid: 4000e179262f3b047ab7780e6a6820a1, type: 2}
+    - {fileID: 11400000, guid: 6896e63cce47d584f98feeeafd6534ad, type: 2}
+    - {fileID: 11400000, guid: 3dde0c42dda5530479944d9c62a38ef6, type: 2}
 --- !u!4 &456712293
 Transform:
   m_ObjectHideFlags: 0

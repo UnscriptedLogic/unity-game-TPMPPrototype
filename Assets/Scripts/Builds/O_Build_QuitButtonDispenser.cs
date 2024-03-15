@@ -10,7 +10,7 @@ public class O_Build_QuitButtonDispenser : O_Build_GenericDispenser
     {
         base.OnLevelStarted();
 
-        startController = GameMode.GetPlayerController().CastTo<C_StartPlayerController>();
+        startController = GameMode.GetPlayerController<C_StartPlayerController>();
 
         O_BuildComponent buildItem = CreateQuitButton();
         BuildBehaviours.CreateBuildItem(buildItem, outputNode);

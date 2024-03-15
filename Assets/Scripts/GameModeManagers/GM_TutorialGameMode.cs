@@ -88,7 +88,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
 
         yield return base.Start();
 
-        playerTutorialLevelHUD = GetPlayerController().AttachUIWidget(tutorialLevelHUDPrefab);
+        playerTutorialLevelHUD = GetPlayerController<UController>().AttachUIWidget(tutorialLevelHUDPrefab);
 
         InitializeSection(currentSectionIndex);
     }
@@ -100,7 +100,7 @@ public class GM_TutorialGameMode : UGameModeBase, IUsesPageObjects, IBuildSystem
             OnProjectEvaluationCompleted?.Invoke(this, EventArgs.Empty);
             customGameInstance.Project.Complete();
 
-            GetPlayerController().AttachUIWidget(gameCompletedHUD);
+            GetPlayerController<UController>().AttachUIWidget(gameCompletedHUD);
         }
         else
         {

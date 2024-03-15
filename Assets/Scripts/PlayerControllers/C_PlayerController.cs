@@ -54,16 +54,16 @@ public class C_PlayerController : UController, IPlayerState
     {
         base.OnLevelStarted();
 
+        EnableInput(GameMode.InputContext);
+
         factoryValidationInterface = GameMode as IFactoryValidation;
-        if (factoryValidationInterface == null)
+        if (factoryValidationInterface != null)
         {
-            Debug.Log("GameMode does not use IFactoryValidation");
-            return;
+            factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
         }
 
         gameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
-        factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
         GameMode.OnPause += LevelManager_OnPause;
         GameMode.OnResume += LevelManager_OnResume;
 
@@ -120,6 +120,8 @@ public class C_PlayerController : UController, IPlayerState
     public override void OnDefaultLeftMouseDown()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        Debug.Log("hello");
 
         switch (CurrentPlayerState.Value)
         {

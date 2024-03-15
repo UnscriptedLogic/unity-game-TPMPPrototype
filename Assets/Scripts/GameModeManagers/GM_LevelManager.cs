@@ -94,7 +94,7 @@ public class GM_LevelManager : UGameModeBase, IBuildSystem, IFactoryValidation, 
         }
 
 
-        GetPlayerController().AttachUIWidget(gameLevelHUD);
+        GetPlayerController<UController>().AttachUIWidget(gameLevelHUD);
 
         CreateDeployers();
     }

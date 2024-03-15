@@ -29,7 +29,7 @@ public class O_Build_ColorModifier : O_Build_ModifierBase
         uiInterface.Bind<UButtonComponent>("toggleforward", OnToggleForward);
         uiInterface.Bind<UButtonComponent>("toggleback", OnToggleBack);
 
-        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn().CastTo<URTSCamera>().ControllerCamera;
+        uiInterface.GetComponent<Canvas>().worldCamera = GameMode.GetPlayerPawn<URTSCamera>().ControllerCamera;
     }
 
     private void OnToggleBack()

@@ -36,10 +36,9 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
         customGameInstance = GameMode.GameInstance.CastTo<GI_CustomGameInstance>();
 
         factoryValidationInterface = GameMode as IFactoryValidation;
-        if (factoryValidationInterface == null)
+        if (factoryValidationInterface != null)
         {
-            Debug.Log("GameMode doesn't use IFactoryValidation");
-            return;
+            factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
         }
 
         Bind<UButtonComponent>("deleteBtn", DeleteBtnClicked);
@@ -49,7 +48,6 @@ public class UIC_BuildHUD : UCanvasController, IBuildHUD
 
         deletePage.SetActive(false);
 
-        factoryValidationInterface.OnProjectCompleted += LevelManager_OnProjectCompleted;
         OnObjectCreated += ULevelObject_OnObjectCreated;
     }
 
