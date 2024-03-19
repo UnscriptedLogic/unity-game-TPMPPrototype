@@ -166,5 +166,5 @@ MonoBehaviour:
       - {fileID: 11400000, guid: d71fd11be8d8683478503e4381c49b8c, type: 2}
       - {fileID: 11400000, guid: 4f0075d1d5ba8664287520d4fa7236db, type: 2}
   globalConveyorBeltMaterial: {fileID: 2100000, guid: 2cbe70d4147e2a4479627ffd323102b2, type: 2}
-  levelToLoad: 0
+  levelToLoad: 5
   doPreviewNextLevel: 0
